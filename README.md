@@ -27,8 +27,8 @@
 
 | 书名 | 作者/出处 | 篇数 | 在线阅读 | GitHub |
 |---|---|---|---|---|
-| 大学 | 《礼记》· 曾子述 | 11 章 | [daxue.aiyazone.com](https://daxue.aiyazone.com/) | — |
-| 中庸 | 《礼记》· 子思述 | 33 章 | [zhongyong.aiyazone.com](https://zhongyong.aiyazone.com/) | — |
+| 大学 | 《礼记》· 曾子述 | 11 章 | [daxue.aiyazone.com](https://daxue.aiyazone.com/) | [GitHub](https://github.com/AIYAZONE/daxue) |
+| 中庸 | 《礼记》· 子思述 | 33 章 | [zhongyong.aiyazone.com](https://zhongyong.aiyazone.com/) | [GitHub](https://github.com/AIYAZONE/zhongyong) |
 | 止学 | 隋·王通 | 10 章 | [zhixue.aiyazone.com](https://zhixue.aiyazone.com/) | [GitHub](https://github.com/AIYAZONE/zhixue) |
 | 素书 | 秦·黄石公 | 6 章 | [sushu.aiyazone.com](https://sushu.aiyazone.com/) | [GitHub](https://github.com/AIYAZONE/sushu) |
 | 长短经 | 唐·赵蕤 | 64 篇 | [changduanjing.aiyazone.com](https://changduanjing.aiyazone.com/) | [GitHub](https://github.com/AIYAZONE/changduanjing) |
