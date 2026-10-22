@@ -258,24 +258,20 @@ body {
   text-align: center;
 }
 .coming-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 16px;
-}
-@media (min-width: 720px) {
-  .coming-grid { grid-template-columns: repeat(3, 1fr); }
-}
-@media (min-width: 1060px) {
-  .coming-grid { grid-template-columns: repeat(4, 1fr); }
 }
 .coming-card {
   background: var(--card-bg);
   border-radius: 10px;
   box-shadow: 0 1px 6px rgba(0,0,0,.04);
-  padding: 20px;
+  padding: 20px 28px;
   text-align: center;
   opacity: .5;
   border: 1px dashed var(--border);
+  min-width: 140px;
 }
 .coming-card .cn {
   font-size: 20px;
