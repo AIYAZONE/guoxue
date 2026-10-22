@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国学经典共读</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --card-bg: #fff;
+  --text: #2c2416;
+  --text2: #6b5e4a;
+  --text3: #9a8d7b;
+  --border: #e8e0d5;
+  --accent: #8b5e3c;
+  --tag-bg: #f5efe8;
+  --tag-active: #2c2416;
+  --shadow: 0 2px 12px rgba(0,0,0,.06);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body {
+  font-family: "PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 64px 20px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: .3;
+}
+.hero h1 {
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--tag-active);
+  margin-bottom: 12px;
+}
+.hero .sub {
+  font-size: 15px;
+  color: var(--text2);
+  letter-spacing: .04em;
+}
+.hero .count {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 4px 16px;
+  border-radius: 99px;
+  font-size: 13px;
+  color: var(--text3);
+  background: var(--tag-bg);
+  letter-spacing: .03em;
+}
+
+/* ── Filter ── */
+.filter-bar {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 20px 32px;
+}
+.filter-bar button {
+  padding: 6px 18px;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  background: var(--card-bg);
+  font-size: 14px;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all .2s;
+  font-family: inherit;
+  letter-spacing: .03em;
+}
+.filter-bar button:hover { border-color: var(--accent); color: var(--accent); }
+.filter-bar button.active {
+  background: var(--tag-active);
+  color: #fff;
+  border-color: var(--tag-active);
+}
+
+/* ── Benefits ── */
+.benefits {
+  padding: 0 20px 40px;
+}
+.benefits-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.bf-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--card-bg);
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+}
+.bf-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.bf-item strong { display: block; font-size: 14px; color: var(--text); margin-bottom: 2px; letter-spacing: .03em; }
+.bf-item span { font-size: 12px; color: var(--text3); line-height: 1.5; }
+
+@media (min-width: 720px) {
+  .benefits-inner { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 719px) {
+  .bf-item { padding: 10px 12px; }
+}
+
+/* ── Grid ── */
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  padding-bottom: 48px;
+}
+@media (min-width: 720px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1060px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ── Card ── */
+.card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform .2s, box-shadow .2s;
+  position: relative;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 24px rgba(0,0,0,.10);
+}
+.card .ribbon {
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px; height: 100%;
+}
+.card .body {
+  padding: 24px 24px 16px;
+  flex: 1;
+}
+.card .name {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  margin-bottom: 6px;
+}
+.card .authors {
+  font-size: 13px;
+  color: var(--text3);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+.card .meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.card .chapter-badge {
+  font-size: 12px;
+  color: var(--text3);
+  background: var(--tag-bg);
+  padding: 2px 10px;
+  border-radius: 99px;
+}
+.card .cat-tag {
+  font-size: 11px;
+  padding: 2px 10px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  color: var(--text2);
+  letter-spacing: .03em;
+}
+.card .actions {
+  display: flex;
+  gap: 10px;
+  padding: 0 24px 20px;
+}
+.card .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all .2s;
+  font-family: inherit;
+  letter-spacing: .03em;
+}
+.card .btn-primary {
+  background: var(--tag-active);
+  color: #fff;
+  border: none;
+}
+.card .btn-primary:hover { opacity: .88; }
+.card .btn-ghost {
+  background: transparent;
+  color: var(--text2);
+  border: 1px solid var(--border);
+}
+.card .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Coming Soon ── */
+.coming-section {
+  max-width: 1100px;
+  margin: 0 auto 64px;
+  padding: 0 20px;
+}
+.coming-section h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text2);
+  margin-bottom: 20px;
+  letter-spacing: .04em;
+  text-align: center;
+}
+.coming-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media (min-width: 720px) {
+  .coming-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1060px) {
+  .coming-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.coming-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  box-shadow: 0 1px 6px rgba(0,0,0,.04);
+  padding: 20px;
+  text-align: center;
+  opacity: .5;
+  border: 1px dashed var(--border);
+}
+.coming-card .cn {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text3);
+  letter-spacing: .06em;
+}
+.coming-card .en {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 4px;
+}
+
+/* ── Footer ── */
+.footer {
+  margin-top: auto;
+  text-align: center;
+  padding: 32px 20px;
+  font-size: 12px;
+  color: var(--text3);
+  letter-spacing: .03em;
+  border-top: 1px solid var(--border);
+}
+.footer a { color: var(--accent); text-decoration: none; }
+
+/* ── Responsive ── */
+@media (max-width: 719px) {
+  .hero { padding: 40px 16px 32px; }
+  .hero h1 { font-size: 28px; }
+  .card .name { font-size: 24px; }
+}
+@media (max-width: 400px) {
+  .card .actions { flex-direction: column; }
+  .card .btn { text-align: center; justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<header class="hero">
+  <h1>国学经典共读</h1>
+  <p class="sub">注音 · 逐句译文 · 多视角解读——让古籍不再难读</p>
+  <span class="count" id="bookCount">已收录 5 部经典</span>
+</header>
+
+<!-- Filter -->
+<nav class="filter-bar" id="filterBar">
+  <button class="active" data-cat="all">全部</button>
+  <button data-cat="四书">四书</button>
+  <button data-cat="道家">道家</button>
+  <button data-cat="纵横">纵横</button>
+</nav>
+
+<!-- Value Props -->
+<section class="benefits">
+  <div class="benefits-inner">
+    <div class="bf-item">
+      <span class="bf-icon">🔤</span>
+      <div><strong>逐句译文</strong><span>原文与现代汉语逐句对照，不再"望文生义"</span></div>
+    </div>
+    <div class="bf-item">
+      <span class="bf-icon">📝</span>
+      <div><strong>生僻字注音</strong><span>通假字、异读字逐一标注，点按即看说明</span></div>
+    </div>
+    <div class="bf-item">
+      <span class="bf-icon">🔍</span>
+      <div><strong>多视角解读</strong><span>串讲疏通文义 + 历史背景 + 现代生活启发</span></div>
+    </div>
+    <div class="bf-item">
+      <span class="bf-icon">🧭</span>
+      <div><strong>研读专区</strong><span>结构脉络、概念词典、名句摘录，一目了然</span></div>
+    </div>
+    <div class="bf-item">
+      <span class="bf-icon">📱</span>
+      <div><strong>手机优先</strong><span>一章一页碎片阅读，通勤、午休随时翻一章</span></div>
+    </div>
+    <div class="bf-item">
+      <span class="bf-icon">💡</span>
+      <div><strong>章尾省察</strong><span>每章配提问式自省，把古人智慧用在自己身上</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Grid -->
+<main class="container">
+  <div class="grid" id="bookGrid"></div>
+</main>
+
+<!-- Coming Soon -->
+<section class="coming-section">
+  <h2>即将上线</h2>
+  <div class="coming-grid">
+    <div class="coming-card"><div class="cn">道德经</div><div class="en">Tao Te Ching</div></div>
+    <div class="coming-card"><div class="cn">冰鉴</div><div class="en">Bing Jian</div></div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>各书原文出自公有领域古籍底本精校 · 说明文字均为编者自撰</p>
+  <p style="margin-top:6px;">© 2026 <a href="https://guoxue.aiyazone.com">国学经典共读</a> · MIT License</p>
+</footer>
+
+<script>
+// ── Books Data ──
+var BOOKS = [
+  {
+    key: "daxue",
+    name: "大学",
+    theme: "#a02c2c",
+    cat: "四书",
+    subtitle: "《礼记》第四十二篇 · 曾子述 · 四书之首",
+    chapters: 11,
+    site: "https://daxue.aiyazone.com/",
+    github: ""
+  },
+  {
+    key: "zhongyong",
+    name: "中庸",
+    theme: "#a02c2c",
+    cat: "四书",
+    subtitle: "《礼记》第三十一篇 · 子思述 · 孔门心法",
+    chapters: 33,
+    site: "https://zhongyong.aiyazone.com/",
+    github: ""
+  },
+  {
+    key: "zhixue",
+    name: "止学",
+    theme: "#2d5016",
+    cat: "道家",
+    subtitle: "隋·王通（文中子）· 道家处世绝学",
+    chapters: 10,
+    site: "https://zhixue.aiyazone.com/",
+    github: "https://github.com/AIYAZONE/zhixue"
+  },
+  {
+    key: "sushu",
+    name: "素书",
+    theme: "#5b3a29",
+    cat: "道家",
+    subtitle: "秦·黄石公授 张良受 · 道家谋略绝学",
+    chapters: 6,
+    site: "https://sushu.aiyazone.com/",
+    github: "https://github.com/AIYAZONE/sushu"
+  },
+  {
+    key: "changduanjing",
+    name: "长短经",
+    theme: "#2f5d63",
+    cat: "纵横",
+    subtitle: "唐·赵蕤 撰 · 九卷六十四篇 · 纵横谋略奇书",
+    chapters: 64,
+    site: "https://changduanjing.aiyazone.com/",
+    github: "https://github.com/AIYAZONE/changduanjing"
+  }
+];
+
+var currentCat = "all";
+
+// ── Render ──
+function renderBooks() {
+  var filtered = currentCat === "all"
+    ? BOOKS
+    : BOOKS.filter(function(b) { return b.cat === currentCat; });
+
+  document.getElementById("bookCount").textContent =
+    "已收录 " + BOOKS.length + " 部经典" + (currentCat !== "all" ? " · 当前筛选 " + filtered.length + " 部" : "");
+
+  var html = "";
+  filtered.forEach(function(b) {
+    html += '<div class="card">';
+    html += '<div class="ribbon" style="background:' + b.theme + '"></div>';
+    html += '<div class="body">';
+    html += '<div class="name">' + b.name + '</div>';
+    html += '<div class="authors">' + b.subtitle + '</div>';
+    html += '<div class="meta-row">';
+    html += '<span class="cat-tag">' + b.cat + '</span>';
+    html += '<span class="chapter-badge">' + b.chapters + ' 章</span>';
+    html += '</div></div>';
+    html += '<div class="actions">';
+    html += '<a class="btn btn-primary" href="' + b.site + '" target="_blank" rel="noopener">📖 在线阅读</a>';
+    if (b.github) {
+      html += '<a class="btn btn-ghost" href="' + b.github + '" target="_blank" rel="noopener">⌂ GitHub</a>';
+    }
+    html += '</div></div>';
+  });
+
+  document.getElementById("bookGrid").innerHTML = html;
+}
+
+// ── Filter ──
+document.getElementById("filterBar").addEventListener("click", function(e) {
+  if (e.target.tagName !== "BUTTON") return;
+  var btns = document.querySelectorAll("#filterBar button");
+  btns.forEach(function(b) { b.classList.remove("active"); });
+  e.target.classList.add("active");
+  currentCat = e.target.dataset.cat;
+  renderBooks();
+});
+
+// ── Init ──
+renderBooks();
+</script>
+
+</body>
+</html>
