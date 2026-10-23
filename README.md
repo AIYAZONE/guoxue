@@ -32,7 +32,7 @@
 | 止学 | 隋·王通 | 10 章 | [zhixue.aiyazone.com](https://zhixue.aiyazone.com/) | [GitHub](https://github.com/AIYAZONE/zhixue) |
 | 素书 | 秦·黄石公 | 6 章 | [sushu.aiyazone.com](https://sushu.aiyazone.com/) | [GitHub](https://github.com/AIYAZONE/sushu) |
 | 长短经 | 唐·赵蕤 | 64 篇 | [changduanjing.aiyazone.com](https://changduanjing.aiyazone.com/) | [GitHub](https://github.com/AIYAZONE/changduanjing) |
-| 冰鉴 | 旧题 清·曾国藩 | 7 篇 | [bingjian.aiyazone.com](https://bingjian.aiyazone.com/) | [GitHub](https://github.com/AIYAZONE/bingjian) |
+| 冰鉴 | 相传 清·曾国藩 | 7 篇 | [bingjian.aiyazone.com](https://bingjian.aiyazone.com/) | [GitHub](https://github.com/AIYAZONE/bingjian) |
 
 ---
 
