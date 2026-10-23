@@ -96,11 +96,19 @@ body {
 
 /* ── Benefits ── */
 .benefits {
-  padding: 0 20px 40px;
+  max-width: 1100px;
+  margin: 0 auto 56px;
+  padding: 0 20px;
+}
+.benefits h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text2);
+  margin-bottom: 20px;
+  letter-spacing: .04em;
+  text-align: center;
 }
 .benefits-inner {
-  max-width: 1100px;
-  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
@@ -318,8 +326,14 @@ body {
   <button data-cat="识人">识人</button>
 </nav>
 
+<!-- Grid -->
+<main class="container">
+  <div class="grid" id="bookGrid"></div>
+</main>
+
 <!-- Value Props -->
 <section class="benefits">
+  <h2>每部经典，都配齐这些</h2>
   <div class="benefits-inner">
     <div class="bf-item">
       <span class="bf-icon">🔤</span>
@@ -347,11 +361,6 @@ body {
     </div>
   </div>
 </section>
-
-<!-- Grid -->
-<main class="container">
-  <div class="grid" id="bookGrid"></div>
-</main>
 
 <!-- Coming Soon -->
 <section class="coming-section">
