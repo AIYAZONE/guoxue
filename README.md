@@ -2,7 +2,7 @@
 
 > guoxue.aiyazone.com — 经典古籍在线共读入口
 
-《大学》《中庸》《止学》《素书》《长短经》五部经典共读网站的汇总导航页面。未来持续扩充更多书目。
+《大学》《中庸》《止学》《素书》《长短经》《冰鉴》六部经典共读网站的汇总导航页面。未来持续扩充更多书目。
 
 ---
 
@@ -32,13 +32,13 @@
 | 止学 | 隋·王通 | 10 章 | [zhixue.aiyazone.com](https://zhixue.aiyazone.com/) | [GitHub](https://github.com/AIYAZONE/zhixue) |
 | 素书 | 秦·黄石公 | 6 章 | [sushu.aiyazone.com](https://sushu.aiyazone.com/) | [GitHub](https://github.com/AIYAZONE/sushu) |
 | 长短经 | 唐·赵蕤 | 64 篇 | [changduanjing.aiyazone.com](https://changduanjing.aiyazone.com/) | [GitHub](https://github.com/AIYAZONE/changduanjing) |
+| 冰鉴 | 旧题 清·曾国藩 | 7 篇 | [bingjian.aiyazone.com](https://bingjian.aiyazone.com/) | [GitHub](https://github.com/AIYAZONE/bingjian) |
 
 ---
 
 ## 即将上线
 
 - **道德经** — 老子 · 八十一章
-- **冰鉴** — 曾国藩 · 七篇
 
 ---
 
