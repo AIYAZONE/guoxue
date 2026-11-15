@@ -101,6 +101,31 @@ python3 -m http.server 8080
 
 阅读进度写在 `localStorage`（`<book>_last_v1`），首页据此显示「继续共读」。
 
+## PWA（安装到主屏 / 离线阅读）
+
+站点是纯静态的，用一个 Service Worker 做离线缓存，可在手机浏览器里「添加到主屏幕」后当 App 用。
+
+| 文件 | 作用 |
+|---|---|
+| `manifest.webmanifest` | 名称、`standalone` 显示、主题色、三档图标（192 / 512 / maskable） |
+| `sw.js` | 预缓存外壳与全部书目；运行时按类型分流 |
+| `icons/` | `icon-192.png` / `icon-512.png`（含内框印章）、`maskable-512.png`（留安全区）、`apple-touch-icon.png` |
+| `favicon.svg` | 站徽：朱砂方章 + 白文「读」（小尺寸去掉内框，保证 16px 可辨） |
+
+缓存策略：
+
+- **安装期**：预缓存首页、共享 CSS/JS、图标，再读 `books.json` 动态铺开每本书的入口页 / `data.json` / `study.html`——**新增书目不需要改 `sw.js`**
+- **页面导航**：network-first，断网回退同地址缓存，再退回首页
+- **`data.json` / `study.html`**：network-first，保证勘误与新增章节即时可见
+- **`/shared/*`**：network-first，避免改版后新 DOM 配旧 CSS
+- **图标 / favicon / manifest**：cache-first + 后台更新
+
+改了 `sw.js` 的缓存清单或策略时，把 `VERSION` 加一（如 `guoxue-v2`），旧缓存在 `activate` 中自动清理。
+
+`vercel.json` 已为 `/sw.js`、`/manifest.webmanifest` 设置 `must-revalidate`，避免 CDN 缓存住旧版本。
+
+本地验证离线：浏览器 DevTools → Network → Offline，刷新任意书籍页仍可翻章；或 `curl` 检查 `/manifest.webmanifest` 与三张图标均为 200。
+
 ## 迁移说明
 
 本仓库由原 7 个独立仓库（6 部书 + 导航页）合并而来，内容数据于 2026-11 用

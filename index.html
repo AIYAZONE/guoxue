@@ -4,7 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<meta name="theme-color" content="#faf8f5">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#faf7f2">
+<meta name="application-name" content="国学共读">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="国学共读">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <script>try{var d=document.documentElement;d.setAttribute('data-theme',localStorage.getItem('guoxue_theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));d.setAttribute('data-pal',localStorage.getItem('guoxue_pal')||'e')}catch(e){}</script>
 <meta name="description" content="国学经典共读：注音 · 逐句译文 · 多视角解读——让古籍不再难读">
 <title>国学经典共读</title>
@@ -31,11 +37,13 @@ a{color:inherit}
 /* ── 顶栏 ── */
 .nav{position:sticky;top:0;z-index:60;background:var(--paper);background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .nav-inner{max-width:1100px;margin:0 auto;padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between;gap:14px}
-.nav-brand{font-family:"STKaiti","KaiTi","Kaiti SC",serif;font-size:21px;letter-spacing:3px;text-decoration:none;display:flex;align-items:baseline;gap:8px}
+.nav-brand{font-family:"STKaiti","KaiTi","Kaiti SC",serif;font-size:21px;letter-spacing:3px;text-decoration:none;display:inline-flex;align-items:center;gap:9px}
+.brand-mark{width:34px;height:34px;border-radius:7px;flex:none;display:block;box-shadow:0 1px 4px rgba(141,74,52,.22)}
+.brand-txt{display:inline-flex;align-items:baseline;gap:8px;white-space:nowrap}
 .nav-brand small{font-family:inherit;font-size:10.5px;letter-spacing:2px;color:var(--muted)}
 .nav-right{display:flex;align-items:center;gap:8px}
 .nav-meta{font-size:12px;color:var(--muted);letter-spacing:1.5px}
-.icon-btn{font-family:inherit;font-size:13px;padding:5px 13px;border:1px solid var(--line);background:transparent;color:var(--soft);border-radius:999px;cursor:pointer;transition:.18s;letter-spacing:.5px}
+.icon-btn{font-family:inherit;font-size:13px;white-space:nowrap;padding:5px 13px;border:1px solid var(--line);background:transparent;color:var(--soft);border-radius:999px;cursor:pointer;transition:.18s;letter-spacing:.5px}
 .icon-btn:hover{border-color:var(--accent);color:var(--accent)}
 .icon-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
@@ -142,8 +150,13 @@ html[data-theme="dark"] .card-seal{color:#201c17}
 @media (max-width:560px){
   .hero{padding:52px 20px 28px}
   .hero .sub{font-size:13.5px;letter-spacing:.06em}
-  .nav-inner{height:52px;padding:0 16px}
+  .nav-inner{height:54px;padding:0 14px;gap:10px}
   .nav-meta{display:none}
+  .nav-brand{font-size:18.5px;letter-spacing:2px;gap:7px}
+  .brand-mark{width:30px;height:30px;border-radius:6px}
+  .brand-txt small{display:none}
+  .nav-right{gap:6px}
+  .icon-btn{font-size:12.5px;padding:5px 10px;letter-spacing:.3px}
   .container,.resume,.benefits,.coming{padding-left:16px;padding-right:16px}
   .card{padding:20px}
   .benefits-inner{grid-template-columns:1fr}
@@ -154,7 +167,7 @@ html[data-theme="dark"] .card-seal{color:#201c17}
 
 <header class="nav">
   <div class="nav-inner">
-    <a class="nav-brand" href="/">国学共读<small>GUOXUE</small></a>
+    <a class="nav-brand" href="/"><img class="brand-mark" src="/favicon.svg" width="34" height="34" alt=""><span class="brand-txt">国学共读<small>GUOXUE</small></span></a>
     <div class="nav-right">
       <span class="nav-meta" id="navMeta">六部经典 · 一日一章</span>
       <details class="pal-pick" id="palPick">
@@ -360,5 +373,6 @@ document.getElementById('filterBar').addEventListener('click', function (e) {
 });
 </script>
 
+<script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}</script>
 </body>
 </html>

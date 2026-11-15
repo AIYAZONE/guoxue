@@ -2,11 +2,117 @@
   "cleanUrls": true,
   "trailingSlash": true,
   "redirects": [
-    { "source": "/(.*)", "has": [{ "type": "host", "value": "daxue.aiyazone.com" }], "destination": "https://guoxue.aiyazone.com/daxue/$1", "permanent": true },
-    { "source": "/(.*)", "has": [{ "type": "host", "value": "zhongyong.aiyazone.com" }], "destination": "https://guoxue.aiyazone.com/zhongyong/$1", "permanent": true },
-    { "source": "/(.*)", "has": [{ "type": "host", "value": "zhixue.aiyazone.com" }], "destination": "https://guoxue.aiyazone.com/zhixue/$1", "permanent": true },
-    { "source": "/(.*)", "has": [{ "type": "host", "value": "sushu.aiyazone.com" }], "destination": "https://guoxue.aiyazone.com/sushu/$1", "permanent": true },
-    { "source": "/(.*)", "has": [{ "type": "host", "value": "changduanjing.aiyazone.com" }], "destination": "https://guoxue.aiyazone.com/changduanjing/$1", "permanent": true },
-    { "source": "/(.*)", "has": [{ "type": "host", "value": "bingjian.aiyazone.com" }], "destination": "https://guoxue.aiyazone.com/bingjian/$1", "permanent": true }
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "daxue.aiyazone.com"
+        }
+      ],
+      "destination": "https://guoxue.aiyazone.com/daxue/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "zhongyong.aiyazone.com"
+        }
+      ],
+      "destination": "https://guoxue.aiyazone.com/zhongyong/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "zhixue.aiyazone.com"
+        }
+      ],
+      "destination": "https://guoxue.aiyazone.com/zhixue/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "sushu.aiyazone.com"
+        }
+      ],
+      "destination": "https://guoxue.aiyazone.com/sushu/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "changduanjing.aiyazone.com"
+        }
+      ],
+      "destination": "https://guoxue.aiyazone.com/changduanjing/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "bingjian.aiyazone.com"
+        }
+      ],
+      "destination": "https://guoxue.aiyazone.com/bingjian/$1",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "Service-Worker-Allowed",
+          "value": "/"
+        }
+      ]
+    },
+    {
+      "source": "/manifest.webmanifest",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/manifest+json"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/icons/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800"
+        }
+      ]
+    },
+    {
+      "source": "/shared/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300, must-revalidate"
+        }
+      ]
+    }
   ]
 }
