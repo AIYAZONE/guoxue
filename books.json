@@ -1,0 +1,56 @@
+[
+ {
+  "key": "daxue",
+  "book": "大学",
+  "subtitle": "《礼记》第四十二篇·曾子述·四书之首",
+  "total": 11,
+  "cat": "四书",
+  "theme": "#a02c2c",
+  "favchar": "学"
+ },
+ {
+  "key": "zhongyong",
+  "book": "中庸",
+  "subtitle": "《礼记》第三十一篇·子思撰·四书之一",
+  "total": 33,
+  "cat": "四书",
+  "theme": "#a02c2c",
+  "favchar": "中"
+ },
+ {
+  "key": "zhixue",
+  "book": "止学",
+  "subtitle": "隋·王通（文中子）·道家处世绝学",
+  "total": 10,
+  "cat": "道家",
+  "theme": "#a02c2c",
+  "favchar": "止"
+ },
+ {
+  "key": "sushu",
+  "book": "素书",
+  "subtitle": "秦·黄石公授张良受·道家谋略绝学",
+  "total": 6,
+  "cat": "道家",
+  "theme": "#5b3a29",
+  "favchar": "素"
+ },
+ {
+  "key": "changduanjing",
+  "book": "长短经",
+  "subtitle": "唐·赵蕤撰·九卷六十四篇·纵横谋略奇书",
+  "total": 64,
+  "cat": "纵横",
+  "theme": "#2f5d63",
+  "favchar": "长"
+ },
+ {
+  "key": "bingjian",
+  "book": "冰鉴",
+  "subtitle": "相传清·曾国藩撰·相人识人七大端",
+  "total": 7,
+  "cat": "识人",
+  "theme": "#2c5f7c",
+  "favchar": "鉴"
+ }
+]

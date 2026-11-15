@@ -1,0 +1,62 @@
+/* ================================================================
+   全站主题令牌：五套配色 × 日/夜两态
+   - 属性挂在 <html> 与 <body> 上：data-pal = a|b|c|d|e，data-theme = light|dark
+   - a 纸墨（默认）· b 朱砂 · c 黛青 · d 竹绿 · e 赭红
+   - 首页与阅读器共用本文件；其余样式一律引用变量，不得写死色值
+   ================================================================ */
+
+/* —— A 纸墨（默认，日间） —— */
+:root{
+  --paper:#faf8f5; --card:#ffffff; --ink:#2b2418; --soft:#6b5e4a; --muted:#9a8d7b;
+  --accent:#8b5e3c; --accent-deep:#74482b; --accent-bg:#f5efe8;
+  --line:#e6dfd3; --line-strong:#d8cdb9;
+  --dot:rgba(139,94,60,.035);
+}
+
+/* —— 其余四套（日间） —— */
+[data-pal="b"]{
+  --paper:#f7f5f2; --ink:#262322; --soft:#5c5650; --muted:#8d857c;
+  --accent:#9e3b32; --accent-deep:#7f2c25; --accent-bg:#f7ece8;
+  --line:#e4ded6; --line-strong:#d4ccc1;
+  --dot:rgba(158,59,50,.028);
+}
+[data-pal="c"]{
+  --paper:#f6f7f6; --ink:#232a2e; --soft:#4f5d66; --muted:#82909a;
+  --accent:#33566e; --accent-deep:#264254; --accent-bg:#e9eff2;
+  --line:#dfe3e1; --line-strong:#c6cfcf;
+  --dot:rgba(51,86,110,.028);
+}
+[data-pal="d"]{
+  --paper:#f5f7f2; --ink:#23291f; --soft:#4e5c48; --muted:#84937c;
+  --accent:#47694f; --accent-deep:#35523c; --accent-bg:#e9efe6;
+  --line:#dee3d8; --line-strong:#c3cfc0;
+  --dot:rgba(71,105,79,.03);
+}
+[data-pal="e"]{
+  --paper:#faf7f2; --ink:#262019; --soft:#5f5449; --muted:#93887a;
+  --accent:#8d4a34; --accent-deep:#733a28; --accent-bg:#f6ebe5;
+  --line:#e6ded2; --line-strong:#d6c9b8;
+  --dot:rgba(141,74,52,.03);
+}
+
+/* —— 暗色（中性底，五套通用） —— */
+[data-theme="dark"]{
+  --paper:#1c1915; --card:#252119; --ink:#e9e3d5; --soft:#b0a693; --muted:#8a8070;
+  --line:#3a342b; --line-strong:#4c4438;
+  --accent:#c99b6c; --accent-deep:#dbae7f; --accent-bg:#332a22;
+  --dot:rgba(233,227,213,.03);
+}
+
+/* —— 各配色在暗色下的主色（提亮以保对比） —— */
+[data-pal="b"][data-theme="dark"]{ --accent:#c96a5a; --accent-deep:#dd8d80; --accent-bg:#382622 }
+[data-pal="c"][data-theme="dark"]{
+  --paper:#171a1d; --card:#1f2429; --ink:#e5e8ea; --soft:#a9b3b9; --muted:#7f8a91;
+  --line:#2f353a; --line-strong:#3f474d;
+  --accent:#7fa3bd; --accent-deep:#a2c1d6; --accent-bg:#232e37;
+}
+[data-pal="d"][data-theme="dark"]{
+  --paper:#161a17; --card:#1e241f; --ink:#e5eae3; --soft:#a8b4a7; --muted:#7f8b7f;
+  --line:#2f352e; --line-strong:#404840;
+  --accent:#86a98d; --accent-deep:#a6c3ab; --accent-bg:#243027;
+}
+[data-pal="e"][data-theme="dark"]{ --accent:#c68a6e; --accent-deep:#d9a488; --accent-bg:#342822 }

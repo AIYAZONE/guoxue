@@ -4,488 +4,350 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta name="theme-color" content="#faf8f5">
+<script>try{var d=document.documentElement;d.setAttribute('data-theme',localStorage.getItem('guoxue_theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));d.setAttribute('data-pal',localStorage.getItem('guoxue_pal')||'a')}catch(e){}</script>
+<meta name="description" content="国学经典共读：注音 · 逐句译文 · 多视角解读——让古籍不再难读">
 <title>国学经典共读</title>
+<link rel="stylesheet" href="/shared/palette.css">
 <style>
-:root {
-  --bg: #faf8f5;
-  --card-bg: #fff;
-  --text: #2c2416;
-  --text2: #6b5e4a;
-  --text3: #9a8d7b;
-  --border: #e8e0d5;
-  --accent: #8b5e3c;
-  --tag-bg: #f5efe8;
-  --tag-active: #2c2416;
-  --shadow: 0 2px 12px rgba(0,0,0,.06);
+:root{
+  --shadow:0 1px 3px rgba(43,36,24,.05), 0 10px 30px -18px rgba(43,36,24,.18);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body {
-  font-family: "PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC","SimSun",serif;
+  background:var(--paper);
+  background-image:radial-gradient(var(--dot) 1px,transparent 1px);
+  background-size:22px 22px;
+  color:var(--ink);
+  line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;display:flex;flex-direction:column;
 }
+a{color:inherit}
+::selection{background:var(--accent-bg);color:var(--accent-deep)}
 
-/* ── Hero ── */
-.hero {
-  text-align: center;
-  padding: 64px 20px 48px;
-  position: relative;
-  overflow: hidden;
-}
-.hero::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  opacity: .3;
-}
-.hero h1 {
-  font-size: clamp(32px, 5vw, 48px);
-  font-weight: 700;
-  letter-spacing: .08em;
-  color: var(--tag-active);
-  margin-bottom: 12px;
-}
-.hero .sub {
-  font-size: 15px;
-  color: var(--text2);
-  letter-spacing: .04em;
-}
-.hero .count {
-  display: inline-block;
-  margin-top: 16px;
-  padding: 4px 16px;
-  border-radius: 99px;
-  font-size: 13px;
-  color: var(--text3);
-  background: var(--tag-bg);
-  letter-spacing: .03em;
-}
+/* ── 顶栏 ── */
+.nav{position:sticky;top:0;z-index:60;background:var(--paper);background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.nav-brand{font-family:"STKaiti","KaiTi","Kaiti SC",serif;font-size:21px;letter-spacing:3px;text-decoration:none;display:flex;align-items:baseline;gap:8px}
+.nav-brand small{font-family:inherit;font-size:10.5px;letter-spacing:2px;color:var(--muted)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-meta{font-size:12px;color:var(--muted);letter-spacing:1.5px}
+.icon-btn{font-family:inherit;font-size:13px;padding:5px 13px;border:1px solid var(--line);background:transparent;color:var(--soft);border-radius:999px;cursor:pointer;transition:.18s;letter-spacing:.5px}
+.icon-btn:hover{border-color:var(--accent);color:var(--accent)}
+.icon-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-/* ── Filter ── */
-.filter-bar {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 0 20px 32px;
-}
-.filter-bar button {
-  padding: 6px 18px;
-  border: 1px solid var(--border);
-  border-radius: 99px;
-  background: var(--card-bg);
-  font-size: 14px;
-  color: var(--text2);
-  cursor: pointer;
-  transition: all .2s;
-  font-family: inherit;
-  letter-spacing: .03em;
-}
-.filter-bar button:hover { border-color: var(--accent); color: var(--accent); }
-.filter-bar button.active {
-  background: var(--tag-active);
-  color: #fff;
-  border-color: var(--tag-active);
-}
+/* ── 封面区 ── */
+.hero{width:100%;text-align:center;padding:72px 24px 40px;position:relative}
+.hero h1{font-family:"STKaiti","KaiTi","Kaiti SC",serif;font-size:clamp(34px,5.6vw,52px);font-weight:600;letter-spacing:.16em;text-indent:.16em;line-height:1.3}
+.hero .sub{margin-top:14px;font-size:15px;color:var(--soft);letter-spacing:.12em}
+.hero .rule{width:52px;height:1px;background:var(--accent);opacity:.5;margin:22px auto 0}
+.hero .stats{margin-top:20px;display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+.stat{font-size:12px;letter-spacing:1px;color:var(--muted);border:1px solid var(--line);background:var(--card);padding:3px 12px;border-radius:999px}
+.stat b{color:var(--accent-deep);font-weight:600}
 
-/* ── Benefits ── */
-.benefits {
-  max-width: 1100px;
-  margin: 0 auto 56px;
-  padding: 0 20px;
-}
-.benefits h2 {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text2);
-  margin-bottom: 20px;
-  letter-spacing: .04em;
-  text-align: center;
-}
-.benefits-inner {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-.bf-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 12px 16px;
-  background: var(--card-bg);
-  border-radius: 10px;
-  box-shadow: 0 1px 4px rgba(0,0,0,.04);
-}
-.bf-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
-.bf-item strong { display: block; font-size: 14px; color: var(--text); margin-bottom: 2px; letter-spacing: .03em; }
-.bf-item span { font-size: 12px; color: var(--text3); line-height: 1.5; }
+/* ── 继续共读 ── */
+.resume{width:100%;max-width:1100px;margin:0 auto 6px;padding:0 24px}
+.resume[hidden]{display:none}
+.resume-title{font-size:12px;letter-spacing:3px;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.resume-title:after{content:"";flex:1;height:1px;background:var(--line)}
+.resume-list{display:flex;flex-wrap:wrap;gap:12px}
+.resume-card{flex:1 1 250px;display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;text-decoration:none;transition:.18s;box-shadow:var(--shadow)}
+.resume-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.resume-card .rk{font-family:"STKaiti","KaiTi",serif;font-size:20px;letter-spacing:2px;flex:none}
+.resume-card .rp{font-size:11.5px;color:var(--muted);letter-spacing:.5px}
+.resume-card .go{margin-left:auto;font-size:12px;color:var(--accent-deep);white-space:nowrap}
 
-@media (min-width: 720px) {
-  .benefits-inner { grid-template-columns: repeat(3, 1fr); }
-}
-@media (max-width: 719px) {
-  .bf-item { padding: 10px 12px; }
-}
+/* ── 筛选 ── */
+.filter-bar{width:100%;display:flex;justify-content:center;flex-wrap:wrap;gap:8px;padding:26px 24px 30px}
+.filter-bar button{font-family:inherit;padding:5px 18px;border:1px solid var(--line);border-radius:999px;background:var(--card);font-size:13.5px;color:var(--soft);cursor:pointer;transition:.18s;letter-spacing:.08em}
+.filter-bar button:hover{border-color:var(--accent);color:var(--accent)}
+.filter-bar button.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:500}
+.filter-bar button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-/* ── Grid ── */
-.container {
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 20px;
+/* ── 书卡 ── */
+.container{width:100%;max-width:1100px;margin:0 auto;padding:0 24px}
+.grid{display:grid;grid-template-columns:1fr;gap:20px;padding-bottom:16px}
+@media (min-width:700px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1040px){.grid{grid-template-columns:repeat(3,1fr)}}
+.card{
+  position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:24px 24px 20px;display:flex;flex-direction:column;
+  transition:transform .2s,border-color .2s,box-shadow .2s;box-shadow:var(--shadow);
 }
-.grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-  padding-bottom: 48px;
-}
-@media (min-width: 720px) {
-  .grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (min-width: 1060px) {
-  .grid { grid-template-columns: repeat(3, 1fr); }
-}
+.card:hover{transform:translateY(-3px);border-color:var(--line-strong);box-shadow:0 2px 6px rgba(43,36,24,.05),0 18px 40px -22px rgba(43,36,24,.3)}
+.card-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:10px}
+.card-seal{flex:none;width:42px;height:42px;border-radius:10px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-family:"STKaiti","KaiTi",serif;font-size:22px;letter-spacing:0;box-shadow:inset 0 -1px 0 rgba(0,0,0,.12)}
+.card .name{font-family:"STKaiti","KaiTi","Kaiti SC",serif;font-size:27px;font-weight:600;letter-spacing:.1em;line-height:1.2}
+.card .authors{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.6;letter-spacing:.02em}
+.card .meta-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:14px 0 16px;font-size:11.5px;color:var(--soft)}
+.card .cat-tag{border:1px solid var(--line);border-radius:999px;padding:1px 9px;letter-spacing:.06em}
+.card .chapter-badge{background:var(--accent-bg);color:var(--accent-deep);border-radius:999px;padding:1px 9px;letter-spacing:.04em}
+.card .progress-line{margin-top:auto;font-size:11.5px;color:var(--muted);letter-spacing:.04em;display:flex;align-items:center;gap:7px;min-height:20px}
+.card .progress-line .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.7;flex:none}
+.card .actions{margin-top:14px}
+.card .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:9px 18px;border-radius:9px;font-family:inherit;font-size:14px;letter-spacing:.1em;text-decoration:none;background:var(--accent);color:#fff;border:1px solid var(--accent);transition:.18s}
+.card .btn:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
+.card .btn:focus-visible{outline:2px solid var(--accent-deep);outline-offset:2px}
 
-/* ── Card ── */
-.card {
-  background: var(--card-bg);
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: transform .2s, box-shadow .2s;
-  position: relative;
-}
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 24px rgba(0,0,0,.10);
-}
-.card .ribbon {
-  position: absolute;
-  top: 0; left: 0;
-  width: 4px; height: 100%;
-}
-.card .body {
-  padding: 24px 24px 16px;
-  flex: 1;
-}
-.card .name {
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: .06em;
-  margin-bottom: 6px;
-}
-.card .authors {
-  font-size: 13px;
-  color: var(--text3);
-  margin-bottom: 12px;
-  line-height: 1.5;
-}
-.card .meta-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-}
-.card .chapter-badge {
-  font-size: 12px;
-  color: var(--text3);
-  background: var(--tag-bg);
-  padding: 2px 10px;
-  border-radius: 99px;
-}
-.card .cat-tag {
-  font-size: 11px;
-  padding: 2px 10px;
-  border-radius: 99px;
-  border: 1px solid var(--border);
-  color: var(--text2);
-  letter-spacing: .03em;
-}
-.card .actions {
-  display: flex;
-  gap: 10px;
-  padding: 0 24px 20px;
-}
-.card .btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 8px 18px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  text-decoration: none;
-  transition: all .2s;
-  font-family: inherit;
-  letter-spacing: .03em;
-}
-.card .btn-primary {
-  background: var(--tag-active);
-  color: #fff;
-  border: none;
-}
-.card .btn-primary:hover { opacity: .88; }
-.card .btn-ghost {
-  background: transparent;
-  color: var(--text2);
-  border: 1px solid var(--border);
-}
-.card .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+/* ── 特色 ── */
+.benefits{width:100%;max-width:1100px;margin:56px auto 0;padding:0 24px}
+.benefits h2{font-size:13px;font-weight:400;color:var(--muted);letter-spacing:4px;margin-bottom:22px;text-align:center;display:flex;align-items:center;justify-content:center;gap:14px}
+.benefits h2:before,.benefits h2:after{content:"";width:40px;height:1px;background:var(--line)}
+.benefits-inner{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media (min-width:760px){.benefits-inner{grid-template-columns:repeat(3,1fr)}}
+.bf-item{display:flex;align-items:flex-start;gap:11px;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:11px}
+.bf-ico{flex:none;width:26px;height:26px;border-radius:7px;background:var(--accent-bg);color:var(--accent-deep);display:flex;align-items:center;justify-content:center;font-family:"STKaiti","KaiTi",serif;font-size:15px;margin-top:2px}
+.bf-item strong{display:block;font-size:13.5px;font-weight:600;letter-spacing:.06em;margin-bottom:1px}
+.bf-item span{font-size:12px;color:var(--muted);line-height:1.6}
 
-/* ── Coming Soon ── */
-.coming-section {
-  max-width: 1100px;
-  margin: 0 auto 64px;
-  padding: 0 20px;
-}
-.coming-section h2 {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text2);
-  margin-bottom: 20px;
-  letter-spacing: .04em;
-  text-align: center;
-}
-.coming-grid {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-.coming-card {
-  background: var(--card-bg);
-  border-radius: 10px;
-  box-shadow: 0 1px 6px rgba(0,0,0,.04);
-  padding: 20px 28px;
-  text-align: center;
-  opacity: .5;
-  border: 1px dashed var(--border);
-  min-width: 140px;
-}
-.coming-card .cn {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text3);
-  letter-spacing: .06em;
-}
-.coming-card .en {
-  font-size: 12px;
-  color: var(--text3);
-  margin-top: 4px;
-}
+/* ── 即将上线 ── */
+.coming{width:100%;max-width:1100px;margin:46px auto 64px;padding:0 24px;text-align:center}
+.coming h2{font-size:13px;font-weight:400;color:var(--muted);letter-spacing:4px;margin-bottom:16px}
+.coming-list{display:flex;justify-content:center;flex-wrap:wrap;gap:10px}
+.coming-card{border:1px dashed var(--line-strong);border-radius:10px;padding:8px 20px;color:var(--muted);font-family:"STKaiti","KaiTi",serif;font-size:17px;letter-spacing:2px;background:transparent}
+.coming-card small{display:block;font-family:inherit;font-size:10.5px;letter-spacing:1px;color:var(--muted);opacity:.75}
 
-/* ── Footer ── */
-.footer {
-  margin-top: auto;
-  text-align: center;
-  padding: 32px 20px;
-  font-size: 12px;
-  color: var(--text3);
-  letter-spacing: .03em;
-  border-top: 1px solid var(--border);
-}
-.footer a { color: var(--accent); text-decoration: none; }
+/* ── 页脚 ── */
+.footer{margin-top:auto;border-top:1px solid var(--line);text-align:center;padding:30px 24px 40px;font-size:12px;color:var(--muted);letter-spacing:.05em}
+.footer a{color:var(--accent-deep);text-decoration:none;border-bottom:1px dotted var(--line-strong)}
+.footer a:hover{border-color:var(--accent)}
+.footer p+p{margin-top:6px}
 
-/* ── Responsive ── */
-@media (max-width: 719px) {
-  .hero { padding: 40px 16px 32px; }
-  .hero h1 { font-size: 28px; }
-  .card .name { font-size: 24px; }
+/* ── 暗色 ── */
+html[data-theme="dark"]{
+  --shadow:0 1px 3px rgba(0,0,0,.3), 0 12px 30px -20px rgba(0,0,0,.6);
 }
-@media (max-width: 400px) {
-  .card .actions { flex-direction: column; }
-  .card .btn { text-align: center; justify-content: center; }
+html[data-theme="dark"] body{background-image:radial-gradient(var(--dot) 1px,transparent 1px)}
+html[data-theme="dark"] .nav{background:color-mix(in srgb,var(--paper) 92%,transparent)}
+html[data-theme="dark"] .card .btn{color:#201c17}
+html[data-theme="dark"] .filter-bar button.active{color:#201c17}
+html[data-theme="dark"] .card-seal{color:#201c17}
+
+.pal-pick{position:relative}
+.pal-pick summary{list-style:none;cursor:pointer;user-select:none}
+.pal-pick summary::-webkit-details-marker{display:none}
+.pal-menu{position:absolute;right:0;top:calc(100% + 6px);min-width:132px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:2px;z-index:80}
+.pal-menu button{display:flex;align-items:center;gap:8px;width:100%;font-family:inherit;font-size:13px;letter-spacing:1px;padding:6px 10px;background:none;border:0;border-radius:8px;color:var(--soft);cursor:pointer;text-align:left;transition:.15s}
+.pal-menu button:hover{background:var(--accent-bg);color:var(--accent-deep)}
+.pal-menu button.on{color:var(--accent-deep);font-weight:600}
+.pal-menu button.on:after{content:"✓";margin-left:auto;font-size:11px;opacity:.85}
+.pal-menu .dot{width:13px;height:13px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+
+@media (max-width:560px){
+  .hero{padding:52px 20px 28px}
+  .hero .sub{font-size:13.5px;letter-spacing:.06em}
+  .nav-inner{height:52px;padding:0 16px}
+  .nav-meta{display:none}
+  .container,.resume,.benefits,.coming{padding-left:16px;padding-right:16px}
+  .card{padding:20px}
+  .benefits-inner{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
-<!-- Hero -->
-<header class="hero">
-  <h1>国学经典共读</h1>
-  <p class="sub">注音 · 逐句译文 · 多视角解读——让古籍不再难读</p>
-  <span class="count" id="bookCount">已收录 5 部经典</span>
+<header class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="/">国学共读<small>GUOXUE</small></a>
+    <div class="nav-right">
+      <span class="nav-meta" id="navMeta">六部经典 · 一日一章</span>
+      <details class="pal-pick" id="palPick">
+        <summary class="icon-btn" title="主题配色">配色</summary>
+        <div class="pal-menu" id="palMenu"></div>
+      </details>
+      <button class="icon-btn" id="themeBtn" type="button" title="夜间 / 日间">夜览</button>
+    </div>
+  </div>
 </header>
 
-<!-- Filter -->
+<section class="hero">
+  <h1>国学经典共读</h1>
+  <p class="sub">注音 · 逐句译文 · 多视角解读——让古籍不再难读</p>
+  <div class="rule"></div>
+  <div class="stats">
+    <span class="stat" id="bookCount">载入中…</span>
+    <span class="stat"><b>一天一章</b> · 碎片时间读完整本</span>
+    <span class="stat"><b>数据本地</b> · 笔记不上传云端</span>
+  </div>
+</section>
+
+<section class="resume" id="resume" hidden>
+  <div class="resume-title">继 续 共 读</div>
+  <div class="resume-list" id="resumeList"></div>
+</section>
+
 <nav class="filter-bar" id="filterBar">
   <button class="active" data-cat="all">全部</button>
-  <button data-cat="四书">四书</button>
-  <button data-cat="道家">道家</button>
-  <button data-cat="纵横">纵横</button>
-  <button data-cat="识人">识人</button>
 </nav>
 
-<!-- Grid -->
 <main class="container">
   <div class="grid" id="bookGrid"></div>
 </main>
 
-<!-- Value Props -->
 <section class="benefits">
-  <h2>每部经典，都配齐这些</h2>
+  <h2>每 部 经 典 都 配 齐</h2>
   <div class="benefits-inner">
-    <div class="bf-item">
-      <span class="bf-icon">🔤</span>
-      <div><strong>逐句译文</strong><span>原文与现代汉语逐句对照，不再"望文生义"</span></div>
-    </div>
-    <div class="bf-item">
-      <span class="bf-icon">📝</span>
-      <div><strong>生僻字注音</strong><span>通假字、异读字逐一标注，点按即看说明</span></div>
-    </div>
-    <div class="bf-item">
-      <span class="bf-icon">🔍</span>
-      <div><strong>多视角解读</strong><span>串讲疏通文义 + 历史背景 + 现代生活启发</span></div>
-    </div>
-    <div class="bf-item">
-      <span class="bf-icon">🧭</span>
-      <div><strong>研读专区</strong><span>结构脉络、概念词典、名句摘录，一目了然</span></div>
-    </div>
-    <div class="bf-item">
-      <span class="bf-icon">📱</span>
-      <div><strong>手机优先</strong><span>一章一页碎片阅读，通勤、午休随时翻一章</span></div>
-    </div>
-    <div class="bf-item">
-      <span class="bf-icon">💡</span>
-      <div><strong>章尾省察</strong><span>每章配提问式自省，把古人智慧用在自己身上</span></div>
-    </div>
+    <div class="bf-item"><span class="bf-ico">译</span><div><strong>逐句译文</strong><span>原文与现代汉语逐句对照，不再望文生义</span></div></div>
+    <div class="bf-item"><span class="bf-ico">音</span><div><strong>生僻字注音</strong><span>通假字、异读字逐一标注，点按即看说明</span></div></div>
+    <div class="bf-item"><span class="bf-ico">索</span><div><strong>站内搜索</strong><span>经文、译文、注解全文检索，直达所在章节</span></div></div>
+    <div class="bf-item"><span class="bf-ico">研</span><div><strong>研读专区</strong><span>结构脉络、概念词典、名句摘录一目了然</span></div></div>
+    <div class="bf-item"><span class="bf-ico">夜</span><div><strong>夜览模式</strong><span>夜间护眼，分页 / 连续双模式随心切换</span></div></div>
+    <div class="bf-item"><span class="bf-ico">省</span><div><strong>章尾省察</strong><span>每章配提问式自省，把古人智慧用在自己身上</span></div></div>
   </div>
 </section>
 
-<!-- Coming Soon -->
-<section class="coming-section">
-  <h2>即将上线</h2>
-  <div class="coming-grid">
-    <div class="coming-card"><div class="cn">道德经</div><div class="en">Tao Te Ching</div></div>
+<section class="coming">
+  <h2>即 将 上 线</h2>
+  <div class="coming-list">
+    <div class="coming-card">道德经<small>DAO DE JING</small></div>
+    <div class="coming-card">论语<small>THE ANALECTS</small></div>
+    <div class="coming-card">庄子<small>ZHUANGZI</small></div>
   </div>
 </section>
 
-<!-- Footer -->
 <footer class="footer">
   <p>各书原文出自公有领域古籍底本精校 · 说明文字均为编者自撰</p>
-  <p style="margin-top:6px;">© 2026 <a href="https://guoxue.aiyazone.com">国学经典共读</a> · MIT License</p>
+  <p>© 2026 <a href="https://github.com/AIYAZONE/guoxue">国学经典共读</a> · MIT License</p>
 </footer>
 
 <script>
-// ── Books Data ──
-var BOOKS = [
-  {
-    key: "daxue",
-    name: "大学",
-    theme: "#a02c2c",
-    cat: "四书",
-    subtitle: "《礼记》第四十二篇 · 曾子述 · 四书之首",
-    chapters: 11,
-    site: "https://daxue.aiyazone.com/",
-    github: "https://github.com/AIYAZONE/daxue"
-  },
-  {
-    key: "zhongyong",
-    name: "中庸",
-    theme: "#a02c2c",
-    cat: "四书",
-    subtitle: "《礼记》第三十一篇 · 子思述 · 孔门心法",
-    chapters: 33,
-    site: "https://zhongyong.aiyazone.com/",
-    github: "https://github.com/AIYAZONE/zhongyong"
-  },
-  {
-    key: "zhixue",
-    name: "止学",
-    theme: "#2d5016",
-    cat: "道家",
-    subtitle: "隋·王通（文中子）· 道家处世绝学",
-    chapters: 10,
-    site: "https://zhixue.aiyazone.com/",
-    github: "https://github.com/AIYAZONE/zhixue"
-  },
-  {
-    key: "sushu",
-    name: "素书",
-    theme: "#5b3a29",
-    cat: "道家",
-    subtitle: "秦·黄石公授 张良受 · 道家谋略绝学",
-    chapters: 6,
-    site: "https://sushu.aiyazone.com/",
-    github: "https://github.com/AIYAZONE/sushu"
-  },
-  {
-    key: "changduanjing",
-    name: "长短经",
-    theme: "#2f5d63",
-    cat: "纵横",
-    subtitle: "唐·赵蕤 撰 · 九卷六十四篇 · 纵横谋略奇书",
-    chapters: 64,
-    site: "https://changduanjing.aiyazone.com/",
-    github: "https://github.com/AIYAZONE/changduanjing"
-  },
-  {
-    key: "bingjian",
-    name: "冰鉴",
-    theme: "#2c5f7c",
-    cat: "识人",
-    subtitle: "相传 清·曾国藩 撰 · 相人识人七大端",
-    chapters: 7,
-    site: "https://bingjian.aiyazone.com/",
-    github: "https://github.com/AIYAZONE/bingjian"
-  }
-];
-
+var BOOKS = [];
 var currentCat = "all";
 
-// ── Render ──
+/* 外观：主题（guoxue_theme）+ 配色（guoxue_pal），与阅读器共用 */
+var PALS = [
+  { id: 'a', name: '纸墨', c: '#8b5e3c' },
+  { id: 'b', name: '朱砂', c: '#9e3b32' },
+  { id: 'c', name: '黛青', c: '#33566e' },
+  { id: 'd', name: '竹绿', c: '#47694f' },
+  { id: 'e', name: '赭红', c: '#8d4a34' }
+];
+
+function getPal() {
+  try { return localStorage.getItem('guoxue_pal') || 'a'; } catch (e) { return 'a'; }
+}
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  document.documentElement.setAttribute('data-pal', getPal());
+  var b = document.getElementById('themeBtn');
+  if (b) b.textContent = t === 'dark' ? '日间' : '夜览';
+  renderPalMenu();
+}
+document.getElementById('themeBtn').addEventListener('click', function () {
+  var cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  try { localStorage.setItem('guoxue_theme', cur); } catch (e) {}
+  applyTheme(cur);
+});
+
+function renderPalMenu() {
+  var menu = document.getElementById('palMenu');
+  if (!menu) return;
+  var cur = getPal();
+  menu.innerHTML = PALS.map(function (p) {
+    return '<button type="button" data-pal-id="' + p.id + '" class="' + (p.id === cur ? 'on' : '') + '">'
+      + '<span class="dot" style="background:' + p.c + '"></span>' + p.name + '</button>';
+  }).join('');
+}
+document.getElementById('palMenu').addEventListener('click', function (e) {
+  var b = e.target.closest ? e.target.closest('button[data-pal-id]') : null;
+  if (!b) return;
+  try { localStorage.setItem('guoxue_pal', b.getAttribute('data-pal-id')); } catch (err) {}
+  applyTheme(document.documentElement.getAttribute('data-theme') || 'light');
+  document.getElementById('palPick').removeAttribute('open');
+});
+document.addEventListener('click', function (e) {
+  var d = document.getElementById('palPick');
+  if (d && d.open && !d.contains(e.target)) d.removeAttribute('open');
+});
+
+/* 首屏应用外观（并渲染配色菜单） */
+applyTheme(document.documentElement.getAttribute('data-theme') || 'light');
+
+/* 本地进度：阅读器写入 `<key>_last_v1` */
+function lastRead(key) {
+  try { return parseInt(localStorage.getItem(key + '_last_v1') || '0', 10) || 0; } catch (e) { return 0; }
+}
+
+fetch('/books.json').then(function (r) { return r.json(); }).then(function (bs) {
+  BOOKS = bs || [];
+  var sum = BOOKS.reduce(function (a, b) { return a + (b.total || 0); }, 0);
+  document.getElementById('navMeta').textContent = BOOKS.length + ' 部经典 · 共 ' + sum + ' 章 · 一日一章';
+  buildFilter();
+  renderBooks();
+  renderResume();
+}).catch(function () {
+  document.getElementById('bookCount').textContent = 'books.json 加载失败';
+});
+
+function buildFilter() {
+  var cats = [];
+  BOOKS.forEach(function (b) { if (b.cat && cats.indexOf(b.cat) < 0) cats.push(b.cat); });
+  var bar = document.getElementById('filterBar');
+  cats.forEach(function (c) {
+    var btn = document.createElement('button');
+    btn.dataset.cat = c;
+    btn.textContent = c;
+    bar.appendChild(btn);
+  });
+}
+
+function renderResume() {
+  var list = BOOKS.map(function (b) {
+    var n = lastRead(b.key);
+    return n > 0 ? { b: b, n: n } : null;
+  }).filter(Boolean).sort(function (x, y) { return y.n - x.n; }).slice(0, 3);
+
+  var host = document.getElementById('resume');
+  if (!list.length) { host.hidden = true; return; }
+  document.getElementById('resumeList').innerHTML = list.map(function (it) {
+    return '<a class="resume-card" href="/' + it.b.key + '/#ch-' + it.n + '">'
+      + '<span class="rk">' + it.b.book + '</span>'
+      + '<span class="rp">读到第 ' + it.n + ' / ' + it.b.total + ' 章</span>'
+      + '<span class="go">继续 →</span></a>';
+  }).join('');
+  host.hidden = false;
+}
+
 function renderBooks() {
   var filtered = currentCat === "all"
     ? BOOKS
-    : BOOKS.filter(function(b) { return b.cat === currentCat; });
+    : BOOKS.filter(function (b) { return b.cat === currentCat; });
 
-  document.getElementById("bookCount").textContent =
-    "已收录 " + BOOKS.length + " 部经典" + (currentCat !== "all" ? " · 当前筛选 " + filtered.length + " 部" : "");
+  document.getElementById('bookCount').innerHTML =
+    '已收录 <b>' + BOOKS.length + '</b> 部经典' + (currentCat !== "all" ? ' · 当前 ' + filtered.length + ' 部' : '');
 
-  var html = "";
-  filtered.forEach(function(b) {
-    html += '<div class="card">';
-    html += '<div class="ribbon" style="background:' + b.theme + '"></div>';
-    html += '<div class="body">';
-    html += '<div class="name">' + b.name + '</div>';
-    html += '<div class="authors">' + b.subtitle + '</div>';
-    html += '<div class="meta-row">';
-    html += '<span class="cat-tag">' + b.cat + '</span>';
-    html += '<span class="chapter-badge">' + b.chapters + ' 章</span>';
-    html += '</div></div>';
-    html += '<div class="actions">';
-    html += '<a class="btn btn-primary" href="' + b.site + '" target="_blank" rel="noopener">📖 在线阅读</a>';
-    if (b.github) {
-      html += '<a class="btn btn-ghost" href="' + b.github + '" target="_blank" rel="noopener">⌂ GitHub</a>';
-    }
-    html += '</div></div>';
-  });
+  var html = filtered.map(function (b) {
+    var n = lastRead(b.key);
+    var line = n > 0
+      ? '<span class="dot"></span>上次读到第 ' + n + ' 章'
+      : '<span class="dot" style="opacity:.35"></span>尚未开始 · 随时可读';
+    return '<article class="card">'
+      + '<div class="card-top">'
+      + '  <span class="card-seal">' + b.book.charAt(0) + '</span>'
+      + '  <div><div class="name">' + b.book + '</div>'
+      + '  <div class="authors">' + b.subtitle + '</div></div>'
+      + '</div>'
+      + '<div class="meta-row"><span class="cat-tag">' + (b.cat || '经典') + '</span>'
+      + '<span class="chapter-badge">' + b.total + ' 章 · ' + b.total + ' 天</span></div>'
+      + '<div class="progress-line">' + line + '</div>'
+      + '<div class="actions"><a class="btn" href="/' + b.key + '/">' + (n > 0 ? '继续共读' : '开始共读') + '</a></div>'
+      + '</article>';
+  }).join('');
 
-  document.getElementById("bookGrid").innerHTML = html;
+  document.getElementById('bookGrid').innerHTML = html || '<p style="color:var(--muted)">暂无书目</p>';
 }
 
-// ── Filter ──
-document.getElementById("filterBar").addEventListener("click", function(e) {
+document.getElementById('filterBar').addEventListener('click', function (e) {
   if (e.target.tagName !== "BUTTON") return;
-  var btns = document.querySelectorAll("#filterBar button");
-  btns.forEach(function(b) { b.classList.remove("active"); });
-  e.target.classList.add("active");
+  var btns = document.querySelectorAll('#filterBar button');
+  btns.forEach(function (b) { b.classList.remove('active'); });
+  e.target.classList.add('active');
   currentCat = e.target.dataset.cat;
   renderBooks();
 });
-
-// ── Init ──
-renderBooks();
 </script>
 
 </body>
