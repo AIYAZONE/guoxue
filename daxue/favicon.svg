@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
     <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#ac4230"/>
-      <stop offset="1" stop-color="#8f3225"/>
+      <stop offset="0" stop-color="#a83e2c"/>
+      <stop offset="1" stop-color="#8a2c1f"/>
     </linearGradient>
   </defs>
   <rect width="64" height="64" rx="13" fill="url(#g)"/>
-  <text x="32" y="46.5" font-size="40" text-anchor="middle" fill="#f8eeda"
+  <text x="32" y="46.5" font-size="40" text-anchor="middle" fill="#f8f0de"
         font-family="STKaiti, KaiTi, Kaiti SC, serif" font-weight="700">学</text>
 </svg>
