@@ -727,6 +727,6 @@ body[data-theme="dark"] .sb-seal{color:#201c17}
 .tp-row.tp-col{flex-direction:column;align-items:stretch;gap:8px}
 .pal-swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .pal-swatch{display:inline-flex;align-items:center;justify-content:flex-start;gap:6px;font-family:inherit;font-size:12px;padding:5px 9px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--soft);cursor:pointer;transition:.15s;letter-spacing:.5px}
-.pal-swatch span{width:12px;height:12px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.pal-swatch span{width:12px;height:12px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);transform:translateY(1px)}
 .pal-swatch:hover{border-color:var(--accent);color:var(--accent-deep)}
 .pal-swatch.on{border-color:var(--accent);color:var(--accent-deep);background:var(--accent-bg);font-weight:600}
