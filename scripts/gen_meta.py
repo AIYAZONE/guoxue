@@ -27,7 +27,7 @@ SHELL = '''<!DOCTYPE html>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="theme-color" content="#faf8f5">
-<script>try{{var d=document.documentElement;d.setAttribute('data-theme',localStorage.getItem('guoxue_theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));d.setAttribute('data-pal',localStorage.getItem('guoxue_pal')||'a')}}catch(e){{}}</script>
+<script>try{{var d=document.documentElement;d.setAttribute('data-theme',localStorage.getItem('guoxue_theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));d.setAttribute('data-pal',localStorage.getItem('guoxue_pal')||'e')}}catch(e){{}}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="{desc}">
 <meta name="color-scheme" content="light dark">

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="theme-color" content="#faf8f5">
-<script>try{var d=document.documentElement;d.setAttribute('data-theme',localStorage.getItem('guoxue_theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));d.setAttribute('data-pal',localStorage.getItem('guoxue_pal')||'a')}catch(e){}</script>
+<script>try{var d=document.documentElement;d.setAttribute('data-theme',localStorage.getItem('guoxue_theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));d.setAttribute('data-pal',localStorage.getItem('guoxue_pal')||'e')}catch(e){}</script>
 <meta name="description" content="国学经典共读：注音 · 逐句译文 · 多视角解读——让古籍不再难读">
 <title>国学经典共读</title>
 <link rel="stylesheet" href="/shared/palette.css">
@@ -85,12 +85,14 @@ a{color:inherit}
 .card .meta-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:14px 0 16px;font-size:11.5px;color:var(--soft)}
 .card .cat-tag{border:1px solid var(--line);border-radius:999px;padding:1px 9px;letter-spacing:.06em}
 .card .chapter-badge{background:var(--accent-bg);color:var(--accent-deep);border-radius:999px;padding:1px 9px;letter-spacing:.04em}
-.card .progress-line{margin-top:auto;font-size:11.5px;color:var(--muted);letter-spacing:.04em;display:flex;align-items:center;gap:7px;min-height:20px}
-.card .progress-line .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.7;flex:none}
-.card .actions{margin-top:14px}
-.card .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:9px 18px;border-radius:9px;font-family:inherit;font-size:14px;letter-spacing:.1em;text-decoration:none;background:var(--accent);color:#fff;border:1px solid var(--accent);transition:.18s}
-.card .btn:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
-.card .btn:focus-visible{outline:2px solid var(--accent-deep);outline-offset:2px}
+.card .card-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:12px;border-top:1px solid var(--line)}
+.card .prog{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted);letter-spacing:.04em;min-width:0}
+.card .prog .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.7;flex:none}
+.card .go{display:inline-flex;align-items:center;gap:5px;font-size:13.5px;letter-spacing:.06em;color:var(--accent-deep);text-decoration:none;white-space:nowrap;transition:color .16s}
+.card .go .ar{font-size:13px;line-height:1;transition:transform .16s}
+.card .go:hover{color:var(--accent)}
+.card .go:hover .ar{transform:translateX(3px)}
+.card .go:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
 
 /* ── 特色 ── */
 .benefits{width:100%;max-width:1100px;margin:56px auto 0;padding:0 24px}
@@ -122,12 +124,12 @@ html[data-theme="dark"]{
 }
 html[data-theme="dark"] body{background-image:radial-gradient(var(--dot) 1px,transparent 1px)}
 html[data-theme="dark"] .nav{background:color-mix(in srgb,var(--paper) 92%,transparent)}
-html[data-theme="dark"] .card .btn{color:#201c17}
 html[data-theme="dark"] .filter-bar button.active{color:#201c17}
 html[data-theme="dark"] .card-seal{color:#201c17}
 
 .pal-pick{position:relative}
-.pal-pick summary{list-style:none;cursor:pointer;user-select:none}
+.pal-dot{flex:none;display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:inset 0 0 0 1px rgba(0,0,0,.1)}
+.pal-pick summary{list-style:none;cursor:pointer;user-select:none;display:inline-flex;align-items:center;gap:5px}
 .pal-pick summary::-webkit-details-marker{display:none}
 .pal-menu{position:absolute;right:0;top:calc(100% + 6px);min-width:132px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:2px;z-index:80}
 .pal-menu button{display:flex;align-items:center;gap:8px;width:100%;font-family:inherit;font-size:13px;letter-spacing:1px;padding:6px 10px;background:none;border:0;border-radius:8px;color:var(--soft);cursor:pointer;text-align:left;transition:.15s}
@@ -155,7 +157,7 @@ html[data-theme="dark"] .card-seal{color:#201c17}
     <div class="nav-right">
       <span class="nav-meta" id="navMeta">六部经典 · 一日一章</span>
       <details class="pal-pick" id="palPick">
-        <summary class="icon-btn" title="主题配色">配色</summary>
+        <summary class="icon-btn" id="palBtn" title="主题配色"><span class="pal-dot"></span>配色</summary>
         <div class="pal-menu" id="palMenu"></div>
       </details>
       <button class="icon-btn" id="themeBtn" type="button" title="夜间 / 日间">夜览</button>
@@ -227,7 +229,7 @@ var PALS = [
 ];
 
 function getPal() {
-  try { return localStorage.getItem('guoxue_pal') || 'a'; } catch (e) { return 'a'; }
+  try { return localStorage.getItem('guoxue_pal') || 'e'; } catch (e) { return 'e'; }
 }
 function applyTheme(t) {
   document.documentElement.setAttribute('data-theme', t);
@@ -246,6 +248,11 @@ function renderPalMenu() {
   var menu = document.getElementById('palMenu');
   if (!menu) return;
   var cur = getPal();
+  var btn = document.getElementById('palBtn');
+  if (btn) {
+    var hit = PALS.filter(function (x) { return x.id === cur; })[0];
+    btn.title = '主题配色 · 当前：' + (hit ? hit.name : '纸墨');
+  }
   menu.innerHTML = PALS.map(function (p) {
     return '<button type="button" data-pal-id="' + p.id + '" class="' + (p.id === cur ? 'on' : '') + '">'
       + '<span class="dot" style="background:' + p.c + '"></span>' + p.name + '</button>';
@@ -332,8 +339,10 @@ function renderBooks() {
       + '</div>'
       + '<div class="meta-row"><span class="cat-tag">' + (b.cat || '经典') + '</span>'
       + '<span class="chapter-badge">' + b.total + ' 章 · ' + b.total + ' 天</span></div>'
-      + '<div class="progress-line">' + line + '</div>'
-      + '<div class="actions"><a class="btn" href="/' + b.key + '/">' + (n > 0 ? '继续共读' : '开始共读') + '</a></div>'
+      + '<div class="card-foot">'
+      + '  <span class="prog">' + line + '</span>'
+      + '  <a class="go" href="/' + b.key + '/">' + (n > 0 ? '继续共读' : '开始共读') + '<span class="ar">→</span></a>'
+      + '</div>'
       + '</article>';
   }).join('');
 

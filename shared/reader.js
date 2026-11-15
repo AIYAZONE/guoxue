@@ -619,7 +619,7 @@
 
   function applyLook() {
     var t = lsGet(LS_THEME) || 'light';
-    var pal = lsGet(LS_PAL) || 'a';
+    var pal = lsGet(LS_PAL) || 'e';
     // html 与 body 同步设置：palette.css 的组合选择器（data-pal + data-theme）才能命中
     var roots = [document.documentElement, document.body];
     for (var i = 0; i < roots.length; i++) {
