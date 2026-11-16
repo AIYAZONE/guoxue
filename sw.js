@@ -1,6 +1,6 @@
 /* 国学经典共读 · Service Worker
    策略：外壳预缓存；页面与数据网络优先（改版即时可见）；静态资源缓存优先 + 后台更新 */
-var VERSION = 'guoxue-v3';
+var VERSION = 'guoxue-v4';
 
 var SHELL = [
   '/',
@@ -101,7 +101,7 @@ self.addEventListener('fetch', function (e) {
 
   // 样式与脚本：网络优先（避免改版后旧 CSS 与新 DOM 错配），断网回退缓存
   if (/^\/shared\//.test(url.pathname)) {
-    e.respondWith(netFirst(req));
+    e.respondWith(netFirst(new Request(req, { cache: 'reload' })));
     return;
   }
 

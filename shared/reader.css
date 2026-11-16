@@ -86,7 +86,7 @@ body.toc-open #tocBackdrop{opacity:1;visibility:visible}
 .noscript-tip{display:none;margin-top:10px;font-size:12px;color:var(--soft)}
 
 .chapter{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:26px 26px 20px;margin:22px 0;scroll-margin-top:70px}
-.ch-head{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px dashed var(--line);margin-bottom:16px}
+.ch-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px dashed var(--line);margin-bottom:16px}
 .seal-lg{min-width:40px;height:40px;padding:0 8px;font-size:20px;border-radius:8px}
 .ch-head h2{font-size:20px;letter-spacing:3px;font-weight:600;line-height:1.5}
 .ch-head .lab{font-size:13px;color:var(--soft);letter-spacing:1px;margin-top:2px}
