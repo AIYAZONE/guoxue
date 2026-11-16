@@ -207,6 +207,12 @@ body.no-py ruby rt{display:none}
   body.nav-hidden .bottom-nav{transform:translateY(110%);visibility:hidden;transition:transform .24s ease,visibility 0s linear .24s}
   body.nav-hidden .nav-handle{display:flex}
   body.nav-hidden .backtop{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease,visibility 0s linear .18s}
+  /* 沉浸时不再为底栏预留空间，只留把手高度 */
+  body.nav-hidden .content{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
+  /* 章节页底部对齐：短章也把翻页条收在把手之上，避免大片空白 */
+  body.paged.view-chapter .content{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+  body.paged.view-chapter .wrap{flex:1 1 auto;display:flex;flex-direction:column}
+  body.paged.view-chapter .pager{margin-top:auto}
   /* 移动端顶栏仅作品牌条，工具入口统一走底部导航，避免与底栏重复 */
   #toolsBtn{display:none}
 }
