@@ -415,7 +415,7 @@
   }
 
   function showCover() {
-    showNav(true);
+    showNav();
     syncNav('cover');
     if (bodyClass('paged')) {
       setActiveView($('cover'));
@@ -428,7 +428,7 @@
   }
 
   function showStudy(scroll) {
-    showNav(true);
+    showNav();
     syncNav('study');
     if (bodyClass('paged')) setActiveView($('study'));
     if (scroll !== false) {
@@ -445,7 +445,7 @@
     markRead(n);
     ensureChapter(n);
     syncNav('ch');
-    showNav(false);
+    showNav();
     var el = $('ch-' + n);
     if (bodyClass('paged')) {
       setActiveView(el);
@@ -456,7 +456,6 @@
       window.scrollTo(0, Math.max(0, y));
       if (opts.flash) { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
     }
-    scheduleNavHide();
   }
 
   function updatePager() {
@@ -559,7 +558,7 @@
   }
 
   // ------------------------------------------------- immersive nav ----
-  var navHideTimer = null, lastChromeY = 0, chromeAccum = 0;
+  var lastChromeY = 0, chromeAccum = 0, tapStart = null, lastTapTime = 0;
   function isMobileNav() { return window.matchMedia('(max-width:1023px)').matches; }
   // 仅在真正读到正文时收起导航：封面、目录、研读页保持常显
   function readingInView() {
@@ -577,40 +576,56 @@
     if (document.body.classList.contains('toc-open')) return false;
     var tp = $('toolsPanel');
     if (tp && tp.classList.contains('open')) return false;
-    var nav = $('bottomNav');
-    if (nav && nav.contains(document.activeElement)) return false;
     return true;
   }
-  function showNav(cancelTimer) {
-    if (cancelTimer) { clearTimeout(navHideTimer); navHideTimer = null; }
+  function showNav() {
     document.body.classList.remove('nav-hidden');
   }
-  function hideNav() {
+  function hideNav(force) {
     if (!canHideNav()) return;
+    var nav = $('bottomNav');
+    if (!force && nav && nav.contains(document.activeElement)) return;
     document.body.classList.add('nav-hidden');
   }
-  // 进入章节后短暂停留即收起；用户主动唤回后不再自动收起
-  function scheduleNavHide() {
-    clearTimeout(navHideTimer);
-    navHideTimer = null;
-    if (!isMobileNav()) return;
-    navHideTimer = setTimeout(function () {
-      navHideTimer = null;
-      hideNav();
-    }, 3000);
+  function toggleNav() {
+    if (!canHideNav()) return;
+    if (document.body.classList.contains('nav-hidden')) showNav();
+    else hideNav(true);
+  }
+  // 主流阅读器交互：轻点正文进入/离开沉浸，滑动仅作辅助
+  function onTapStart(e) {
+    if (!isMobileNav() || e.button !== 0 || e.isPrimary === false) return;
+    tapStart = { x: e.clientX, y: e.clientY, t: Date.now() };
+  }
+  function onTapEnd(e) {
+    var s = tapStart;
+    tapStart = null;
+    if (!s || !isMobileNav()) return;
+    if (Math.abs(e.clientX - s.x) > 10 || Math.abs(e.clientY - s.y) > 10) return;
+    if (Date.now() - s.t > 320) return;
+    var t = e.target;
+    if (!t || !t.closest) return;
+    if (t.closest('a,button,summary,input,textarea,select,label,.bottom-nav,.nav-handle')) return;
+    if (!t.closest('article.chapter')) return;
+    var sel = window.getSelection();
+    if (sel && !sel.isCollapsed && String(sel).length) return;
+    var now = Date.now();
+    if (now - lastTapTime < 320) return;
+    lastTapTime = now;
+    toggleNav();
   }
   function onScrollChrome() {
     if (!isMobileNav()) return;
     var y = window.scrollY;
     var dy = y - lastChromeY;
     lastChromeY = y;
-    if (y <= 24) { chromeAccum = 0; showNav(false); return; }
+    if (y <= 24) { chromeAccum = 0; showNav(); return; }
     if (dy > 0) {
       chromeAccum = chromeAccum > 0 ? chromeAccum + dy : dy;
-      if (chromeAccum > 30 && y > 110) hideNav();
+      if (chromeAccum > 20 && y > 60) hideNav();
     } else if (dy < 0) {
       chromeAccum = chromeAccum < 0 ? chromeAccum + dy : dy;
-      if (chromeAccum < -10) { chromeAccum = 0; showNav(true); }
+      if (chromeAccum < -8) { chromeAccum = 0; showNav(); }
     }
   }
 
@@ -667,12 +682,12 @@
   }
 
   function openToc(open) {
-    if (open) showNav(true);
+    if (open) showNav();
     document.body.classList.toggle('toc-open', open);
   }
 
   function openTools(open) {
-    if (open) showNav(true);
+    if (open) showNav();
     $('toolsPanel').classList.toggle('open', open);
     $('toolsMask').classList.toggle('open', open);
   }
@@ -856,7 +871,7 @@
       bnToc: function () { openToc(true); },
       bnTools: function () { openTools(true); },
       navHandle: function () {
-        showNav(true);
+        showNav();
         var b = $('bnToc');
         if (b) b.focus({ preventScroll: true });
       },
@@ -937,11 +952,12 @@
     lastChromeY = window.scrollY;
     window.addEventListener('scroll', onScrollSpy, { passive: true });
     window.addEventListener('hashchange', route);
+    document.addEventListener('pointerdown', onTapStart, true);
+    document.addEventListener('pointerup', onTapEnd, true);
+    document.addEventListener('pointercancel', function () { tapStart = null; }, true);
     window.addEventListener('resize', function () {
       if (isMobileNav()) return;
-      clearTimeout(navHideTimer);
-      navHideTimer = null;
-      showNav(false);
+      showNav();
     });
   }
 
