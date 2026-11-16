@@ -199,7 +199,7 @@ body.no-py ruby rt{display:none}
   .sidebar .toc .seal{grid-row:span 2}
   .sidebar .toc .t{grid-column:2;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .sidebar .toc .d{grid-column:2;font-size:11px;color:var(--soft);white-space:nowrap}
-  .content{padding-bottom:82px}
+  .content{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
   .backtop{bottom:92px}
   /* 沉浸阅读：底栏与回顶按钮一起收起，只留细把手 */
   body.nav-hidden .bottom-nav{transform:translateY(110%);visibility:hidden;transition:transform .24s ease,visibility 0s linear .24s}
@@ -208,7 +208,7 @@ body.no-py ruby rt{display:none}
   /* 沉浸时不再为底栏预留空间，只留把手高度 */
   body.nav-hidden .content{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
   /* 章节页底部对齐：短章也把翻页条收在把手之上，避免大片空白 */
-  body.paged.view-chapter .content{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+  body.paged.view-chapter .content{min-height:100vh;min-height:100svh;display:flex;flex-direction:column}
   body.paged.view-chapter .wrap{flex:1 1 auto;display:flex;flex-direction:column}
   body.paged.view-chapter .pager{margin-top:auto}
   /* 移动端顶栏仅作品牌条，工具入口统一走底部导航，避免与底栏重复 */

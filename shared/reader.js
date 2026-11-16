@@ -557,7 +557,7 @@
   }
 
   // ------------------------------------------------- immersive nav ----
-  var lastChromeY = 0, chromeAccum = 0, tapStart = null, lastTapTime = 0;
+  var lastTapTime = 0, tapStart = null;
   function isMobileNav() { return window.matchMedia('(max-width:1023px)').matches; }
   // 仅在真正读到正文时收起导航：封面、目录、研读页保持常显
   function readingInView() {
@@ -613,20 +613,6 @@
     lastTapTime = now;
     toggleNav();
   }
-  function onScrollChrome() {
-    if (!isMobileNav()) return;
-    var y = window.scrollY;
-    var dy = y - lastChromeY;
-    lastChromeY = y;
-    if (y <= 24) { chromeAccum = 0; showNav(); return; }
-    if (dy > 0) {
-      chromeAccum = chromeAccum > 0 ? chromeAccum + dy : dy;
-      if (chromeAccum > 20 && y > 60) hideNav();
-    } else if (dy < 0) {
-      chromeAccum = chromeAccum < 0 ? chromeAccum + dy : dy;
-      if (chromeAccum < -8) { chromeAccum = 0; showNav(); }
-    }
-  }
 
   // ------------------------------------------------- scroll spy / misc ---
   var barRaf = null;
@@ -645,7 +631,6 @@
   var spyRaf = null;
   function onScrollSpy() {
     updateReadbar();
-    onScrollChrome();
     if (bodyClass('paged') || currentView() === 'cover') return;
     if (spyRaf) return;
     spyRaf = requestAnimationFrame(function () {
@@ -947,7 +932,6 @@
       if (e.key === 'ArrowRight') { showChapter(currentChapter + 1); location.hash = '#ch-' + currentChapter; }
     });
 
-    lastChromeY = window.scrollY;
     window.addEventListener('scroll', onScrollSpy, { passive: true });
     window.addEventListener('hashchange', route);
     document.addEventListener('pointerdown', onTapStart, true);
