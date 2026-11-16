@@ -88,12 +88,25 @@ body.toc-open #tocBackdrop{opacity:1;visibility:visible}
 .ch-head .lab{font-size:13px;color:var(--soft);letter-spacing:1px;margin-top:2px}
 .ch-head .spacer{flex:1}
 .share-btn{flex:none;font-size:12px;padding:4px 10px}
-.ch-text p{text-align:justify;margin:0 0 4px}
+/* 正文：阅读的主角——收窄行长、放大字号、拉开段距 */
+.ch-text{max-width:38em;margin:0 auto;padding:4px 0 4px;font-size:18.5px;line-height:2.15;letter-spacing:.015em;color:var(--ink)}
+.ch-text p{text-align:justify;margin:0 0 1.05em;text-indent:2em}
 .ch-text p:last-child{margin-bottom:0}
-.ch-foot{margin-top:16px;text-align:right}
+.ch-foot{max-width:38em;margin:16px auto 0;text-align:right}
 .ch-foot a{font-size:12px;color:var(--soft);text-decoration:none;border-bottom:1px dotted var(--soft)}
-.det{margin-top:18px;border-top:1px dashed var(--line);padding-top:14px}
-.det-label{font-size:12px;color:var(--soft);letter-spacing:3px;margin-bottom:10px}
+/* 本章详解：默认折叠，只留一条安静的入口 */
+.det{margin-top:18px;border-top:1px dashed var(--line);padding-top:0}
+.det>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:13px 2px 11px;font-size:12px;color:var(--soft);letter-spacing:2px;user-select:none;-webkit-tap-highlight-color:transparent;transition:color .16s}
+.det>summary::-webkit-details-marker{display:none}
+.det>summary:hover,.det[open]>summary{color:var(--accent-deep)}
+.det-label{flex:none;font-size:12px;letter-spacing:3px;color:inherit;margin:0}
+.det-tabs{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;letter-spacing:1px;color:var(--muted)}
+.det-act{flex:none;font-size:11.5px;letter-spacing:1px}
+.det-act::after{content:"展开"}
+.det[open] .det-act::after{content:"收起"}
+.det-chev{flex:none;width:8px;height:8px;margin:-3px 2px 0 0;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);transition:transform .2s,margin .2s}
+.det[open] .det-chev{transform:rotate(-135deg);margin-top:3px}
+.det-body{padding:2px 0;animation:fade .2s}
 .tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
 .tab-btn{font-size:13px;padding:6px 15px;border:1px solid var(--line);background:var(--paper);color:var(--soft);border-radius:999px;cursor:pointer;transition:.15s;line-height:1.5}
 .tab-btn:hover{border-color:var(--accent);color:var(--accent)}
@@ -158,6 +171,10 @@ footer .hub-foot a:hover{color:var(--accent)}
   .toc ol{grid-template-columns:1fr}
   .hero h1{font-size:44px;letter-spacing:10px;text-indent:10px}
   .chapter{padding:20px 18px 16px}
+  .ch-text{font-size:17.5px;line-height:2.05;letter-spacing:.01em;padding:2px 0}
+  .ch-text p{margin-bottom:1em}
+  .det>summary{padding:12px 0 10px;letter-spacing:1.5px}
+  .det-tabs{font-size:11.5px;letter-spacing:0}
   body{font-size:16.5px}
   .topbar-inner{height:50px;padding:0 12px;gap:8px}
   .topbar .brand{font-size:19px;letter-spacing:1px}

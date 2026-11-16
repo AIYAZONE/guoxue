@@ -331,7 +331,7 @@
       + '<div class="ch-text">' + c.paras.map(function (t) { return '<p>' + t + '</p>'; }).join('') + '</div>'
       + '<div class="ch-foot"><a href="#toc">回到目录</a></div>';
     // tabs：仅渲染有内容的面板
-    var tabs = [], panels = [];
+    var tabs = [], panels = [], tabNames = [];
     var tabMap = {};
     for (var i = 0; i < c.tabs.length; i++) tabMap[c.tabs[i].id] = c.tabs[i].label;
     var order = ['yi', 'zhu', 'chuan', 'zz', 'jiedu', 'dao', 'sheng'];
@@ -348,13 +348,24 @@
         : !p.rows.length;
       if (empty) continue;
       var first = tabs.length === 0;
-      tabs.push('<button class="tab-btn' + (first ? ' active' : '') + '" data-tab="' + pid + '">' + esc(tabMap[pid] || pid) + '</button>');
+      var tname = tabMap[pid] || pid;
+      tabNames.push(tname);
+      tabs.push('<button class="tab-btn' + (first ? ' active' : '') + '" data-tab="' + pid + '">' + esc(tname) + '</button>');
       panels.push('<div class="panel' + (first ? ' active' : '') + '" data-panel="' + pid + '">' + PANEL_RENDER[pid](p, c) + '</div>');
     }
     if (tabs.length) {
-      h += '<div class="det"><div class="det-label">本章详解</div>'
+      // 详解默认折叠：先让原文独立成篇，需要时再展开注解
+      h += '<details class="det">'
+        + '<summary class="det-sum">'
+        + '<span class="det-label">本章详解</span>'
+        + '<span class="det-tabs">' + esc(tabNames.join(' · ')) + '</span>'
+        + '<span class="det-act"></span>'
+        + '<span class="det-chev" aria-hidden="true"></span>'
+        + '</summary>'
+        + '<div class="det-body">'
         + '<div class="tabs">' + tabs.join('') + '</div>'
-        + '<div class="panels">' + panels.join('') + '</div></div>';
+        + '<div class="panels">' + panels.join('') + '</div>'
+        + '</div></details>';
     }
     return h + '</article>';
   }
