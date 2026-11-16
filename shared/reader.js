@@ -323,8 +323,7 @@
       + '<span class="spacer"></span>'
       + '<button class="btn ghost share-btn" data-n="' + c.n + '">分享本章</button>'
       + '</div>'
-      + '<div class="ch-text">' + c.paras.map(function (t) { return '<p>' + t + '</p>'; }).join('') + '</div>'
-      + '<div class="ch-foot"><a href="#toc">回到目录</a></div>';
+      + '<div class="ch-text">' + c.paras.map(function (t) { return '<p>' + t + '</p>'; }).join('') + '</div>';
     // tabs：仅渲染有内容的面板
     var tabs = [], panels = [], tabNames = [];
     var tabMap = {};
@@ -847,11 +846,10 @@
       // 分享本章
       var sb = t.closest ? t.closest('.share-btn') : null;
       if (sb) { shareChapter(parseInt(sb.getAttribute('data-n'), 10)); return; }
-      // 目录 / ch-foot 链接：仅接管阅读器自身的路由锚点
+      // 目录 / 路由锚点：仅接管阅读器自身的路由
       var a = t.closest ? t.closest('a[href^="#"]') : null;
       if (a) {
         var href = a.getAttribute('href');
-        if (href === '#toc') { openToc(true); e.preventDefault(); return; }
         if (/^#(ch-\d+|study|cover)$/.test(href)) {
           e.preventDefault();
           openToc(false);
