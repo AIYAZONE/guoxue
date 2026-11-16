@@ -70,6 +70,7 @@ a{color:inherit}
 
 /* ── 筛选 ── */
 .filter-bar{width:100%;display:flex;justify-content:center;flex-wrap:wrap;gap:8px;padding:26px 24px 30px}
+.filter-bar[hidden]{display:none}
 .filter-bar button{font-family:inherit;padding:5px 18px;border:1px solid var(--line);border-radius:999px;background:var(--card);font-size:13.5px;color:var(--soft);cursor:pointer;transition:.18s;letter-spacing:.08em}
 .filter-bar button:hover{border-color:var(--accent);color:var(--accent)}
 .filter-bar button.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:500}
@@ -101,6 +102,43 @@ a{color:inherit}
 .card .go:hover{color:var(--accent)}
 .card .go:hover .ar{transform:translateX(3px)}
 .card .go:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+/* ── 首屏骨架：与真实书卡同构，数据到位时页面不跳动 ── */
+.sk{position:relative;display:block;overflow:hidden;background:var(--line);border-radius:6px}
+.sk::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--card) 75%,transparent),transparent);animation:skShine 1.4s ease-in-out infinite}
+@keyframes skShine{to{transform:translateX(100%)}}
+.sk-card{pointer-events:none;min-height:204px}
+.sk-card .card-seal{background:var(--line);box-shadow:none}
+.sk-stack{flex:1;min-width:0}
+.sk-name{width:78px;height:28px;margin-top:3px}
+.sk-authors{width:176px;max-width:100%;height:11px;margin-top:9px}
+.sk-tag{width:50px;height:18px;border-radius:999px}
+.sk-badge{width:86px;height:18px;border-radius:999px}
+.sk-prog{width:112px;height:11px}
+.sk-go{width:68px;height:13px}
+.sk-pill{width:62px;height:31px;border-radius:999px}
+.sk-stat{width:104px;height:14px;margin:4px 0;border-radius:999px}
+.sk-meta{display:inline-block;width:124px;height:10px;border-radius:999px;vertical-align:middle}
+@media (max-width:699px){.sk-card{min-height:200px}}
+@media (prefers-reduced-motion:reduce){.sk::after{animation:none}}
+
+/* ── 书目载入失败 ── */
+.state{grid-column:1/-1;text-align:center;padding:48px 24px;border:1px dashed var(--line-strong);border-radius:16px;background:var(--card);color:var(--soft);font-size:13.5px;letter-spacing:.06em}
+.state-sub{color:var(--muted);font-size:12.5px;margin-top:6px}
+.state button{margin-top:18px;font-family:inherit;font-size:13px;letter-spacing:.08em;padding:7px 20px;border:1px solid var(--accent);border-radius:999px;background:transparent;color:var(--accent-deep);cursor:pointer;transition:.18s}
+.state button:hover{background:var(--accent);color:#fff}
+html[data-theme="dark"] .state button:hover{color:#201c17}
+.state button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* 书目就位后淡入，衔接骨架 */
+.grid.is-ready .card{animation:cardIn .36s cubic-bezier(.2,.7,.3,1) backwards}
+.grid.is-ready .card:nth-child(2){animation-delay:.04s}
+.grid.is-ready .card:nth-child(3){animation-delay:.08s}
+.grid.is-ready .card:nth-child(4){animation-delay:.12s}
+.grid.is-ready .card:nth-child(5){animation-delay:.16s}
+.grid.is-ready .card:nth-child(6){animation-delay:.2s}
+@keyframes cardIn{from{opacity:0;transform:translateY(6px)}}
+@media (prefers-reduced-motion:reduce){.grid.is-ready .card{animation:none}}
 
 /* ── 特色 ── */
 .benefits{width:100%;max-width:1100px;margin:56px auto 0;padding:0 24px}
@@ -169,7 +207,7 @@ html[data-theme="dark"] .card-seal{color:#201c17}
   <div class="nav-inner">
     <a class="nav-brand" href="/"><img class="brand-mark" src="/favicon.svg" width="38" height="38" alt=""><span class="brand-txt">国学共读<small>GUOXUE</small></span></a>
     <div class="nav-right">
-      <span class="nav-meta" id="navMeta">六部经典 · 一日一章</span>
+      <span class="nav-meta" id="navMeta"><span class="sk sk-meta" aria-hidden="true"></span></span>
       <details class="pal-pick" id="palPick">
         <summary class="icon-btn" id="palBtn" title="主题配色"><span class="pal-dot"></span>配色</summary>
         <div class="pal-menu" id="palMenu"></div>
@@ -184,7 +222,7 @@ html[data-theme="dark"] .card-seal{color:#201c17}
   <p class="sub">注音 · 逐句译文 · 多视角解读——让古籍不再难读</p>
   <div class="rule"></div>
   <div class="stats">
-    <span class="stat" id="bookCount">载入中…</span>
+    <span class="stat" id="bookCount" aria-live="polite"><span class="sk sk-stat"></span></span>
     <span class="stat"><b>一天一章</b> · 碎片时间读完整本</span>
     <span class="stat"><b>数据本地</b> · 笔记不上传云端</span>
   </div>
@@ -195,12 +233,47 @@ html[data-theme="dark"] .card-seal{color:#201c17}
   <div class="resume-list" id="resumeList"></div>
 </section>
 
-<nav class="filter-bar" id="filterBar">
-  <button class="active" data-cat="all">全部</button>
+<nav class="filter-bar" id="filterBar" aria-busy="true" aria-label="按类别筛选">
+  <span class="sk sk-pill"></span>
+  <span class="sk sk-pill"></span>
+  <span class="sk sk-pill"></span>
+  <span class="sk sk-pill"></span>
+  <span class="sk sk-pill"></span>
 </nav>
 
 <main class="container">
-  <div class="grid" id="bookGrid"></div>
+  <div class="grid" id="bookGrid" aria-busy="true">
+    <article class="card sk-card" aria-hidden="true">
+      <div class="card-top"><span class="card-seal"></span><div class="sk-stack"><span class="sk sk-name"></span><span class="sk sk-authors"></span></div></div>
+      <div class="meta-row"><span class="sk sk-tag"></span><span class="sk sk-badge"></span></div>
+      <div class="card-foot"><span class="sk sk-prog"></span><span class="sk sk-go"></span></div>
+    </article>
+    <article class="card sk-card" aria-hidden="true">
+      <div class="card-top"><span class="card-seal"></span><div class="sk-stack"><span class="sk sk-name"></span><span class="sk sk-authors"></span></div></div>
+      <div class="meta-row"><span class="sk sk-tag"></span><span class="sk sk-badge"></span></div>
+      <div class="card-foot"><span class="sk sk-prog"></span><span class="sk sk-go"></span></div>
+    </article>
+    <article class="card sk-card" aria-hidden="true">
+      <div class="card-top"><span class="card-seal"></span><div class="sk-stack"><span class="sk sk-name"></span><span class="sk sk-authors"></span></div></div>
+      <div class="meta-row"><span class="sk sk-tag"></span><span class="sk sk-badge"></span></div>
+      <div class="card-foot"><span class="sk sk-prog"></span><span class="sk sk-go"></span></div>
+    </article>
+    <article class="card sk-card" aria-hidden="true">
+      <div class="card-top"><span class="card-seal"></span><div class="sk-stack"><span class="sk sk-name"></span><span class="sk sk-authors"></span></div></div>
+      <div class="meta-row"><span class="sk sk-tag"></span><span class="sk sk-badge"></span></div>
+      <div class="card-foot"><span class="sk sk-prog"></span><span class="sk sk-go"></span></div>
+    </article>
+    <article class="card sk-card" aria-hidden="true">
+      <div class="card-top"><span class="card-seal"></span><div class="sk-stack"><span class="sk sk-name"></span><span class="sk sk-authors"></span></div></div>
+      <div class="meta-row"><span class="sk sk-tag"></span><span class="sk sk-badge"></span></div>
+      <div class="card-foot"><span class="sk sk-prog"></span><span class="sk sk-go"></span></div>
+    </article>
+    <article class="card sk-card" aria-hidden="true">
+      <div class="card-top"><span class="card-seal"></span><div class="sk-stack"><span class="sk sk-name"></span><span class="sk sk-authors"></span></div></div>
+      <div class="meta-row"><span class="sk sk-tag"></span><span class="sk sk-badge"></span></div>
+      <div class="card-foot"><span class="sk sk-prog"></span><span class="sk sk-go"></span></div>
+    </article>
+  </div>
 </main>
 
 <section class="benefits">
@@ -292,21 +365,50 @@ function lastRead(key) {
   try { return parseInt(localStorage.getItem(key + '_last_v1') || '0', 10) || 0; } catch (e) { return 0; }
 }
 
-fetch('/books.json').then(function (r) { return r.json(); }).then(function (bs) {
+fetch('/books.json').then(function (r) {
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}).then(function (bs) {
   BOOKS = bs || [];
   var sum = BOOKS.reduce(function (a, b) { return a + (b.total || 0); }, 0);
-  document.getElementById('navMeta').textContent = BOOKS.length + ' 部经典 · 共 ' + sum + ' 章 · 一日一章';
+  var meta = document.getElementById('navMeta');
+  meta.textContent = BOOKS.length + ' 部经典 · 共 ' + sum + ' 章 · 一日一章';
   buildFilter();
   renderBooks();
   renderResume();
+  var grid = document.getElementById('bookGrid');
+  grid.setAttribute('aria-busy', 'false');
+  grid.classList.add('is-ready');
 }).catch(function () {
-  document.getElementById('bookCount').textContent = 'books.json 加载失败';
+  showLoadError();
 });
+
+function showLoadError() {
+  var grid = document.getElementById('bookGrid');
+  grid.setAttribute('aria-busy', 'false');
+  grid.innerHTML = '<div class="state"><p>书目暂时没能载入</p>'
+    + '<p class="state-sub">可能是网络或缓存出了点小问题，重试一次就好。</p>'
+    + '<button type="button" id="retryBtn">重新载入</button></div>';
+  document.getElementById('bookCount').textContent = '书目载入失败';
+  var meta = document.getElementById('navMeta');
+  meta.textContent = '国学共读 · 一日一章';
+  var bar = document.getElementById('filterBar');
+  bar.hidden = true;
+  bar.removeAttribute('aria-busy');
+  document.getElementById('retryBtn').addEventListener('click', function () { location.reload(); });
+}
 
 function buildFilter() {
   var cats = [];
   BOOKS.forEach(function (b) { if (b.cat && cats.indexOf(b.cat) < 0) cats.push(b.cat); });
   var bar = document.getElementById('filterBar');
+  bar.innerHTML = '';
+  bar.removeAttribute('aria-busy');
+  var all = document.createElement('button');
+  all.className = 'active';
+  all.dataset.cat = 'all';
+  all.textContent = '全部';
+  bar.appendChild(all);
   cats.forEach(function (c) {
     var btn = document.createElement('button');
     btn.dataset.cat = c;
