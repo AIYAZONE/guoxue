@@ -144,13 +144,14 @@
       + '    </div>'
       + '  </div></header>'
       + '  <div class="readbar" id="readbar"></div>'
-      + '  <nav class="bottom-nav">'
+      + '  <nav class="bottom-nav" id="bottomNav">'
       + '    <button class="bn-item" id="bnToc">目录</button>'
       + '    <button class="bn-item" id="bnHome">封面</button>'
       + '    <button class="bn-item" id="bnStudy">研读</button>'
       + '    <button class="bn-item" id="bnToday">今日</button>'
       + '    <button class="bn-item" id="bnTools">工具</button>'
       + '  </nav>'
+      + '  <button class="nav-handle" id="navHandle" type="button" aria-label="显示底部导航" aria-controls="bottomNav"><span></span></button>'
       + '  <div class="wrap">'
       + coverHtml()
       + '    <section id="chapters"></section>'
@@ -165,7 +166,6 @@
       + '        <button class="btn" id="pNext"><span class="plabel">下一章</span><svg class="par" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg></button>'
       + '      </div>'
       + '    </nav>'
-      + '    <footer>' + footerHtml(m) + '</footer>'
       + '  </div>'
       + '</div></div>'
       + '<div class="tools-mask" id="toolsMask"></div>'
@@ -193,11 +193,6 @@
   }
 
   function cnNum(n) { return CN[n - 1] || String(n); }
-
-  // 页脚内的旧域名统一改成本站根路径，保证「更多经典」回到总站首页
-  function footerHtml(m) {
-    return (m.footer || '').replace(/https?:\/\/[a-z]+\.aiyazone\.com\/?/gi, '/');
-  }
 
   function tocHtml() {
     var s = lsGet(LS_START) || dateStr(new Date());
@@ -420,6 +415,7 @@
   }
 
   function showCover() {
+    showNav(true);
     syncNav('cover');
     if (bodyClass('paged')) {
       setActiveView($('cover'));
@@ -432,6 +428,7 @@
   }
 
   function showStudy(scroll) {
+    showNav(true);
     syncNav('study');
     if (bodyClass('paged')) setActiveView($('study'));
     if (scroll !== false) {
@@ -448,6 +445,7 @@
     markRead(n);
     ensureChapter(n);
     syncNav('ch');
+    showNav(false);
     var el = $('ch-' + n);
     if (bodyClass('paged')) {
       setActiveView(el);
@@ -458,6 +456,7 @@
       window.scrollTo(0, Math.max(0, y));
       if (opts.flash) { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
     }
+    scheduleNavHide();
   }
 
   function updatePager() {
@@ -559,6 +558,62 @@
     res.classList.add('open');
   }
 
+  // ------------------------------------------------- immersive nav ----
+  var navHideTimer = null, lastChromeY = 0, chromeAccum = 0;
+  function isMobileNav() { return window.matchMedia('(max-width:1023px)').matches; }
+  // 仅在真正读到正文时收起导航：封面、目录、研读页保持常显
+  function readingInView() {
+    if (bodyClass('paged') && currentView() !== 'ch') return false;
+    var arts = document.querySelectorAll('article.chapter');
+    for (var i = 0; i < arts.length; i++) {
+      var r = arts[i].getBoundingClientRect();
+      if (r.top < window.innerHeight * 0.6 && r.bottom > 120) return true;
+    }
+    return false;
+  }
+  function canHideNav() {
+    if (!isMobileNav()) return false;
+    if (!readingInView()) return false;
+    if (document.body.classList.contains('toc-open')) return false;
+    var tp = $('toolsPanel');
+    if (tp && tp.classList.contains('open')) return false;
+    var nav = $('bottomNav');
+    if (nav && nav.contains(document.activeElement)) return false;
+    return true;
+  }
+  function showNav(cancelTimer) {
+    if (cancelTimer) { clearTimeout(navHideTimer); navHideTimer = null; }
+    document.body.classList.remove('nav-hidden');
+  }
+  function hideNav() {
+    if (!canHideNav()) return;
+    document.body.classList.add('nav-hidden');
+  }
+  // 进入章节后短暂停留即收起；用户主动唤回后不再自动收起
+  function scheduleNavHide() {
+    clearTimeout(navHideTimer);
+    navHideTimer = null;
+    if (!isMobileNav()) return;
+    navHideTimer = setTimeout(function () {
+      navHideTimer = null;
+      hideNav();
+    }, 3000);
+  }
+  function onScrollChrome() {
+    if (!isMobileNav()) return;
+    var y = window.scrollY;
+    var dy = y - lastChromeY;
+    lastChromeY = y;
+    if (y <= 24) { chromeAccum = 0; showNav(false); return; }
+    if (dy > 0) {
+      chromeAccum = chromeAccum > 0 ? chromeAccum + dy : dy;
+      if (chromeAccum > 30 && y > 110) hideNav();
+    } else if (dy < 0) {
+      chromeAccum = chromeAccum < 0 ? chromeAccum + dy : dy;
+      if (chromeAccum < -10) { chromeAccum = 0; showNav(true); }
+    }
+  }
+
   // ------------------------------------------------- scroll spy / misc ---
   var barRaf = null;
   function updateReadbar() {
@@ -576,6 +631,7 @@
   var spyRaf = null;
   function onScrollSpy() {
     updateReadbar();
+    onScrollChrome();
     if (bodyClass('paged') || currentView() === 'cover') return;
     if (spyRaf) return;
     spyRaf = requestAnimationFrame(function () {
@@ -611,10 +667,12 @@
   }
 
   function openToc(open) {
+    if (open) showNav(true);
     document.body.classList.toggle('toc-open', open);
   }
 
   function openTools(open) {
+    if (open) showNav(true);
     $('toolsPanel').classList.toggle('open', open);
     $('toolsMask').classList.toggle('open', open);
   }
@@ -797,6 +855,11 @@
       bnToday: function () { showChapter(dayIndex()); location.hash = '#ch-' + dayIndex(); },
       bnToc: function () { openToc(true); },
       bnTools: function () { openTools(true); },
+      navHandle: function () {
+        showNav(true);
+        var b = $('bnToc');
+        if (b) b.focus({ preventScroll: true });
+      },
       toolsBtn: function () { openTools(true); },
       toolsClose: function () { openTools(false); },
       toolsMask: function () { openTools(false); },
@@ -871,8 +934,15 @@
       if (e.key === 'ArrowRight') { showChapter(currentChapter + 1); location.hash = '#ch-' + currentChapter; }
     });
 
+    lastChromeY = window.scrollY;
     window.addEventListener('scroll', onScrollSpy, { passive: true });
     window.addEventListener('hashchange', route);
+    window.addEventListener('resize', function () {
+      if (isMobileNav()) return;
+      clearTimeout(navHideTimer);
+      navHideTimer = null;
+      showNav(false);
+    });
   }
 
   // ----------------------------------------------------------- boot ------
