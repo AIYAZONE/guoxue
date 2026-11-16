@@ -563,9 +563,28 @@ body[data-theme="dark"] .sn-hit{color:var(--soft)}
 .search-results .sn-hit{display:block;font-size:12px;color:var(--soft)}
 .search-results .empty{color:var(--soft);cursor:default}
 
-/* ========== 加载态 ========== */
-#appLoading{display:flex;align-items:center;justify-content:center;min-height:60vh;color:var(--soft);font-size:14px;letter-spacing:4px}
-#appLoading.error{letter-spacing:0;color:var(--accent-deep)}
+/* ========== 加载态：整屏遮罩，避免与页面内容同时出现 ========== */
+#app{display:none}
+#appLoading{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+  background:var(--paper);
+  background-image:radial-gradient(var(--dot) 1px,transparent 1px);
+  background-size:22px 22px;
+  color:var(--soft);font-size:13px;letter-spacing:4px;
+}
+#appLoading::before{
+  content:"";width:34px;height:34px;border-radius:50%;
+  border:2px solid var(--line);border-top-color:var(--accent);
+  animation:guoxueSpin .9s linear infinite;flex:none;
+}
+@keyframes guoxueSpin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){#appLoading::before{animation:none;border-top-color:var(--accent)}}
+#appLoading.error{
+  letter-spacing:0;color:var(--accent-deep);
+  padding:24px;text-align:center;line-height:1.8;font-size:13.5px;
+}
+#appLoading.error::before{display:none}
 
 /* ========== 暗色模式：硬编码文字的补偿覆盖 ========== */
 body[data-theme="dark"] .jintro,

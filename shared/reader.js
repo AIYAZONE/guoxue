@@ -969,6 +969,7 @@
         applyLook();
         route();
         $('appLoading').style.display = 'none';
+        $('app').style.display = 'block';
       })
       .catch(function (err) {
         var el = $('appLoading');
