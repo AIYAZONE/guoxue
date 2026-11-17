@@ -109,7 +109,7 @@ python3 -m http.server 8080
 |---|---|
 | `manifest.webmanifest` | 名称、`standalone` 显示、主题色、三档图标（192 / 512 / maskable） |
 | `sw.js` | 预缓存外壳与全部书目；运行时按类型分流 |
-| `icons/` | `icon-192.png` / `icon-512.png`（朱砂印泥底 + 白文「国学」竖排，无边框；墨迹 190×400，四周留白 56 起）、`maskable-512.png`（内容缩到 90% 安全区）、`apple-touch-icon.png` |
+| `icons/` | `icon-192.png` / `icon-512.png`（朱砂印泥底 + 白文「国学」竖排，无边框；墨迹 190×400，四周留白 56 起）、`maskable-512.png`（整幅缩到 75%，预留启动闪屏 / 自适应图标安全区）、`apple-touch-icon.png` |
 | `favicon.svg` | 标签页与顶栏用：同一朱砂底 + 单字「学」——16～38px 下双字必糊，故这里只留一字 |
 | `scripts/logo/` | 站徽源文件（SVG + 导出说明），字体用马善政毛笔楷书，OFL 授权可商用 |
 

@@ -5,7 +5,7 @@
 - 字体：**马善政毛笔楷书 Ma Shan Zheng**，SIL Open Font License 1.1，可商用（含商标/logo）
 - 视觉：朱砂印泥底（`#a83e2c → #8a2c1f` 微渐变）+ 白文楷书「国学」竖排；无边框
 - 质感：两层 `feTurbulence` 颗粒（一深一浅）+ 字形 `feDisplacementMap` 细碎墨边 + 径向压暗
-- 派生：`maskable-512.png` 是把字形内容缩到 84%（安全区）后重新导出
+- 派生：`maskable-512.png` 是把整幅图缩到 75%（预留 Android 自适应图标的安全区），边缘像素向外延展补齐画布
 
 ## 重新导出
 
