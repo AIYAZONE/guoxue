@@ -166,9 +166,10 @@ body.no-py ruby rt{display:none}
 
 @media (max-width:640px){
   .toc ol{grid-template-columns:1fr}
+  .wrap{padding:0 10px}
   .hero h1{font-size:44px;letter-spacing:10px;text-indent:10px}
-  .chapter{padding:20px 18px 16px}
-  .ch-text{font-size:17.5px;line-height:2.05;letter-spacing:.01em;padding:2px 0}
+  .chapter{padding:20px 12px 16px;margin:16px 0}
+  .ch-text{max-width:none;font-size:17.5px;line-height:2.05;letter-spacing:.01em;padding:2px 0}
   .ch-text p{margin-bottom:1em}
   .det>summary{padding:12px 0 10px;letter-spacing:1.5px}
   .det-tabs{font-size:11.5px;letter-spacing:0}
@@ -179,8 +180,8 @@ body.no-py ruby rt{display:none}
   .top-actions{gap:6px;justify-content:flex-end;flex:1;min-width:0}
   .top-actions .btn{padding:6px 10px;font-size:13px;white-space:nowrap}
   .tlong{display:none}
-  .study{padding:20px 16px 16px}
-  .pager{padding:10px 12px}
+  .study{padding:16px 12px 14px;margin:16px 0}
+  .pager{padding:10px 8px}
   .pager .btn{padding:8px 12px}
   .pager .pager-info{font-size:12px;letter-spacing:0;line-height:1.6}
   .pager .plabel{display:none}

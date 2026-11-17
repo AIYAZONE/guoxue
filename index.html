@@ -186,18 +186,30 @@ html[data-theme="dark"] .card-seal{color:#201c17}
 .pal-menu .dot{width:13px;height:13px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);transform:translateY(1px)}
 
 @media (max-width:560px){
-  .hero{padding:52px 20px 28px}
+  .hero{padding:40px 14px 24px}
+  .hero h1{font-size:clamp(28px,9vw,36px);letter-spacing:.14em;text-indent:.14em}
   .hero .sub{font-size:13.5px;letter-spacing:.06em}
-  .nav-inner{height:54px;padding:0 14px;gap:10px}
+  .hero .stats{gap:6px}
+  .nav-inner{height:54px;padding:0 12px;gap:10px}
   .nav-meta{display:none}
   .nav-brand{font-size:18.5px;letter-spacing:2px;gap:7px}
   .brand-mark{width:30px;height:30px;border-radius:6px}
   .brand-txt small{display:none}
   .nav-right{gap:6px}
   .icon-btn{font-size:12.5px;padding:5px 10px;letter-spacing:.3px}
-  .container,.resume,.benefits,.coming{padding-left:16px;padding-right:16px}
-  .card{padding:20px}
+  .resume,.filter-bar,.container,.benefits,.coming,.footer{padding-left:12px;padding-right:12px}
+  .resume{margin-bottom:4px}
+  .filter-bar{padding:20px 12px 24px}
+  .filter-bar button{padding:5px 14px;font-size:12.5px}
+  .grid{gap:14px;padding-bottom:12px}
+  .card{padding:18px;border-radius:14px}
+  .card .name{font-size:24px}
+  .card .card-seal{width:36px;height:36px;font-size:19px;border-radius:9px}
+  .benefits{margin-top:40px}
   .benefits-inner{grid-template-columns:1fr}
+  .benefits h2{letter-spacing:3px}
+  .benefits h2:before,.benefits h2:after{width:24px}
+  .coming{margin:32px auto 48px}
 }
 </style>
 </head>
