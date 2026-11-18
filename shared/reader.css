@@ -126,15 +126,17 @@ body.toc-open #tocBackdrop{opacity:1;visibility:visible}
 .jie li{margin:0 0 12px;padding-left:1.6em;text-indent:-1.6em;line-height:1.95;font-size:15px}
 .jie .src{display:inline-block;font-weight:600;color:var(--accent-deep);margin-right:7px;font-size:13px;letter-spacing:1px}
 .jiedu{display:flex;flex-direction:column;gap:2px}
-.jrow{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px dashed var(--line)}
+.jrow{display:flex;flex-direction:column;gap:9px;padding:14px 0;border-bottom:1px dashed var(--line)}
 .jrow:last-child{border-bottom:none}
-.jlabel{flex:none;min-width:62px;text-align:center;background:var(--accent-bg);color:var(--accent-deep);border:1px solid var(--line);font-size:12px;padding:3px 8px;border-radius:6px;line-height:1.4;font-weight:600;font-family:inherit;cursor:pointer;appearance:none;-webkit-appearance:none}
+.jhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.jlabel{flex:none;text-align:center;background:var(--accent-bg);color:var(--accent-deep);border:1px solid var(--line);font-size:12px;padding:3px 8px;border-radius:6px;line-height:1.4;font-weight:600;font-family:inherit;cursor:pointer;appearance:none;-webkit-appearance:none}
 .jlabel:after{content:"？";margin-left:3px;font-weight:400;opacity:.55}
 .jhint{margin:0 0 2px;font-size:12px;color:var(--soft);letter-spacing:.5px;text-indent:0}
 .jintro{display:none;margin:0 0 10px;font-size:13px;line-height:1.85;color:#4a4438;background:var(--accent-bg);border:1px dashed var(--line);border-radius:8px;padding:9px 12px;text-align:justify}
 .jrow.jopen .jintro{display:block}
 .jrow.jopen .jlabel:after{content:"？";opacity:.3}
 .jrow p{margin:0;line-height:1.9;font-size:15px;text-align:justify;text-indent:2em}
+.jrow p+p{margin-top:10px}
 .nodata{color:var(--soft);font-size:13px}
 
 /* 注音 ruby + 通假虚线 */
@@ -254,7 +256,7 @@ body.no-py ruby rt{display:none}
 }
 /* 细滚动条 */
 .sidebar::-webkit-scrollbar{width:6px}
-.sidebar::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:3px}
+.sidebar::-webkit-scrollbar-thumb{background:#d8cdb4;border-radius:3px}
 
 @media print{
   .sidebar,.topbar,.backtop,.bottom-nav,.nav-handle,.plan-actions,.share-btn,.det,.pager{display:none}
@@ -346,7 +348,7 @@ body.paged.view-chapter .pager{display:flex}
 .ech{width:100%;border-collapse:collapse;font-size:14px;background:var(--card)}
 .ech caption{caption-side:top;text-align:left;font-size:13px;color:var(--soft);padding:0 0 8px}
 .ech th,.ech td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;line-height:1.6}
-.ech th{background:var(--accent-bg);color:var(--ink);font-weight:600;font-family:"STKaiti","KaiTi",serif;white-space:nowrap}
+.ech th{background:#f3ece0;color:var(--ink);font-weight:600;font-family:"STKaiti","KaiTi",serif;white-space:nowrap}
 .ech td.ck{white-space:nowrap;color:var(--accent);font-weight:600}
 .ech .citem{color:var(--accent);font-weight:600;text-decoration:none}
 .ech .citem:hover{text-decoration:underline}
@@ -384,9 +386,9 @@ body.paged.view-chapter .pager{display:flex}
 .jzpass{display:block;font-size:14.5px;color:var(--ink);font-family:"STKaiti","KaiTi",serif;margin:2px 0 3px}
 .jznote{display:block;font-size:13px;color:#4a4438;text-align:justify}
 
-/* ========== 解读：所本经典（小字置于正文首行，随文换行） ========== */
-.jbody{flex:1;min-width:0}
-.jbasis{display:block;font-size:12px;color:var(--accent-deep);opacity:.75;letter-spacing:.5px;line-height:1.6;margin-bottom:4px}
+/* ========== 解读：视角行（标签 + 所本 同行，正文通栏） ========== */
+.jbody{min-width:0}
+.jbasis{font-size:12px;color:var(--accent-deep);opacity:.75;letter-spacing:.5px;line-height:1.6}
 .jbasis:before{content:"";display:inline-block;width:14px;height:1px;background:var(--accent);vertical-align:middle;margin-right:7px;opacity:.6}
 
 /* ========== 朱注：章首句引标 ========== */
@@ -510,11 +512,13 @@ body.paged.view-chapter .pager{display:flex}
   .ech{font-size:13px}
   .ech th,.ech td{padding:7px 8px}
 }
-/* 解读面板：窄屏改为上下堆叠，学派名在上方，不再让左侧标签列挤占正文宽度 */
+/* 解读面板：窄屏收紧间距（标签行与正文同为通栏，仅调字号与留白） */
 @media (max-width:640px){
-  .jrow{flex-direction:column;gap:6px;padding:12px 0}
-  .jlabel{align-self:flex-start;min-width:0;padding:4px 10px;font-size:12.5px}
+  .jrow{gap:7px;padding:12px 0}
+  .jhead{gap:8px}
+  .jlabel{padding:4px 10px;font-size:12.5px}
   .jrow p{font-size:14.5px;line-height:1.85}
+  .jrow p+p{margin-top:8px}
   .jintro{margin-bottom:8px}
   /* 章间呼应表：640px 以下转卡片布局 */
   .ech thead{display:none}

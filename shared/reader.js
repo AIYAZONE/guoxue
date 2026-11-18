@@ -282,9 +282,12 @@
     h += '<div class="jiedu">';
     for (var i = 0; i < p.rows.length; i++) {
       var r = p.rows[i];
-      h += '<div class="jrow"><button class="jlabel" type="button" aria-expanded="false">' + esc(r.label) + '</button>'
-        + '<div class="jbody">'
+      h += '<div class="jrow">'
+        + '<div class="jhead">'
+        + '<button class="jlabel" type="button" aria-expanded="false">' + esc(r.label) + '</button>'
         + (r.basis ? '<span class="jbasis">所本：' + esc(r.basis) + '</span>' : '')
+        + '</div>'
+        + '<div class="jbody">'
         + (r.intro ? '<div class="jintro">' + esc(r.intro) + '</div>' : '')
         + r.paras.map(function (t) { return '<p>' + t + '</p>'; }).join('')
         + '</div></div>';
