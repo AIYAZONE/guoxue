@@ -605,7 +605,10 @@
     var t = e.target;
     if (!t || !t.closest) return;
     if (t.closest('a,button,summary,input,textarea,select,label,.bottom-nav,.nav-handle')) return;
-    if (!t.closest('article.chapter')) return;
+    // 章节视图下整块内容区都可轻点收展，避免翻页条收起后底部出现点不动的死区
+    var inRead = t.closest('article.chapter') || t.closest('.pager')
+      || (document.body.classList.contains('view-chapter') && t.closest('.content'));
+    if (!inRead) return;
     var sel = window.getSelection();
     if (sel && !sel.isCollapsed && String(sel).length) return;
     var now = Date.now();

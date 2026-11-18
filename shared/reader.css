@@ -212,6 +212,9 @@ body.no-py ruby rt{display:none}
   body.paged.view-chapter .content{min-height:100vh;min-height:100svh;display:flex;flex-direction:column}
   body.paged.view-chapter .wrap{flex:1 1 auto;display:flex;flex-direction:column}
   body.paged.view-chapter .pager{margin-top:auto}
+  /* 翻页条与底栏共用一套沉浸交互：轻点正文一起收起，再点一起展开 */
+  .pager{transition:opacity .2s ease,transform .2s ease,visibility 0s}
+  body.nav-hidden .pager{opacity:0;visibility:hidden;pointer-events:none;transform:translateY(8px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
   /* 移动端顶栏仅作品牌条，工具入口统一走底部导航，避免与底栏重复 */
   #toolsBtn{display:none}
 }
@@ -769,5 +772,5 @@ body[data-theme="dark"] .sb-seal{color:#201c17}
 
 /* 减少动效偏好：沉浸收展直接切换 */
 @media (prefers-reduced-motion:reduce){
-  .bottom-nav,.backtop,.nav-handle span{transition:none!important}
+  .bottom-nav,.backtop,.nav-handle span,.pager{transition:none!important}
 }
