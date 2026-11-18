@@ -11,6 +11,8 @@
   --accent:#8d4a34; --accent-deep:#733a28; --accent-bg:#f6ebe5;
   --line:#e6ded2; --line-strong:#d6c9b8;
   --dot:rgba(141,74,52,.03);
+  /* 实色主色块上的文字色：日间主色偏暗 → 白字；夜间主色提亮 → 深墨字 */
+  --on-accent:#fff;
 }
 
 /* —— A 纸墨（日间） —— */
@@ -53,6 +55,7 @@
   --line:#3a342b; --line-strong:#4c4438;
   --accent:#c68a6e; --accent-deep:#d9a488; --accent-bg:#342822;
   --dot:rgba(233,227,213,.03);
+  --on-accent:#201c17;
 }
 
 /* —— 各配色在暗色下的主色（提亮以保对比） —— */

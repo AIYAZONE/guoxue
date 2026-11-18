@@ -78,7 +78,7 @@ a{color:inherit}
 .filter-bar[hidden]{display:none}
 .filter-bar button{font-family:inherit;padding:5px 18px;border:1px solid var(--line);border-radius:999px;background:var(--card);font-size:13.5px;color:var(--soft);cursor:pointer;transition:.18s;letter-spacing:.08em}
 .filter-bar button:hover{border-color:var(--accent);color:var(--accent)}
-.filter-bar button.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:500}
+.filter-bar button.active{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:500}
 .filter-bar button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* ── 书卡 ── */
@@ -93,7 +93,7 @@ a{color:inherit}
 }
 .card:hover{transform:translateY(-3px);border-color:var(--line-strong);box-shadow:0 2px 6px rgba(43,36,24,.05),0 18px 40px -22px rgba(43,36,24,.3)}
 .card-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:10px}
-.card-seal{flex:none;width:42px;height:42px;border-radius:10px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-family:"STKaiti","KaiTi",serif;font-size:22px;letter-spacing:0;box-shadow:inset 0 -1px 0 rgba(0,0,0,.12)}
+.card-seal{flex:none;width:42px;height:42px;border-radius:10px;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-family:"STKaiti","KaiTi",serif;font-size:22px;letter-spacing:0;box-shadow:inset 0 -1px 0 rgba(0,0,0,.12)}
 .card .name{font-family:"STKaiti","KaiTi","Kaiti SC",serif;font-size:27px;font-weight:600;letter-spacing:.1em;line-height:1.2}
 .card .authors{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.6;letter-spacing:.02em}
 .card .meta-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:14px 0 16px;font-size:11.5px;color:var(--soft)}
@@ -131,8 +131,7 @@ a{color:inherit}
 .state{grid-column:1/-1;text-align:center;padding:48px 24px;border:1px dashed var(--line-strong);border-radius:16px;background:var(--card);color:var(--soft);font-size:13.5px;letter-spacing:.06em}
 .state-sub{color:var(--muted);font-size:12.5px;margin-top:6px}
 .state button{margin-top:18px;font-family:inherit;font-size:13px;letter-spacing:.08em;padding:7px 20px;border:1px solid var(--accent);border-radius:999px;background:transparent;color:var(--accent-deep);cursor:pointer;transition:.18s}
-.state button:hover{background:var(--accent);color:#fff}
-html[data-theme="dark"] .state button:hover{color:#201c17}
+.state button:hover{background:var(--accent);color:var(--on-accent)}
 .state button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* 书目就位后淡入，衔接骨架 */
@@ -175,8 +174,6 @@ html[data-theme="dark"]{
 }
 html[data-theme="dark"] body{background-image:radial-gradient(var(--dot) 1px,transparent 1px)}
 html[data-theme="dark"] .nav{background:color-mix(in srgb,var(--paper) 92%,transparent)}
-html[data-theme="dark"] .filter-bar button.active{color:#201c17}
-html[data-theme="dark"] .card-seal{color:#201c17}
 
 .pal-pick{position:relative}
 /* 汉字墨迹中心比行盒中心低约 1px（宋体 13px 实测 1.05px），圆点随之下移才是视觉居中 */
