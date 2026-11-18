@@ -154,11 +154,11 @@
       + '  <button class="nav-handle" id="navHandle" type="button" aria-label="显示底部导航" aria-controls="bottomNav"><span></span></button>'
       + '  <div class="wrap">'
       + coverHtml()
-      + '    <section id="chapters"></section>'
       + '    <section class="study view" data-view="study" id="study">'
       + '      <div id="studyBody"></div>'
       + '      <div class="study-foot"><a href="#cover" class="btn ghost">回到封面</a><span class="hint">研读内容随书加载</span></div>'
       + '    </section>'
+      + '    <section id="chapters"></section>'
       + '    <nav class="pager" id="pager">'
       + '      <div class="pager-row">'
       + '        <button class="btn ghost" id="pPrev"><svg class="par" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg><span class="plabel">上一章</span></button>'
@@ -395,7 +395,16 @@
     if (rendered[n]) return;
     var c = data.chapters[n - 1];
     if (!c) return;
-    $('chapters').insertAdjacentHTML('beforeend', chapterHtml(c));
+    var host = $('chapters');
+    host.insertAdjacentHTML('beforeend', chapterHtml(c));
+    var el = host.lastElementChild;
+    // 章节始终按序号升序排列：分页模式乱序跳读后切连续阅读，也不会错序
+    var kids = host.children, next = null;
+    for (var i = 0; i < kids.length; i++) {
+      if (kids[i] === el) continue;
+      if (parseInt(kids[i].getAttribute('data-chapter'), 10) > n) { next = kids[i]; break; }
+    }
+    if (next) host.insertBefore(el, next);
     rendered[n] = true;
     restoreShengNote(n);
     if (bodyClass('paged')) setActiveView($('ch-' + n));
