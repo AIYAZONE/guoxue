@@ -138,9 +138,10 @@ body.toc-open #tocBackdrop{opacity:1;visibility:visible}
 .jrow p{margin:0;line-height:1.9;font-size:15px;text-align:justify;text-indent:2em}
 .jrow p+p{margin-top:10px}
 
-/* —— 分批笔记（如「吴大哥」）：批次标题 / 冒号小标题 / 正文 三层 —— */
-.jbatch{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line)}
-.jbody > .jbatch:first-child{margin-top:0;padding-top:0;border-top:none}
+/* —— 分批笔记（如「吴大哥」）：整块内缩一级表示从属于本行，再分 批次 / 小标题 / 正文 三层 —— */
+.jnotes{margin-top:4px;padding-left:16px;border-left:2px solid var(--line)}
+.jbatch{margin-top:16px}
+.jbatch:first-child{margin-top:0}
 .jbatch-h{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:12.5px;font-weight:600;color:var(--accent-deep);letter-spacing:.5px;line-height:1.6;text-indent:0}
 .jbatch-h:before{content:"";flex:none;width:3px;height:13px;border-radius:2px;background:var(--accent)}
 .jsub{margin:14px 0 8px;font-size:14px;font-weight:600;color:var(--accent-deep);line-height:1.7;text-indent:0}
@@ -529,7 +530,8 @@ body.paged.view-chapter .pager{display:flex}
   .jrow p{font-size:14.5px;line-height:1.85}
   .jrow p+p{margin-top:8px}
   .jintro{margin-bottom:8px}
-  .jbatch{margin-top:14px;padding-top:12px}
+  .jnotes{padding-left:12px}
+  .jbatch{margin-top:14px}
   .jbatch-h{font-size:12px;margin-bottom:8px}
   .jsub{font-size:13.5px;margin:12px 0 6px}
   .jbatch p + .jsub{margin-top:14px}

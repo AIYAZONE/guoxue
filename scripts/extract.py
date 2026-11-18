@@ -17,6 +17,17 @@ REPO = Path(__file__).resolve().parent.parent
 VOID = {'br', 'hr', 'img', 'input', 'meta', 'link', 'source', 'wbr',
         'area', 'base', 'col', 'embed', 'track'}
 
+# 源站个别小标题漏写「：」，前端凭冒号识别小标题，这里按整段精确匹配补齐
+SUBHEAD_FIX = {
+    '案例应用': '案例应用：',
+    '金句摘抄': '金句摘抄：',
+    '综合理解': '综合理解：',
+    '核心思想综合': '核心思想综合：',
+    '核心心法': '核心心法：',
+    '现实应用': '现实应用：',
+    '边界提醒（避免走偏）': '边界提醒（避免走偏）：',
+}
+
 
 # ---------------------------------------------------------------- DOM ------
 class Node:
@@ -227,6 +238,9 @@ def parse_panel_jiedu(p):
         intro = find(jrow, 'div', 'jintro')
         jbody = find(jrow, 'div', 'jbody')
         paras = [ser_children(c) for c in (jbody.children if jbody else []) if not isinstance(c, str) and c.tag == 'p']
+        # 去重：源站偶有相邻段落重复录入（如「情卷4段注分享：」连出两次），保留一份
+        paras = [t for i, t in enumerate(paras) if i == 0 or t != paras[i - 1]]
+        paras = [SUBHEAD_FIX.get(t, t) for t in paras]
         bas = text_of(basis)
         while bas.startswith('所本：') or bas.startswith('所本:'):
             bas = bas[3:]

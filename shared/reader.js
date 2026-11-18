@@ -286,7 +286,7 @@
       if (JBATCH_RE.test(paras[i])) { hasBatch = true; break; }
     }
     if (!hasBatch) return paras.map(function (t) { return '<p>' + t + '</p>'; }).join('');
-    var h = '', open = false;
+    var h = '<div class="jnotes">', open = false;
     for (i = 0; i < paras.length; i++) {
       var t = paras[i];
       if (JBATCH_RE.test(t)) {
@@ -299,7 +299,7 @@
         h += '<p>' + t + '</p>';
       }
     }
-    return h + (open ? '</div>' : '');
+    return h + (open ? '</div>' : '') + '</div>';
   }
   function panelJiedu(p) {
     var h = p.hint ? '<p class="jhint">' + esc(p.hint) + '</p>' : '';
