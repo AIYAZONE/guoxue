@@ -670,7 +670,8 @@
   var spyRaf = null;
   function onScrollSpy() {
     updateReadbar();
-    if (bodyClass('paged') || currentView() === 'cover') return;
+    // 连续模式下封面 / 研读 / 章节同屏，不能按 active-view 判定；无章节在视口顶部时自然不进循环
+    if (bodyClass('paged')) return;
     if (spyRaf) return;
     spyRaf = requestAnimationFrame(function () {
       spyRaf = null;
