@@ -230,8 +230,8 @@ body.no-py ruby rt{display:none}
   #toolsBtn{display:none}
 }
 
-/* 目录已读进度标记 */
-.toc a.read .seal{background:color-mix(in srgb,var(--accent) 30%,var(--line))}
+/* 目录已读进度标记：底色去饱和以弱化，但文字保持 --ink 保证可读 */
+.toc a.read .seal{background:color-mix(in srgb,var(--accent) 30%,var(--line));color:var(--ink)}
 .toc a.read .t{color:var(--muted)}
 
 /* ========== 宽屏：左侧目录栏 + 右侧正文（PDF 阅读器式） ========== */
@@ -265,7 +265,7 @@ body.no-py ruby rt{display:none}
 }
 /* 细滚动条 */
 .sidebar::-webkit-scrollbar{width:6px}
-.sidebar::-webkit-scrollbar-thumb{background:#d8cdb4;border-radius:3px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:3px}
 
 @media print{
   .sidebar,.topbar,.backtop,.bottom-nav,.nav-handle,.plan-actions,.share-btn,.det,.pager{display:none}
@@ -357,7 +357,7 @@ body.paged.view-chapter .pager{display:flex}
 .ech{width:100%;border-collapse:collapse;font-size:14px;background:var(--card)}
 .ech caption{caption-side:top;text-align:left;font-size:13px;color:var(--soft);padding:0 0 8px}
 .ech th,.ech td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;line-height:1.6}
-.ech th{background:#f3ece0;color:var(--ink);font-weight:600;font-family:"STKaiti","KaiTi",serif;white-space:nowrap}
+.ech th{background:var(--accent-bg);color:var(--ink);font-weight:600;font-family:"STKaiti","KaiTi",serif;white-space:nowrap}
 .ech td.ck{white-space:nowrap;color:var(--accent);font-weight:600}
 .ech .citem{color:var(--accent);font-weight:600;text-decoration:none}
 .ech .citem:hover{text-decoration:underline}
@@ -723,7 +723,6 @@ body[data-theme="dark"] ::-webkit-scrollbar-thumb{border-color:var(--paper)}
 .top-actions{justify-content:flex-end}
 .crumbs .cur{max-width:40vw;overflow:hidden;text-overflow:ellipsis}
 /* 实色主色块上的文字色统一由 --on-accent 令牌处理（见 palette.css），此处不再逐条覆盖 */
-body[data-theme="dark"] .toc a.read .seal{color:var(--soft)}
 
 
 /* ========== 侧栏：书签式头部 + 研读入口 + 目录独立滚动 ========== */
