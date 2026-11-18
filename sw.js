@@ -8,6 +8,7 @@ var SHELL = [
   '/manifest.webmanifest',
   '/shared/reader.css',
   '/shared/palette.css',
+  '/shared/appearance.js',
   '/shared/reader.js',
   '/books.json',
   '/icons/icon-192.png',

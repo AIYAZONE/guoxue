@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
@@ -12,15 +12,18 @@
 <meta name="apple-mobile-web-app-title" content="国学共读">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <script>try{var d=document.documentElement;d.setAttribute('data-theme',localStorage.getItem('guoxue_theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));d.setAttribute('data-pal',localStorage.getItem('guoxue_pal')||'e')}catch(e){}</script>
+<meta name="color-scheme" content="light dark">
 <meta name="description" content="国学经典共读：注音 · 逐句译文 · 多视角解读——让古籍不再难读">
 <title>国学经典共读</title>
 <link rel="stylesheet" href="/shared/palette.css">
+<script src="/shared/appearance.js"></script>
 <style>
 :root{
   --shadow:0 1px 3px rgba(43,36,24,.05), 0 10px 30px -18px rgba(43,36,24,.18);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+/* 全面屏：内容避开刘海、状态条与底部手势区 */
 body{
   font-family:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC","SimSun",serif;
   background:var(--paper);
@@ -30,12 +33,14 @@ body{
   line-height:1.85;
   -webkit-font-smoothing:antialiased;
   min-height:100vh;display:flex;flex-direction:column;
+  padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
 }
 a{color:inherit}
 ::selection{background:var(--accent-bg);color:var(--accent-deep)}
 
 /* ── 顶栏 ── */
-.nav{position:sticky;top:0;z-index:60;background:var(--paper);background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{position:sticky;top:0;z-index:60;background:var(--paper);background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
 .nav-inner{max-width:1100px;margin:0 auto;padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between;gap:14px}
 .nav-brand{font-family:"STKaiti","KaiTi","Kaiti SC",serif;font-size:21px;letter-spacing:3px;text-decoration:none;display:inline-flex;align-items:center;gap:9px}
 .brand-mark{width:38px;height:38px;border-radius:8px;flex:none;display:block;box-shadow:0 1px 4px rgba(141,74,52,.22)}
@@ -333,6 +338,7 @@ function getPal() {
 function applyTheme(t) {
   document.documentElement.setAttribute('data-theme', t);
   document.documentElement.setAttribute('data-pal', getPal());
+  if (window.GuoxueAppearance) window.GuoxueAppearance.sync();
   var b = document.getElementById('themeBtn');
   if (b) b.textContent = t === 'dark' ? '日间' : '夜览';
   renderPalMenu();

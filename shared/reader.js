@@ -697,6 +697,7 @@
       roots[i].setAttribute('data-theme', t);
       roots[i].setAttribute('data-pal', pal);
     }
+    if (window.GuoxueAppearance) window.GuoxueAppearance.sync();
     var btns = [$('themeBtn'), $('themeBtn2')];
     for (i = 0; i < btns.length; i++) if (btns[i]) btns[i].textContent = t === 'dark' ? '日间' : '夜览';
 
