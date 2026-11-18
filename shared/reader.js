@@ -277,6 +277,30 @@
     return '<p class="zz-head"><span class="zz-ref">' + esc(p.ref) + '</span></p>'
       + '<p class="zz">' + esc(p.text) + '</p>';
   }
+  // 分批笔记（如「吴大哥」止学解说）：检出批次标题时按 批次 / 小标题 / 正文 三层排版。
+  // 其余行的 paras 仍是普通散文，保持逐段 <p> 输出，不受影响。
+  var JBATCH_RE = /^第\s*\d+\s*批/;
+  function jieduParas(paras) {
+    var hasBatch = false, i;
+    for (i = 0; i < paras.length; i++) {
+      if (JBATCH_RE.test(paras[i])) { hasBatch = true; break; }
+    }
+    if (!hasBatch) return paras.map(function (t) { return '<p>' + t + '</p>'; }).join('');
+    var h = '', open = false;
+    for (i = 0; i < paras.length; i++) {
+      var t = paras[i];
+      if (JBATCH_RE.test(t)) {
+        if (open) h += '</div>';
+        h += '<div class="jbatch"><div class="jbatch-h">' + t + '</div>';
+        open = true;
+      } else if (open && /[：:]$/.test(stripTags(t)) && stripTags(t).length <= 12) {
+        h += '<div class="jsub">' + t + '</div>';
+      } else {
+        h += '<p>' + t + '</p>';
+      }
+    }
+    return h + (open ? '</div>' : '');
+  }
   function panelJiedu(p) {
     var h = p.hint ? '<p class="jhint">' + esc(p.hint) + '</p>' : '';
     h += '<div class="jiedu">';
@@ -289,7 +313,7 @@
         + '</div>'
         + '<div class="jbody">'
         + (r.intro ? '<div class="jintro">' + esc(r.intro) + '</div>' : '')
-        + r.paras.map(function (t) { return '<p>' + t + '</p>'; }).join('')
+        + jieduParas(r.paras)
         + '</div></div>';
     }
     return h + '</div>';
