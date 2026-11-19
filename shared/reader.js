@@ -255,7 +255,7 @@
   function panelZhu(items) {
     var h = '<ul class="zhu">';
     for (var i = 0; i < items.length; i++) {
-      h += '<li><b>' + esc(items[i].term) + '</b>' + esc(items[i].text) + '</li>';
+      h += '<li><b>' + esc(items[i].term) + '</b>：' + esc(items[i].text) + '</li>';
     }
     return h + '</ul>';
   }

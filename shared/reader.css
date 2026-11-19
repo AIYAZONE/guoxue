@@ -122,7 +122,7 @@ body.toc-open #tocBackdrop{opacity:1;visibility:visible}
 .panel p:last-child{margin-bottom:0}
 .zhu{list-style:none;margin:0;padding:0}
 .zhu li{margin:0 0 10px;padding-left:1.4em;text-indent:-1.4em;line-height:1.9;font-size:15px}
-.zhu b{color:var(--accent-deep);font-weight:600;margin-right:4px}
+.zhu b{color:var(--accent-deep);font-weight:700}
 .jie{list-style:none;margin:0;padding:0}
 .jie li{margin:0 0 12px;padding-left:1.6em;text-indent:-1.6em;line-height:1.95;font-size:15px}
 .jie .src{display:inline-block;font-weight:600;color:var(--accent-deep);margin-right:7px;font-size:13px;letter-spacing:1px}
