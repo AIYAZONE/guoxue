@@ -316,9 +316,10 @@ body.no-py ruby rt{display:none}
 .sentences{display:flex;flex-direction:column}
 .srow{padding:10px 0;border-bottom:1px dashed var(--line)}
 .srow:last-child{border-bottom:none}
-.srow .src{font-size:16px;line-height:1.9;color:var(--ink);margin-bottom:4px}
+.srow .src{position:relative;font-size:17px;line-height:1.9;color:var(--ink);letter-spacing:.02em;padding-left:13px;margin-bottom:6px}
+.srow .src::before{content:"";position:absolute;left:0;top:.5em;bottom:.5em;width:2px;border-radius:2px;background:var(--accent);opacity:.55}
 .srow .src ruby{font-weight:600}
-.srow .tr{font-size:14.5px;line-height:1.9;color:#4a4438;text-align:justify;text-indent:2em}
+.srow .tr{font-size:14.5px;line-height:1.9;color:var(--muted);text-align:justify;text-indent:2em}
 
 /* ========== 分页阅读 ========== */
 .pager{display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;margin:24px 0 8px;padding:14px;background:var(--card);border:1px solid var(--line);border-radius:12px}
