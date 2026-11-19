@@ -346,7 +346,7 @@
     var h = '<article class="chapter view" data-view="ch" id="ch-' + c.n + '" data-chapter="' + c.n + '">'
       + '<div class="ch-head">'
       + '<span class="seal seal-lg">' + esc(c.seal || cnNum(c.n)) + '</span>'
-      + '<div><h2>' + esc(c.title || ('第' + c.n + '章')) + '</h2><p class="lab">' + esc(c.label) + '</p></div>'
+      + '<div class="ch-title"><h2>' + esc(c.label || c.title || ('第' + c.n + '章')) + '</h2></div>'
       + '<span class="spacer"></span>'
       + '<button class="btn ghost share-btn" data-n="' + c.n + '">分享本章</button>'
       + '</div>'

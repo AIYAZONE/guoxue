@@ -89,6 +89,7 @@ body.toc-open #tocBackdrop{opacity:1;visibility:visible}
 .ch-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px dashed var(--line);margin-bottom:16px}
 .seal-lg{min-width:40px;height:40px;padding:0 8px;font-size:20px;border-radius:8px}
 .ch-head h2{font-size:20px;letter-spacing:3px;font-weight:600;line-height:1.5}
+.ch-title{display:flex;align-items:center;min-width:0}
 .ch-head .lab{font-size:13px;color:var(--soft);letter-spacing:1px;margin-top:2px}
 .ch-head .spacer{flex:1}
 .share-btn{flex:none;font-size:12px;padding:4px 10px}
