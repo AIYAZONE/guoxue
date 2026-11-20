@@ -789,3 +789,30 @@ body[data-theme="dark"] ::-webkit-scrollbar-thumb{border-color:var(--paper)}
 @media (prefers-reduced-motion:reduce){
   .bottom-nav,.backtop,.nav-handle span,.pager{transition:none!important}
 }
+
+/* ================================================================
+   PC 沉浸阅读（宽屏）：只留当前正文，隐去侧栏与顶栏
+   —— 移动端的沉浸交互已由「轻点正文收展底栏」承担，此处专供 ≥1024px
+   ================================================================ */
+.focus-exit{display:none}
+
+@media (min-width:1024px){
+  /* 隐去导航外壳，正文独占视口 */
+  body.immersive .sidebar{display:none}
+  body.immersive .topbar{display:none}
+  /* 收窄阅读区并居中，读起来更像一页书 */
+  body.immersive .layout{max-width:1000px}
+  body.immersive .wrap{max-width:780px}
+  /* 正文去卡片化：直接落在纸面上，弱化容器感 */
+  body.immersive .chapter{background:transparent;border-color:transparent;box-shadow:none;border-radius:0}
+  /* 浮动退出入口：平时淡出，悬停显形，不干扰阅读 */
+  body.immersive .focus-exit{
+    display:inline-flex;align-items:center;gap:6px;
+    position:fixed;top:16px;right:18px;z-index:120;
+    font-family:inherit;font-size:12px;letter-spacing:1px;
+    padding:6px 12px;border-radius:999px;cursor:pointer;
+    border:1px solid var(--line);background:var(--card);color:var(--soft);
+    opacity:.45;transition:opacity .18s,border-color .18s,color .18s;
+  }
+  body.immersive .focus-exit:hover{opacity:1;border-color:var(--accent);color:var(--accent-deep)}
+}

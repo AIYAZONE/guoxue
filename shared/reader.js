@@ -73,7 +73,7 @@
   var searchIndex = [];
 
   function lsKey(name) { return (V[name] || BOOK + '_' + name); }
-  var LS_START, LS_LAST, LS_SHENG, LS_READ, LS_PY, LS_THEME, LS_PAGED, LS_PAL;
+  var LS_START, LS_LAST, LS_SHENG, LS_READ, LS_PY, LS_THEME, LS_PAGED, LS_PAL, LS_FOCUS;
 
   function initKeys() {
     LS_START = lsKey('LS_KEY') || (BOOK + '_start_v1');
@@ -82,6 +82,7 @@
     LS_READ = BOOK + '_read_v1';
     LS_PY = BOOK + '_py';
     LS_PAGED = BOOK + '_paged';
+    LS_FOCUS = BOOK + '_focus';
     LS_THEME = 'guoxue_theme';
     LS_PAL = 'guoxue_pal';
   }
@@ -140,6 +141,7 @@
       + '      <button class="btn ghost nav-btn" id="studyBtn" title="研读专区">研读</button>'
       + '      <button class="btn nav-btn" id="todayBtn" title="跳到今日共读">今日</button>'
       + '      <button class="btn ghost nav-btn" id="themeBtn" title="夜间 / 日间">夜览</button>'
+      + '      <button class="btn ghost nav-btn" id="focusBtn" title="沉浸阅读：只留当前正文" aria-pressed="false">沉浸</button>'
       + '      <button class="btn ghost" id="toolsBtn" title="工具箱">工具箱</button>'
       + '    </div>'
       + '  </div></header>'
@@ -152,6 +154,7 @@
       + '    <button class="bn-item" id="bnTools">工具</button>'
       + '  </nav>'
       + '  <button class="nav-handle" id="navHandle" type="button" aria-label="显示底部导航" aria-controls="bottomNav"><span></span></button>'
+      + '  <button class="focus-exit" id="focusExit" type="button" title="退出沉浸阅读（Esc）">退出沉浸</button>'
       + '  <div class="wrap">'
       + coverHtml()
       + '    <section class="study view" data-view="study" id="study">'
@@ -179,7 +182,8 @@
       + '    <div class="tp-row"><span>疑难字注音</span><button class="btn ghost py-toggle" id="pyBtn" type="button">开</button></div>'
       + '    <div class="tp-row"><span>夜间模式</span><button class="btn ghost" id="themeBtn2" type="button">切换</button></div>'
       + '    <div class="tp-row tp-col"><span>主题配色</span><div class="pal-swatches" id="palSwatches"></div></div>'
-      + '    <div class="tp-row"><span id="modeState">分页阅读</span><button class="btn ghost" id="modeBtn" type="button">切换为连续阅读</button></div></div>'
+      + '    <div class="tp-row"><span id="modeState">分页阅读</span><button class="btn ghost" id="modeBtn" type="button">切换为连续阅读</button></div>'
+      + '    <div class="tp-row"><span>沉浸阅读</span><button class="btn ghost" id="focusBtn2" type="button">开启</button></div></div>'
       + '  <div class="tp-sec"><div class="tp-sec-t">共读设置</div>'
       + '    <div class="tp-row"><span>开始日期</span><input type="date" id="startDate" class="tp-date"></div>'
       + '    <div class="tp-note">改日期自动跳到对应章节</div></div>'
@@ -781,6 +785,20 @@
     $('pyBtn').classList.toggle('on', on);
   }
 
+  // 沉浸阅读（宽屏）：隐去侧栏与顶栏，只留当前正文，靠浮动入口 / Esc 退出
+  function applyFocus() {
+    var on = lsGet(LS_FOCUS) === 'on';
+    document.body.classList.toggle('immersive', on);
+    var b = $('focusBtn');
+    if (b) { b.classList.toggle('active', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); }
+    var b2 = $('focusBtn2');
+    if (b2) b2.textContent = on ? '关闭' : '开启';
+  }
+  function toggleFocus() {
+    lsSet(LS_FOCUS, lsGet(LS_FOCUS) === 'on' ? 'off' : 'on');
+    applyFocus();
+  }
+
   // -------------------------------------------------------- export -------
   function exportSheng() {
     var store = shengStore();
@@ -905,6 +923,9 @@
       tocBackdrop: function () { openToc(false); },
       themeBtn: toggleTheme,
       themeBtn2: toggleTheme,
+      focusBtn: toggleFocus,
+      focusBtn2: toggleFocus,
+      focusExit: toggleFocus,
       palSwatches: setPalFromClick,
       resumeBtn: function () { showChapter(parseInt(lsGet(LS_LAST) || '1', 10) || 1); location.hash = '#ch-' + (parseInt(lsGet(LS_LAST) || '1', 10) || 1); },
       jumpBtn: function () { showChapter(dayIndex()); location.hash = '#ch-' + dayIndex(); },
@@ -968,6 +989,8 @@
     // 键盘翻章
     document.addEventListener('keydown', function (e) {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      // Esc 退出沉浸阅读
+      if (e.key === 'Escape' && bodyClass('immersive')) { toggleFocus(); return; }
       if (!bodyClass('paged') || currentView() !== 'ch') return;
       if (e.key === 'ArrowLeft') { showChapter(currentChapter - 1); location.hash = '#ch-' + currentChapter; }
       if (e.key === 'ArrowRight') { showChapter(currentChapter + 1); location.hash = '#ch-' + currentChapter; }
@@ -1003,6 +1026,7 @@
         applyLook();
         applyPaged();
         applyPy();
+        applyFocus();
         refreshTocDates();
         buildSearchIndex();
         bind();
