@@ -34,6 +34,7 @@
 
     if (!schemeMeta) schemeMeta = findMeta('color-scheme');
     if (schemeMeta) schemeMeta.setAttribute('content', dark ? 'dark' : 'light');
+    root.style.colorScheme = dark ? 'dark' : 'light';
 
     if (!iosMeta) iosMeta = findMeta('apple-mobile-web-app-status-bar-style');
     if (iosMeta) iosMeta.setAttribute('content', dark ? 'black' : 'default');
@@ -67,6 +68,7 @@
     else if (mq.addListener) mq.addListener(onSchemeChange);
   }
 
+  // 立即同步一次：PWA 可能在 DOMContentLoaded 前读取并锁定系统栏颜色。
+  sync();
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', sync);
-  else sync();
 })();
