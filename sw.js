@@ -1,6 +1,6 @@
 /* 国学经典共读 · Service Worker
    策略：外壳预缓存；页面与数据网络优先（改版即时可见）；静态资源缓存优先 + 后台更新 */
-var VERSION = 'guoxue-v16';
+var VERSION = 'guoxue-v17';
 
 var SHELL = [
   '/',
@@ -9,6 +9,8 @@ var SHELL = [
   '/shared/reader.css',
   '/shared/palette.css',
   '/shared/appearance.js',
+  '/shared/pwa.css',
+  '/shared/pwa.js',
   '/shared/reader.js',
   '/books.json',
   '/icons/icon-192.png',

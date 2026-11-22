@@ -16,7 +16,9 @@
 <meta name="description" content="国学经典共读：注音 · 逐句译文 · 多视角解读——让古籍不再难读">
 <title>国学经典共读</title>
 <link rel="stylesheet" href="/shared/palette.css?v=5">
+<link rel="stylesheet" href="/shared/pwa.css">
 <script src="/shared/appearance.js"></script>
+<script src="/shared/pwa.js" defer></script>
 <style>
 :root{
   --shadow:0 1px 3px rgba(43,36,24,.05), 0 10px 30px -18px rgba(43,36,24,.18);
@@ -222,6 +224,7 @@ html[data-theme="dark"] .nav{background:color-mix(in srgb,var(--paper) 92%,trans
     <a class="nav-brand" href="/"><img class="brand-mark" src="/favicon.svg" width="38" height="38" alt=""><span class="brand-txt">国学共读<small>GUOXUE</small></span></a>
     <div class="nav-right">
       <span class="nav-meta" id="navMeta"><span class="sk sk-meta" aria-hidden="true"></span></span>
+      <button class="icon-btn" type="button" data-pwa-install>安装 <span class="pwa-app-suffix">APP</span></button>
       <details class="pal-pick" id="palPick">
         <summary class="icon-btn" id="palBtn" title="主题配色"><span class="pal-dot"></span>配色</summary>
         <div class="pal-menu" id="palMenu"></div>

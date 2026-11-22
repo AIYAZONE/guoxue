@@ -40,6 +40,8 @@ SHELL = '''<!DOCTYPE html>
 <title>{title}</title>
 <link rel="stylesheet" href="/shared/reader.css">
 <link rel="stylesheet" href="/shared/palette.css">
+<link rel="stylesheet" href="/shared/pwa.css">
+<script src="/shared/pwa.js" defer></script>
 <script src="/shared/reader.js" defer></script>
 </head>
 <body data-book="{key}">
