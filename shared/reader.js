@@ -179,11 +179,15 @@
       + '    <div class="tp-note">笔记与导出都只保存在当前浏览器，不会上传云端。清除缓存、更换设备或浏览器后将不可见，建议定期导出备份。</div>'
       + '    <div class="tp-note" id="exportTip"></div></div>'
       + '  <div class="tp-sec"><div class="tp-sec-t">阅读设置</div>'
-      + '    <div class="tp-row"><span>疑难字注音</span><button class="btn ghost py-toggle" id="pyBtn" type="button">开</button></div>'
-      + '    <div class="tp-row"><span>夜间模式</span><button class="btn ghost" id="themeBtn2" type="button">切换</button></div>'
+      + '    <div class="tp-row"><span class="tp-label">疑难字注音<small>开：显示拼音 · 关：隐藏</small></span>'
+      + '      <button class="tp-switch" id="pyBtn" type="button" role="switch" aria-checked="true" aria-label="疑难字注音"><span class="tp-switch-txt">开</span><i></i></button></div>'
+      + '    <div class="tp-row"><span class="tp-label">夜间模式<small>开：夜览 · 关：日间</small></span>'
+      + '      <button class="tp-switch" id="themeBtn2" type="button" role="switch" aria-checked="false" aria-label="夜间模式"><span class="tp-switch-txt">日间</span><i></i></button></div>'
       + '    <div class="tp-row tp-col"><span>主题配色</span><div class="pal-swatches" id="palSwatches"></div></div>'
-      + '    <div class="tp-row"><span id="modeState">分页阅读</span><button class="btn ghost" id="modeBtn" type="button">切换为连续阅读</button></div>'
-      + '    <div class="tp-row"><span>沉浸阅读</span><button class="btn ghost" id="focusBtn2" type="button">开启</button></div></div>'
+      + '    <div class="tp-row"><span class="tp-label">分页阅读<small>开：分页 · 关：连续</small></span>'
+      + '      <button class="tp-switch" id="modeBtn" type="button" role="switch" aria-checked="true" aria-label="分页阅读"><span class="tp-switch-txt">分页</span><i></i></button></div>'
+      + '    <div class="tp-row"><span class="tp-label">沉浸阅读<small>开：只留正文 · 关：显示完整</small></span>'
+      + '      <button class="tp-switch" id="focusBtn2" type="button" role="switch" aria-checked="false" aria-label="沉浸阅读"><span class="tp-switch-txt">关闭</span><i></i></button></div></div>'
       + '  <div class="tp-sec"><div class="tp-sec-t">共读设置</div>'
       + '    <div class="tp-row"><span>开始日期</span><input type="date" id="startDate" class="tp-date"></div>'
       + '    <div class="tp-note">改日期自动跳到对应章节</div></div>'
@@ -742,8 +746,9 @@
       roots[i].setAttribute('data-pal', pal);
     }
     if (window.GuoxueAppearance) window.GuoxueAppearance.sync();
-    var btns = [$('themeBtn'), $('themeBtn2')];
-    for (i = 0; i < btns.length; i++) if (btns[i]) btns[i].textContent = t === 'dark' ? '日间' : '夜览';
+    var tb = $('themeBtn');
+    if (tb) tb.textContent = t === 'dark' ? '日间' : '夜览';
+    syncSwitch('themeBtn2', t === 'dark', '夜览', '日间');
 
     var host = $('palSwatches');
     if (host) {
@@ -762,11 +767,19 @@
     if (b) { lsSet(LS_PAL, b.getAttribute('data-pal-id')); applyLook(); }
   }
 
+  function syncSwitch(id, on, onText, offText) {
+    var b = $(id);
+    if (!b) return;
+    b.classList.toggle('on', !!on);
+    b.setAttribute('aria-checked', on ? 'true' : 'false');
+    var t = b.querySelector('.tp-switch-txt');
+    if (t) t.textContent = on ? onText : offText;
+  }
+
   function applyPaged() {
     var paged = (lsGet(LS_PAGED) || 'paged') !== 'cont';
     document.body.classList.toggle('paged', paged);
-    $('modeBtn').textContent = paged ? '切换为连续阅读' : '切换为分页阅读';
-    $('modeState').textContent = paged ? '分页阅读' : '连续阅读';
+    syncSwitch('modeBtn', paged, '分页', '连续');
     if (paged) {
       // 重建分页视图：当前 view 高亮
       var v = currentView();
@@ -784,8 +797,7 @@
   function applyPy() {
     var on = (lsGet(LS_PY) || 'on') !== 'off';
     document.body.classList.toggle('no-py', !on);
-    $('pyBtn').textContent = on ? '开' : '关';
-    $('pyBtn').classList.toggle('on', on);
+    syncSwitch('pyBtn', on, '开', '关');
   }
 
   // 沉浸阅读（宽屏）：隐去侧栏与顶栏，只留当前正文，靠浮动入口 / Esc 退出
@@ -794,8 +806,7 @@
     document.body.classList.toggle('immersive', on);
     var b = $('focusBtn');
     if (b) { b.classList.toggle('active', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); }
-    var b2 = $('focusBtn2');
-    if (b2) b2.textContent = on ? '关闭' : '开启';
+    syncSwitch('focusBtn2', on, '开启', '关闭');
   }
   function toggleFocus() {
     lsSet(LS_FOCUS, lsGet(LS_FOCUS) === 'on' ? 'off' : 'on');
