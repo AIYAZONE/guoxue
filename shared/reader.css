@@ -502,6 +502,9 @@ body.paged.view-chapter .pager{display:flex}
 .tp-sec-t{font-size:13px;font-weight:700;color:var(--ink);margin:8px 0 6px;letter-spacing:.5px}
 .tp-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 2px;font-size:14.5px;color:var(--ink)}
 .tp-row .hint{font-size:12px;color:var(--soft)}
+/* 顶栏已有「夜览 / 沉浸」开关：工具箱同功能项仅在窄屏（顶栏隐藏时）显示，避免 PC 端重复 */
+.mob-only{display:none}
+@media (max-width:1023px){.mob-only{display:flex}}
 .tp-status{font-size:13px;color:var(--soft);padding:2px 0 6px}
 .tp-status.ok{color:var(--accent-deep)}
 .tp-note{font-size:12px;color:var(--soft);line-height:1.6;margin-top:8px}
