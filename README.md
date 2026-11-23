@@ -60,6 +60,8 @@ python3 -m http.server 8080
 安心签分享 / 章尾省察笔记（localStorage，可导出 txt）/ 站内搜索 / 夜览模式 /
 顶部阅读进度条 / 键盘翻章 / 滚动监听高亮目录 / 打印样式。
 
+《大学》全书：原文区采用最初采纳的「显示译注」——顶部按钮整章展开/收起，每段就近显示「译文」与词义，无卡片、无标签、无段尾标记。章末深读区沿用 `#study` 研读页视觉语言（居中宽字距标题、`blk-title`、`sbody`、`sscard`、`cgrid`、`sheng`），承接本章脉络、导读、各家解读、朱注与省察，不再使用「讲解 / 注家解读 / 笔记」Tab。全书 11 章均已生成 `reading` 数据（`translations` / `notes` / `paragraphs` / `deepDive` / `commentaries` / `practice`），旧字段 `panels` 保留作兼容读取；其余五本书仍走原有「本章详解」折叠区。PC 版心恢复原值（`layout 1320px` / `wrap 920px` / 沉浸态 `780px` / 侧栏 `300px`）。
+
 ## 视觉与交互规范
 
 全站令牌集中在 **`shared/palette.css`**（首页与六本书共用），其余样式只准引用变量、不准写死色值。

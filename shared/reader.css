@@ -250,8 +250,7 @@ body.no-py ruby rt{display:none}
   .layout{display:flex;align-items:flex-start;max-width:1320px;margin:0 auto}
   /* 内容列必须撑满剩余宽度：flex 项默认按内容收缩，短章节会把整列拉窄 */
   .content{flex:1 1 auto;min-width:0}
-  .wrap{max-width:920px}
-  .topbar-inner{max-width:920px}
+  .wrap,.topbar-inner{max-width:920px}
   .plan{position:sticky;top:60px;z-index:5}
   .sidebar{
     flex:0 0 var(--sidebar-w);width:var(--sidebar-w);
@@ -823,4 +822,60 @@ body[data-theme="dark"] ::-webkit-scrollbar-thumb{border-color:var(--paper)}
     opacity:.45;transition:opacity .18s,border-color .18s,color .18s;
   }
   body.immersive .focus-exit:hover{opacity:1;border-color:var(--accent);color:var(--accent-deep)}
+}
+
+/* Hallmark · component: companion-reader · PC 版心铺满 + 研读页视觉对齐
+ * pre-emit critique: P5 H5 E5 S5 R5 V4 — 同一套 blk-title / sbody / sscard / sheng
+ * 令牌沿用 palette.css；不新增色值与字体声明。 */
+html,body{overflow-x:clip}
+.guided-text{scroll-margin-top:80px}
+.guided-text:focus{outline:none}
+
+/* 恢复最初采纳的显示译注 */
+.reading-toolbar{display:flex;justify-content:flex-end;margin:0 0 16px}
+.reading-toggle{font:inherit;font-size:13px;line-height:1.8;color:var(--accent-deep);border:0;border-bottom:1px solid var(--line-strong);background:transparent;padding:4px 0;cursor:pointer}
+.reading-toggle:hover{border-color:var(--accent)}
+.reading-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+
+.reading-paragraph{margin-bottom:1.1em}
+.reading-paragraph:last-child{margin-bottom:0}
+.paragraph-note[hidden]{display:none}
+.paragraph-note{margin:16px 0 30px;letter-spacing:0;color:var(--soft)}
+.guided-text .paragraph-note p{margin:0 0 12px;text-align:justify}
+.guided-text .paragraph-note p:last-child{margin-bottom:0}
+.guided-text .paragraph-note .paragraph-note-label{font-size:12px;line-height:1.8;letter-spacing:1px;color:var(--accent-deep);text-indent:0;margin:0 0 6px}
+.guided-text .paragraph-note .paragraph-translation{font-size:16px;line-height:2;text-indent:2em}
+.guided-text .paragraph-note .paragraph-terms{font-size:14px;line-height:1.95;text-indent:0;margin-bottom:0}
+
+/* 深读区沿用研读页视觉语言 */
+.deep-dive{margin:60px 0 0;padding-top:36px;padding-bottom:100px;border-top:1px solid var(--line-strong);min-width:0}
+.deep-dive .study-head{margin-bottom:30px}
+.deep-dive .study-head h2{font-size:28px;letter-spacing:10px;text-indent:10px}
+.deep-dive .study-block{margin-top:26px}
+.deep-dive .blk-title{margin-bottom:14px}
+.deep-dive .sbody p.sdesc{margin:0 0 12px;font-size:15px}
+.deep-dive .sbody p.sdesc:last-child{margin-bottom:0}
+.deep-dive .ssgrid{gap:12px}
+.deep-dive .sscard{padding:14px 16px}
+.deep-dive .sscard .sstheme{margin:0 0 12px;color:var(--soft)}
+.deep-dive .snote a{color:var(--accent)}
+.deep-dive .cgrid{gap:12px}
+.deep-dive .concept{padding:14px 16px}
+.deep-dive .sheng li{margin-bottom:10px;font-size:15px}
+.deep-notes .reading-notebook{display:block;width:100%;background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:0 0 14px;font:inherit;font-size:15.5px;line-height:1.95;min-height:180px;resize:vertical;color:var(--ink);min-width:0;scroll-margin-top:90px}
+.deep-notes .reading-notebook:focus{outline:none;border-color:var(--accent-deep)}
+.reading-notebook::placeholder{color:var(--muted)}
+.reading-note-label{display:block;font-size:12px;color:var(--soft);margin-bottom:10px}
+.reading-note-meta{display:flex;justify-content:space-between;gap:16px;font-size:11px;line-height:1.7;color:var(--muted);margin-top:10px}
+body.immersive .deep-dive{margin-top:72px}
+@media(max-width:600px){
+  .deep-dive{margin-top:40px;padding-top:26px}
+  .deep-dive .study-head h2{font-size:22px;letter-spacing:6px;text-indent:6px}
+  .deep-dive .cgrid{grid-template-columns:minmax(0,1fr)}
+}
+@media print{
+  .reading-toolbar,.reading-note-meta{display:none}
+  .paragraph-note[hidden]{display:block}
+  .paragraph-note{break-inside:avoid}
+  .deep-dive{margin-top:30px;padding-bottom:0}
 }

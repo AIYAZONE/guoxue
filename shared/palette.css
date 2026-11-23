@@ -8,7 +8,7 @@
 
 /* —— E 赭红（默认，日间） —— */
 :root{
-  --paper:#faf7f2; --card:#ffffff; --ink:#262019; --soft:#5f5449; --muted:#7e7569;
+  --paper:#faf7f2; --card:#ffffff; --ink:#262019; --soft:#5f5449; --muted:#786e5f;
   --accent:#8d4a34; --accent-deep:#733a28; --accent-bg:#f6ebe5;
   --line:#e6ded2; --line-strong:#d6c9b8;
   --dot:rgba(141,74,52,.03);
@@ -18,7 +18,7 @@
 
 /* —— A 纸墨（日间） —— */
 [data-pal="a"]{
-  --paper:#faf8f5; --card:#ffffff; --ink:#2b2418; --soft:#6b5e4a; --muted:#807566;
+  --paper:#faf8f5; --card:#ffffff; --ink:#2b2418; --soft:#6b5e4a; --muted:#786e5f;
   --accent:#8b5e3c; --accent-deep:#74482b; --accent-bg:#f5efe8;
   --line:#e6dfd3; --line-strong:#d8cdb9;
   --dot:rgba(139,94,60,.035);
@@ -26,25 +26,25 @@
 
 /* —— 其余四套（日间） —— */
 [data-pal="b"]{
-  --paper:#f7f5f2; --ink:#262322; --soft:#5c5650; --muted:#7c756d;
+  --paper:#f7f5f2; --ink:#262322; --soft:#5c5650; --muted:#756c63;
   --accent:#9e3b32; --accent-deep:#7f2c25; --accent-bg:#f7ece8;
   --line:#e4ded6; --line-strong:#d4ccc1;
   --dot:rgba(158,59,50,.028);
 }
 [data-pal="c"]{
-  --paper:#f6f7f6; --ink:#232a2e; --soft:#4f5d66; --muted:#6c7880;
+  --paper:#f6f7f6; --ink:#232a2e; --soft:#4f5d66; --muted:#64737b;
   --accent:#33566e; --accent-deep:#264254; --accent-bg:#e9eff2;
   --line:#dfe3e1; --line-strong:#c6cfcf;
   --dot:rgba(51,86,110,.028);
 }
 [data-pal="d"]{
-  --paper:#f5f7f2; --ink:#23291f; --soft:#4e5c48; --muted:#6e7a67;
+  --paper:#f5f7f2; --ink:#23291f; --soft:#4e5c48; --muted:#667260;
   --accent:#47694f; --accent-deep:#35523c; --accent-bg:#e9efe6;
   --line:#dee3d8; --line-strong:#c3cfc0;
   --dot:rgba(71,105,79,.03);
 }
 [data-pal="e"]{
-  --paper:#faf7f2; --ink:#262019; --soft:#5f5449; --muted:#7e7569;
+  --paper:#faf7f2; --ink:#262019; --soft:#5f5449; --muted:#786e5f;
   --accent:#8d4a34; --accent-deep:#733a28; --accent-bg:#f6ebe5;
   --line:#e6ded2; --line-strong:#d6c9b8;
   --dot:rgba(141,74,52,.03);

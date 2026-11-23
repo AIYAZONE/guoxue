@@ -35,6 +35,65 @@ for d in sorted(p for p in REPO.iterdir() if (p / 'data.json').exists()):
         if not c['label']:
             errs.append(f'ch{n} 缺 label')
         yi = pan.get('yi')
+        reading = c.get('reading')
+        if reading:
+            translations = reading.get('translations', [])
+            if len(translations) != len(c['paras']):
+                errs.append(f'ch{n} 阅读样章的译文与原文段落不一致')
+            if len(reading.get('notes', [])) != len(c['paras']):
+                errs.append(f'ch{n} 阅读样章的词义与原文段落数量不一致')
+            if 'lecture' in reading or 'commentary' in reading:
+                if not reading.get('lecture') or not all(s.get('title') and s.get('paras') for s in reading['lecture']):
+                    errs.append(f'ch{n} 缺讲解标题或正文')
+                if not reading.get('commentary'):
+                    errs.append(f'ch{n} 缺注家解读')
+                for topic in reading.get('commentary', []):
+                    if not topic.get('title') or not topic.get('intro') or not topic.get('voices'):
+                        errs.append(f'ch{n} 注家解读缺题目或内容')
+                    for voice in topic.get('voices', []):
+                        if not all(voice.get(k) for k in ('author', 'quote', 'source', 'explanation')) or not voice.get('url', '').startswith('https://'):
+                            errs.append(f'ch{n} 注家引文缺正文、说明或出处')
+            # 新版伴读结构
+            for key in ('guide', 'paragraphs', 'deepDive', 'commentaries', 'practice', 'resonance'):
+                if key not in reading:
+                    errs.append(f'ch{n} 伴读结构缺 {key}')
+            guide = reading.get('guide', {})
+            if guide and not guide.get('oneLine'):
+                errs.append(f'ch{n} 导读缺一句话')
+            anchors = guide.get('anchors', []) if guide else []
+            if anchors and any(not isinstance(a, int) or a < 0 or a >= len(c['paras']) for a in anchors):
+                errs.append(f'ch{n} 导读锚点超出原文段落范围')
+            ps = reading.get('paragraphs', [])
+            if ps and len(ps) != len(c['paras']):
+                errs.append(f'ch{n} 伴读段落与原文段落不一致')
+            for i, p in enumerate(ps):
+                for ref in p.get('refs', []):
+                    if not ref.get('label') or not ref.get('href'):
+                        errs.append(f'ch{n} 第{i + 1}段互参链接缺标题或地址')
+            sections = reading.get('deepDive', {}).get('sections', [])
+            if not sections or any(not s.get('title') or not s.get('paras') for s in sections):
+                errs.append(f'ch{n} 深读长卷缺章节或正文')
+            for s in sections:
+                if s.get('para') is not None and not (0 <= s['para'] < len(c['paras'])):
+                    errs.append(f'ch{n} 深读段落锚点越界')
+            com = reading.get('commentaries', [])
+            for topic in com:
+                if topic.get('para') is not None and not (0 <= topic['para'] < len(c['paras'])):
+                    errs.append(f'ch{n} 注家异说段落锚点越界')
+                if not topic.get('title') or not topic.get('intro') or not topic.get('voices'):
+                    errs.append(f'ch{n} 注家异说缺题目、引言或声音')
+                for voice in topic.get('voices', []):
+                    if not all(voice.get(k) for k in ('author', 'quote', 'source', 'explanation')) or not voice.get('url', '').startswith('https://'):
+                        errs.append(f'ch{n} 注家异说引文缺正文、说明或 HTTPS 出处')
+            practice = reading.get('practice', [])
+            if not practice or any(not p.get('question') for p in practice):
+                errs.append(f'ch{n} 省察问题为空')
+            for p in practice:
+                if p.get('para') is not None and not (0 <= p['para'] < len(c['paras'])):
+                    errs.append(f'ch{n} 省察问题段落锚点越界')
+            if any(not x.get('title') or not x.get('scene') for x in reading.get('resonance', [])):
+                errs.append(f'ch{n} 现代处境卡缺标题或情境')
+
         if not yi and not (name == 'changduanjing' and not pan.get('yi')):
             errs.append(f'ch{n} 缺译文')
         if not c['paras']:

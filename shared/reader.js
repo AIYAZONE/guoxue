@@ -34,7 +34,7 @@
     try { return window.localStorage.getItem(k) || ''; } catch (e) { return ''; }
   }
   function lsSet(k, v) {
-    try { window.localStorage.setItem(k, v); } catch (e) {}
+    try { window.localStorage.setItem(k, v); return true; } catch (e) { return false; }
   }
   function pad(n) { return n < 10 ? '0' + n : '' + n; }
   function dateStr(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
@@ -352,6 +352,97 @@
     sheng: function (p, c) { return panelSheng(p, c.n); }
   };
 
+  function normalizeReading(c) {
+    var r = c.reading || {}, n = c.paras.length, paragraphs = [];
+    for (var i = 0; i < n; i++) {
+      var p = (r.paragraphs && r.paragraphs[i]) || {};
+      paragraphs.push({
+        translation: p.translation || (r.translations && r.translations[i]) || '',
+        notes: p.notes || (r.notes && r.notes[i]) || '',
+        insight: p.insight || '',
+        question: p.question || '',
+        refs: p.refs || []
+      });
+    }
+    return {
+      guide: r.guide || { oneLine: '', map: [], anchors: [] },
+      paragraphs: paragraphs,
+      deepDive: r.deepDive || { sections: [] },
+      commentaries: r.commentaries || r.commentary || [],
+      practice: r.practice || [],
+      resonance: r.resonance || []
+    };
+  }
+
+  function setChapterNotes(art, show) {
+    var notes = art.querySelectorAll('.paragraph-note');
+    for (var i = 0; i < notes.length; i++) notes[i].hidden = !show;
+  }
+
+  function readingTextHtml(c) {
+    var r = c.reading, ids = [], body = '';
+    for (var i = 0; i < c.paras.length; i++) {
+      var tr = r.translations[i] || '', nt = r.notes[i] || '';
+      var noteId = 'reading-note-' + c.n + '-' + i;
+      if (!tr && !nt) {
+        body += '<div class="reading-paragraph"><p>' + c.paras[i] + '</p></div>';
+        continue;
+      }
+      ids.push(noteId);
+      body += '<div class="reading-paragraph"><p>' + c.paras[i] + '</p>'
+        + '<div class="paragraph-note" id="' + noteId + '" hidden>'
+        + (tr ? '<p class="paragraph-note-label">译文</p><p class="paragraph-translation">' + esc(tr) + '</p>' : '')
+        + (nt ? '<p class="paragraph-terms">' + esc(nt) + '</p>' : '')
+        + '</div></div>';
+    }
+    var h = ids.length
+      ? '<div class="reading-toolbar"><button type="button" class="reading-toggle" aria-expanded="false" aria-controls="' + ids.join(' ') + '">显示译注</button></div>'
+      : '';
+    return h + '<div class="ch-text guided-text" id="reading-text-' + c.n + '" tabindex="-1">' + body + '</div>';
+  }
+
+  function deepDiveHtml(c) {
+    var r = normalizeReading(c), prefix = 'deep-dive-' + c.n;
+    var sections = (r.deepDive.sections || []).map(function (s) {
+      var anchor = s.para != null ? ' id="deep-' + c.n + '-para-' + s.para + '"' : '';
+      return '<section class="study-block deep-section"' + anchor + '>'
+        + '<h3 class="blk-title">' + esc(s.title) + '</h3>'
+        + '<div class="sbody">' + (s.paras || []).map(function (p) {
+            return '<p class="sdesc">' + esc(p) + '</p>';
+          }).join('') + '</div></section>';
+    }).join('');
+    var comm = (r.commentaries || []).map(function (topic) {
+      var anchor = topic.para != null ? ' id="deep-' + c.n + '-comment-' + topic.para + '"' : '';
+      return '<section class="study-block deep-section"' + anchor + '>'
+        + '<h3 class="blk-title">' + esc(topic.title) + '</h3>'
+        + '<div class="ssgrid"><div class="sscard">'
+        + '<p class="sstheme">' + esc(topic.intro) + '</p>'
+        + '<ul class="ssrefs">' + (topic.voices || []).map(function (v) {
+            return '<li><span class="sbook">' + esc(v.author) + '</span>'
+              + '<span class="spass">' + esc(v.quote) + '</span>'
+              + '<span class="snote">' + esc(v.source) + ' · <a href="' + esc(v.url) + '" target="_blank" rel="noopener noreferrer">原文</a><br>'
+              + esc(v.explanation) + '</span></li>';
+          }).join('') + '</ul></div></div></section>';
+    }).join('');
+    var res = (r.resonance || []).map(function (x) {
+      var link = x.link ? '<a class="citem" href="' + esc(x.link.href) + '">' + esc(x.link.label) + ' ↗</a>' : '';
+      return '<div class="concept"><div class="cterm">' + esc(x.title) + '</div>'
+        + '<p class="cdef">' + esc(x.scene) + '</p>' + link + '</div>';
+    }).join('');
+    var practice = (r.practice || []).map(function (p) {
+      return '<li>' + esc(p.question) + '</li>';
+    }).join('');
+    var notes = '<div class="sbody"><label class="reading-note-label" for="shengNote-' + c.n + '">我的省察</label>'
+      + '<textarea class="sheng-note reading-notebook" id="shengNote-' + c.n + '" data-n="' + c.n + '" rows="6" placeholder="记下读到这里想到的事……"></textarea>'
+      + '<div class="reading-note-meta"><span id="readingSave-' + c.n + '" role="status" aria-live="polite"></span><span>仅保存在当前浏览器</span></div></div>';
+    var h = '<section class="deep-dive" id="' + prefix + '" aria-label="本章深读">'
+      + '<header class="study-head"><h2>深 读</h2><p class="study-sub">读懂，然后用到自己身上</p></header>'
+      + sections + comm;
+    if (res) h += '<section class="study-block"><h3 class="blk-title">现代处境</h3><div class="cgrid">' + res + '</div></section>';
+    if (practice) h += '<section class="study-block"><h3 class="blk-title">今日省察</h3><ol class="sheng">' + practice + '</ol></section>';
+    return h + '<section class="study-block"><h3 class="blk-title">我的省察</h3>' + notes + '</section></section>';
+  }
+
   function chapterHtml(c) {
     var m = data.meta;
     var h = '<article class="chapter view" data-view="ch" id="ch-' + c.n + '" data-chapter="' + c.n + '">'
@@ -361,7 +452,8 @@
       + '<span class="spacer"></span>'
       + '<button class="btn ghost share-btn" data-n="' + c.n + '">分享本章</button>'
       + '</div>'
-      + '<div class="ch-text">' + c.paras.map(function (t) { return '<p>' + t + '</p>'; }).join('') + '</div>';
+      + (c.reading ? readingTextHtml(c) : '<div class="ch-text">' + c.paras.map(function (t) { return '<p>' + t + '</p>'; }).join('') + '</div>');
+    if (c.reading) return h + deepDiveHtml(c) + '</article>';
     // tabs：仅渲染有内容的面板
     var tabs = [], panels = [], tabNames = [];
     var tabMap = {};
@@ -430,8 +522,9 @@
     ta.addEventListener('input', function () {
       var s = shengStore();
       s[n] = ta.value;
-      lsSet(LS_SHENG, JSON.stringify(s));
+      var saved = lsSet(LS_SHENG, JSON.stringify(s));
       updateShengCount(n);
+      if ($('readingSave-' + n)) $('readingSave-' + n).textContent = saved ? '已保存' : '未能保存，请复制备份';
     });
   }
   function shengStore() {
@@ -441,6 +534,7 @@
     var el = $('shengCount-' + n);
     var ta = $('shengNote-' + n);
     if (el && ta) el.textContent = ta.value.trim() ? '· 已记' : '';
+    if ($('readingSave-' + n) && ta) $('readingSave-' + n).textContent = ta.value.trim() ? '已保存' : '输入后自动保存';
   }
 
   // ----------------------------------------------------------- views -----
@@ -577,7 +671,16 @@
     searchIndex = data.chapters.map(function (c) {
       var t = stripTags(c.paras.join(''));
       var yi = (c.panels.yi || []).map(function (r) { return stripTags(r.tr); }).join('');
-      return { n: c.n, label: c.label, text: t + yi };
+      var extra = '';
+      if (c.reading) {
+        var r = normalizeReading(c);
+        extra = (r.guide.oneLine || '')
+          + r.paragraphs.map(function (p) { return p.translation + p.notes + p.insight + p.question; }).join('')
+          + (r.deepDive.sections || []).map(function (s) { return s.title + (s.paras || []).join(''); }).join('')
+          + r.commentaries.map(function (x) { return x.title + x.intro + (x.voices || []).map(function (v) { return v.quote + v.explanation; }).join(''); }).join('')
+          + r.practice.map(function (p) { return p.question; }).join('');
+      }
+      return { n: c.n, label: c.label, text: t + yi + stripTags(extra) };
     });
   }
 
@@ -820,7 +923,9 @@
     var count = 0;
     for (var i = 0; i < data.chapters.length; i++) {
       var c = data.chapters[i];
-      var qs = data.shengq[String(c.n)] || c.panels.sheng || [];
+      var qs = c.reading
+        ? normalizeReading(c).practice.map(function (p) { return p.question; })
+        : (data.shengq[String(c.n)] || c.panels.sheng || []);
       var note = store[c.n] || '';
       if (!qs.length && !note) continue;
       count++;
@@ -877,6 +982,16 @@
   function bind() {
     document.body.addEventListener('click', function (e) {
       var t = e.target;
+      var toggle = t.closest ? t.closest('.reading-toggle') : null;
+      if (toggle) {
+        var art = toggle.closest('.chapter');
+        var show = toggle.getAttribute('aria-expanded') !== 'true';
+        setChapterNotes(art, show);
+        toggle.setAttribute('aria-expanded', show ? 'true' : 'false');
+        toggle.textContent = show ? '收起译注' : '显示译注';
+        return;
+      }
+
       // tab 按钮
       var tab = t.closest ? t.closest('.tab-btn') : null;
       if (tab) {
