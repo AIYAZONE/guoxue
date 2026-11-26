@@ -12,8 +12,11 @@
 ```
 ├── index.html              # 首页书架（读取 books.json，自动收录）
 ├── books.json              # 书目清单（由 scripts/gen_meta.py 生成）
+├── assets/cover-textures/  # 书封纹理 SVG（波纹/等高线/同心圆/斜纹/网格/角饰）
 ├── vercel.json             # 旧域名 301 → 主站子路径
 ├── shared/
+│   ├── book-cover.css      # 全站共享实体书封组件样式
+│   ├── book-cover.js       # 全站共享书封模板助手
 │   ├── reader.css          # 唯一一份阅读器样式（含暗色模式）
 │   └── reader.js           # 唯一一份阅读器逻辑（数据驱动渲染）
 ├── zhixue/                 # 每本书一个目录，结构完全一致
@@ -40,7 +43,7 @@ python3 -m http.server 8080
 
 1. 编辑 `<book>/data.json`（或 `<book>/study.html`）；
 2. `python3 scripts/validate.py` 校验；
-3. `python3 scripts/gen_meta.py` 重新生成 `books.json`（章数变化时必须）；
+3. `python3 scripts/gen_meta.py` 重新生成 `books.json` 与六本书入口壳（章数变化时必须；会覆盖各书 `index.html`，手工改动请先写回 `SHELL`）；
 4. 提交推送，Vercel 自动部署。
 
 **新增一本书**：建 `<book>/data.json`（结构照抄现有书目）+ `<book>/study.html` + `<book>/favicon.svg`，
@@ -59,6 +62,9 @@ python3 -m http.server 8080
 疑难字注音开关 / 通假字点按说明 / 朱注 / 四视角解读（点按展开所本）/ 经证链 /
 安心签分享 / 章尾省察笔记（localStorage，可导出 txt）/ 站内搜索 / 夜览模式 /
 顶部阅读进度条 / 键盘翻章 / 滚动监听高亮目录 / 打印样式。
+
+首页书架、阅读器封面页、侧栏、工具箱「更多经典」与研读页标题区共用 `shared/book-cover.*`
+渲染的实体书封：每本书沿用 `books.json` 的 `theme` 与 `favchar`，纹理按 `key` 白名单映射。
 
 《大学》全书：原文区采用最初采纳的「显示译注」——顶部按钮整章展开/收起，每段就近显示「译文」与词义，无卡片、无标签、无段尾标记。章末深读区沿用 `#study` 研读页视觉语言（居中宽字距标题、`blk-title`、`sbody`、`sscard`、`cgrid`、`sheng`），承接本章脉络、导读、各家解读、朱注与省察，不再使用「讲解 / 注家解读 / 笔记」Tab。全书 11 章均已生成 `reading` 数据（`translations` / `notes` / `paragraphs` / `deepDive` / `commentaries` / `practice`），旧字段 `panels` 保留作兼容读取；其余五本书仍走原有「本章详解」折叠区。PC 版心恢复原值（`layout 1320px` / `wrap 920px` / 沉浸态 `780px` / 侧栏 `300px`）。
 
@@ -91,13 +97,13 @@ python3 -m http.server 8080
 | `--line` / `--line-strong` | `#e6dfd3` / `#d8cdb9` | `#3a342b` / `#4c4438` | 描边 |
 | `--dot` | 主色极淡 | 米白极淡 | 纸面颗粒点 |
 
-字体：正文宋体（Songti/Noto Serif），标题与书名楷体（Kaiti/STKaiti）。**新增书目不要自带配色**，一律沿用令牌。
+字体：正文宋体（Songti/Noto Serif），标题与书名楷体（Kaiti/STKaiti）。**新增书目不要自带配色**，一律沿用令牌；书封个性色来自 `books.json.theme`（仅接受十六进制颜色），纹理由 `shared/book-cover.js` 按 `key` 白名单选择，不在数据里写样式；大学 / 中庸 / 止学 / 素书在组件内使用定制书封色（砖红 / 绛红 / 玄墨 / 深赭檀），如需调整请改 `COVER_COLORS`。
 
 外观属性同时挂在 `<html>` 与 `<body>` 上（`data-pal` + `data-theme`），并在 `<head>` 内用一小段内联脚本先行应用，避免暗色闪白。
 
 导航层级（避免「首页」二义）：
 
-- 左侧栏顶部：`← 国学经典共读`（回总站）+ 印章式书名（回本书封面）+ `共 N 章 · 一天一章`；宽屏下头部 / 研读 / 搜索固定，仅目录区独立滚动
+- 左侧栏顶部：`← 国学经典共读`（回总站）+ 当前书 mini 书封与书名（回本书封面）+ `共 N 章 · 一天一章`；宽屏下头部 / 研读 / 搜索固定，仅目录区独立滚动
 - 顶栏：面包屑 `国学经典共读 / 书名` + `封面 · 研读 · 今日 · 夜览 · 工具箱`
 - 页脚：`📚 国学经典共读 · 更多经典 →` 指向本站根路径 `/`
 
@@ -110,18 +116,20 @@ python3 -m http.server 8080
 | 文件 | 作用 |
 |---|---|
 | `manifest.webmanifest` | 名称、`standalone` 显示、主题色、三档图标（192 / 512 / maskable） |
-| `sw.js` | 预缓存外壳与全部书目；运行时按类型分流 |
+| `sw.js` | 预缓存外壳、书封组件与全部书目；运行时按类型分流 |
+| `shared/book-cover.css` / `shared/book-cover.js` | 全站共享书封组件，首页与阅读器均依赖 |
+| `assets/cover-textures/` | 六种书封纹理 SVG，随外壳预缓存供离线使用 |
 | `icons/` | `icon-192.png` / `icon-512.png`（朱砂印泥底 + 白文「国学」竖排，无边框；墨迹 190×400，四周留白 56 起）、`maskable-512.png`（整幅缩到 75%，预留启动闪屏 / 自适应图标安全区）、`apple-touch-icon.png` |
-| `favicon.svg` | 标签页与顶栏用：同一朱砂底 + 单字「学」——16～38px 下双字必糊，故这里只留一字 |
+| `favicon.svg` | 标签页用：朱砂底 + 单字「学」——16～38px 下双字必糊，故这里只留一字；首页顶栏为纯文字品牌标识 |
 | `scripts/logo/` | 站徽源文件（SVG + 导出说明），字体用马善政毛笔楷书，OFL 授权可商用 |
 
 缓存策略：
 
-- **安装期**：预缓存首页、共享 CSS/JS、图标，再读 `books.json` 动态铺开每本书的入口页 / `data.json` / `study.html`——**新增书目不需要改 `sw.js`**
+- **安装期**：预缓存首页、共享 CSS/JS（含书封组件）、纹理 SVG、图标，再读 `books.json` 动态铺开每本书的入口页 / `data.json` / `study.html`——**新增书目不需要改 `sw.js`**
 - **页面导航**：network-first，断网回退同地址缓存，再退回首页
 - **`data.json` / `study.html`**：network-first，保证勘误与新增章节即时可见
 - **`/shared/*`**：network-first，避免改版后新 DOM 配旧 CSS
-- **图标 / favicon / manifest**：cache-first + 后台更新
+- **图标 / 书封纹理 / favicon / manifest**：cache-first + 后台更新
 
 改了 `sw.js` 的缓存清单或策略时，把 `VERSION` 加一（如 `guoxue-v2`），旧缓存在 `activate` 中自动清理。
 

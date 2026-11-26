@@ -1,0 +1,204 @@
+/* ================================================================
+   国学经典共读 · 共享实体书封组件
+   - 由 shared/book-cover.js 输出 DOM；首页 / 阅读器封面 / 侧栏 / 工具箱 / 研读页共用
+   - 仅书封个性色由组件变量 --bc-color 注入（来自 books.json.theme）
+   - 其余颜色、字体、间距尽量引用 shared/palette.css 令牌
+   ================================================================ */
+.bc{
+  --bc-color:var(--accent);
+  --bc-ink:#fff8ec;
+  --bc-line:rgba(255,248,236,.42);
+  --bc-edge:color-mix(in srgb,var(--bc-color) 88%,#1a110d);
+  position:relative;display:block;width:100%;aspect-ratio:3/4;
+  perspective:1200px;line-height:1.4;isolation:isolate;
+}
+.bc *{box-sizing:border-box}
+
+/* 书本实体：书脊 + 封面 + 书页侧边，三层上下齐平收口 */
+.bc-book{
+  position:absolute;inset:0;border-radius:5px 10px 10px 5px;background:var(--bc-edge);
+  box-shadow:0 2px 4px rgba(40,28,18,.12),0 14px 30px -14px rgba(40,28,18,.45),inset 0 0 0 1px rgba(255,255,255,.16);
+  transform-style:preserve-3d;transition:transform .38s cubic-bezier(.2,.7,.25,1),box-shadow .38s;overflow:hidden;
+}
+.bc-spine{
+  position:absolute;left:0;top:0;bottom:0;width:9%;z-index:3;
+  border-radius:5px 0 0 5px;
+  background:linear-gradient(90deg,color-mix(in srgb,var(--bc-color) 88%,#1a110d),color-mix(in srgb,var(--bc-color) 97%,#1a110d) 45%,color-mix(in srgb,var(--bc-color) 86%,#1a110d));
+  box-shadow:inset -2px 0 3px rgba(0,0,0,.22),inset 1px 0 0 rgba(255,255,255,.14);
+}
+.bc-spine i{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  writing-mode:vertical-rl;text-orientation:upright;font-style:normal;
+  font-family:"STKaiti","KaiTi",serif;font-size:clamp(8px,1.1vw,12px);
+  letter-spacing:.32em;color:rgba(255,248,236,.8);white-space:nowrap;max-height:84%;overflow:hidden;
+}
+.bc-face{
+  position:absolute;left:9%;right:4.5%;top:0;bottom:0;z-index:2;
+  border-radius:0 6px 6px 0;overflow:hidden;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--bc-color) 88%,#fff),var(--bc-color) 45%,color-mix(in srgb,var(--bc-color) 84%,#1a110d));
+  box-shadow:inset 1px 0 0 rgba(255,255,255,.2),inset -6px 0 14px rgba(0,0,0,.12);
+}
+/* 封面上沿受光、下沿落影，让上下收口有书页厚度感 */
+.bc-face::before,.bc-face::after{content:"";position:absolute;left:0;right:0;height:3%;z-index:1;pointer-events:none}
+.bc-face::before{top:0;background:linear-gradient(180deg,rgba(255,255,255,.18),transparent)}
+.bc-face::after{bottom:0;background:linear-gradient(0deg,rgba(0,0,0,.18),transparent)}
+.bc-pages{
+  position:absolute;right:0;top:1.4%;bottom:1.4%;width:4.5%;z-index:1;
+  border-radius:0 7px 7px 0;
+  background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--paper) 84%,#b49d7a) 0 1px,var(--paper) 1px 3px);
+  box-shadow:inset 2px 0 3px rgba(0,0,0,.16),inset -1px 0 0 rgba(255,255,255,.2);
+}
+
+/* 纹理与压印框 */
+.bc-grain{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:url('/assets/cover-textures/grid.svg');background-size:42px 42px;
+  opacity:.16;mix-blend-mode:soft-light;
+}
+.bc--wave .bc-grain{background-image:url('/assets/cover-textures/wave.svg');background-size:100% 18px;opacity:.22}
+.bc--contour .bc-grain{background-image:url('/assets/cover-textures/contour.svg');background-size:150px 150px;opacity:.2}
+.bc--concentric .bc-grain{background-image:url('/assets/cover-textures/concentric.svg');background-size:130px 130px;opacity:.24}
+.bc--diagonal .bc-grain{background-image:url('/assets/cover-textures/diagonal.svg');background-size:36px 36px;opacity:.2}
+.bc--grid .bc-grain{background-image:url('/assets/cover-textures/grid.svg');background-size:42px 42px}
+.bc-frame{position:absolute;inset:7%;border:1px solid var(--bc-line);border-radius:2px;pointer-events:none}
+.bc-frame::after{content:"";position:absolute;inset:5px;border:1px solid color-mix(in srgb,var(--bc-line) 55%,transparent)}
+.bc-corner{
+  position:absolute;width:20%;height:14%;opacity:.75;
+  background:url('/assets/cover-textures/corner-ornament.svg') no-repeat center/contain;
+}
+.bc-corner--tl{left:-1px;top:-1px}
+.bc-corner--tr{right:-1px;top:-1px;transform:scaleX(-1)}
+.bc-corner--bl{left:-1px;bottom:-1px;transform:scaleY(-1)}
+.bc-corner--br{right:-1px;bottom:-1px;transform:scale(-1)}
+
+/* 封面文字层 */
+.bc-content{
+  position:absolute;inset:11% 10% 8%;z-index:2;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;color:var(--bc-ink);
+  font-family:"Songti SC","STSong","Noto Serif SC",serif;
+}
+.bc-eyebrow{font-size:9px;letter-spacing:.32em;opacity:.82;white-space:nowrap}
+.bc-title{
+  margin:14% 0 7%;font-family:"STKaiti","KaiTi","Kaiti SC",serif;
+  font-size:clamp(30px,3.2vw,44px);font-weight:600;letter-spacing:.12em;text-indent:.12em;
+  line-height:1.18;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.12);
+}
+.bc-latin{font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.3em;text-transform:uppercase;opacity:.72}
+.bc-sub{
+  margin-top:auto;max-width:100%;font-size:9.5px;line-height:1.65;opacity:.84;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.bc-imprint{
+  margin-top:10px;padding-top:8px;border-top:1px solid var(--bc-line);
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:Georgia,serif;font-size:7.5px;letter-spacing:.2em;opacity:.74;white-space:nowrap;
+}
+.bc-mark{
+  font-style:normal;font-family:"STKaiti","KaiTi",serif;font-size:11px;
+  width:19px;height:19px;display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid var(--bc-line);border-radius:3px;letter-spacing:0;
+}
+
+/* 宣纸变体：素书 —— 暖赭纸面 + 同心水纹 */
+.bc--paper{--bc-line:color-mix(in srgb,var(--bc-color) 46%,transparent);--bc-edge:color-mix(in srgb,var(--bc-color) 12%,var(--paper))}
+.bc--paper .bc-face{
+  background:linear-gradient(135deg,color-mix(in srgb,var(--bc-color) 20%,var(--paper)),color-mix(in srgb,var(--bc-color) 11%,var(--card)) 55%,color-mix(in srgb,var(--bc-color) 24%,var(--paper)));
+  box-shadow:inset 1px 0 0 rgba(255,255,255,.55),inset -6px 0 14px rgba(120,78,42,.1);
+}
+.bc--paper .bc-content{color:color-mix(in srgb,var(--bc-color) 82%,#3a2414)}
+.bc--paper .bc-grain{filter:invert(1);opacity:.16;mix-blend-mode:multiply}
+.bc--paper .bc-spine{
+  background:linear-gradient(90deg,color-mix(in srgb,var(--bc-color) 12%,var(--paper)),color-mix(in srgb,var(--bc-color) 17%,var(--paper)) 45%,color-mix(in srgb,var(--bc-color) 10%,var(--paper)));
+  box-shadow:inset -1px 0 2px rgba(90,58,30,.18),inset 1px 0 0 rgba(255,255,255,.5);
+}
+.bc--paper .bc-spine i{color:color-mix(in srgb,var(--bc-color) 78%,#3a2414);opacity:.9}
+
+/* 玄墨变体：止学 —— 玄色封皮 + 暖金压印 */
+.bc--ink{--bc-ink:#f2e7d5;--bc-line:rgba(205,168,112,.5)}
+.bc--ink .bc-face{background:linear-gradient(150deg,color-mix(in srgb,var(--bc-color) 88%,#1a1512),color-mix(in srgb,var(--bc-color) 68%,#120e0c))}
+.bc--ink .bc-spine{background:linear-gradient(90deg,color-mix(in srgb,var(--bc-color) 92%,#120e0c),var(--bc-color) 45%,color-mix(in srgb,var(--bc-color) 86%,#120e0c))}
+.bc--ink .bc-title{text-shadow:none}
+
+/* 迷你尺寸：侧栏 / 工具箱 / 研读页 */
+.bc--mini .bc-book{border-radius:3px 5px 5px 3px;box-shadow:0 2px 6px rgba(40,28,18,.18)}
+.bc--mini .bc-spine{width:10%;border-radius:3px 0 0 3px}
+.bc--mini .bc-spine i{font-size:8px;letter-spacing:.14em;max-height:72%}
+.bc--mini .bc-face{left:10%;right:6%;top:0;bottom:0;border-radius:0 4px 4px 0}
+.bc--mini .bc-pages{width:6%;top:1.5%;bottom:1.5%;border-radius:0 4px 4px 0}
+.bc--mini .bc-frame{inset:9%}
+.bc--mini .bc-frame::after{inset:3px}
+.bc--mini .bc-corner{display:none}
+.bc--mini .bc-content{inset:11% 8% 6%}
+.bc--mini .bc-eyebrow,.bc--mini .bc-latin,.bc--mini .bc-sub,.bc--mini .bc-imprint{display:none}
+.bc--mini .bc-title{
+  margin:0;font-size:clamp(11px,1.6vw,16px);letter-spacing:.04em;text-indent:.04em;
+  line-height:1.15;white-space:normal;text-shadow:none;
+}
+
+/* 悬停微动效 */
+a:hover .bc-book,.card:hover .bc-book,.tp-book:hover .bc-book{
+  transform:translateY(-5px) rotate(-1.2deg);
+  box-shadow:0 8px 14px rgba(40,28,18,.16),0 22px 38px -16px rgba(40,28,18,.5);
+}
+a:hover .bc-spine,.card:hover .bc-spine,.tp-book:hover .bc-spine{filter:brightness(1.12)}
+
+/* 暗色：保留书本识别度，压低亮度并抬升文字对比 */
+[data-theme="dark"] .bc{--bc-ink:#f6efe2;--bc-line:rgba(246,239,226,.38)}
+[data-theme="dark"] .bc--ink{--bc-ink:#f2e7d5;--bc-line:rgba(205,168,112,.46)}
+[data-theme="dark"] .bc-face,[data-theme="dark"] .bc-spine{filter:brightness(.86) saturate(.92)}
+[data-theme="dark"] .bc-pages{background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--card) 70%,#a89a80) 0 1px,var(--card) 1px 3px)}
+[data-theme="dark"] .bc--paper{--bc-line:color-mix(in srgb,var(--bc-color) 48%,transparent)}
+[data-theme="dark"] .bc--paper .bc-content,[data-theme="dark"] .bc--paper .bc-spine i{color:var(--bc-ink);opacity:.85}
+[data-theme="dark"] .bc--paper .bc-face{
+  filter:none;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--bc-color) 26%,var(--card)),color-mix(in srgb,var(--bc-color) 14%,var(--paper)));
+}
+
+/* ========== 阅读器内承载书封的容器 ========== */
+.cover .cover-hero{
+  display:grid;grid-template-columns:minmax(0,280px) minmax(0,1fr);
+  align-items:center;gap:34px;text-align:left;padding:34px 0 4px;
+}
+.cover .cover-hero .cover-art{width:100%;display:flex;justify-content:center}
+.cover .cover-hero .bc{max-width:280px;margin:0 auto}
+.cover .cover-hero .cover-copy h1{
+  font-family:"STKaiti","KaiTi","Kaiti SC",serif;font-size:clamp(34px,4vw,48px);
+  font-weight:600;letter-spacing:.1em;text-indent:.1em;line-height:1.3;
+}
+.cover .cover-hero .cover-copy .sub{margin-top:10px;color:var(--soft);font-size:13px;letter-spacing:1.5px;line-height:1.8}
+.cover .cover-hero .cover-copy .rule{margin:16px 0 0}
+.cover .cover-hero .cover-copy .intro{margin:18px 0 0;font-size:14.5px}
+@media (max-width:820px){
+  .cover .cover-hero{grid-template-columns:1fr;justify-items:center;gap:22px;text-align:center;padding:26px 0 2px}
+  .cover .cover-hero .bc{max-width:220px}
+  .cover .cover-hero .cover-copy .rule{margin-left:auto;margin-right:auto}
+}
+@media (max-width:640px){
+  .cover .cover-hero .bc{max-width:186px}
+  .cover .cover-hero .cover-copy h1{font-size:36px;letter-spacing:6px;text-indent:6px}
+}
+
+/* 侧栏 mini 书封 */
+.sb-book .sb-cover{flex:none;display:block;width:44px;text-decoration:none}
+@media (min-width:1024px){.sb-book .sb-cover{width:46px}}
+
+/* 工具箱「更多经典」mini 书封 */
+.tp-books .tp-book{flex-direction:row;align-items:center;gap:10px;padding:8px 10px}
+.tp-books .tp-book .bc{flex:none;width:42px}
+.tp-books .tp-book .tb-text{min-width:0;display:flex;flex-direction:column;gap:2px}
+.tp-books .tp-book .tb-name{font-size:15px}
+.tp-books .tp-book.cur{border-color:var(--accent)}
+
+/* 研读页标题区的当前书标识 */
+.study-head .bc,.deep-dive .study-head .bc{display:inline-block;width:46px;vertical-align:middle;margin-right:14px}
+.study-head .bc + h2,.deep-dive .study-head .bc + h2{display:inline-block;vertical-align:middle;margin:0}
+@media (max-width:640px){.study-head .bc,.deep-dive .study-head .bc{width:38px;margin-right:9px}}
+
+@media (prefers-reduced-motion:reduce){
+  .bc-book{transition:none}
+  a:hover .bc-book,.card:hover .bc-book,.tp-book:hover .bc-book{transform:none}
+}
+@media print{
+  .bc{break-inside:avoid-page}
+}

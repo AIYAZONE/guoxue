@@ -34,15 +34,18 @@ SHELL = '''<!DOCTYPE html>
 <meta name="apple-mobile-web-app-title" content="国学共读">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <script>try{{var d=document.documentElement;d.setAttribute('data-theme',localStorage.getItem('guoxue_theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));d.setAttribute('data-pal',localStorage.getItem('guoxue_pal')||'e')}}catch(e){{}}</script>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="description" content="{desc}">
 <meta name="color-scheme" content="light dark">
 <title>{title}</title>
-<link rel="stylesheet" href="/shared/reader.css">
-<link rel="stylesheet" href="/shared/palette.css">
+<link rel="stylesheet" href="/shared/reader.css?v=17">
+<link rel="stylesheet" href="/shared/palette.css?v=6">
+<link rel="stylesheet" href="/shared/book-cover.css?v=7">
 <link rel="stylesheet" href="/shared/pwa.css">
+<script src="/shared/book-cover.js?v=4"></script>
+<script src="/shared/appearance.js"></script>
 <script src="/shared/pwa.js" defer></script>
-<script src="/shared/reader.js" defer></script>
+<script src="/shared/reader.js?v=19" defer></script>
 </head>
 <body data-book="{key}">
 <div id="appLoading">载 入 中 …</div>

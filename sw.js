@@ -1,6 +1,6 @@
 /* 国学经典共读 · Service Worker
    策略：外壳预缓存；页面与数据网络优先（改版即时可见）；静态资源缓存优先 + 后台更新 */
-var VERSION = 'guoxue-v18';
+var VERSION = 'guoxue-v19';
 
 var SHELL = [
   '/',
@@ -8,10 +8,18 @@ var SHELL = [
   '/manifest.webmanifest',
   '/shared/reader.css',
   '/shared/palette.css',
+  '/shared/book-cover.css',
+  '/shared/book-cover.js',
   '/shared/appearance.js',
   '/shared/pwa.css',
   '/shared/pwa.js',
   '/shared/reader.js',
+  '/assets/cover-textures/wave.svg',
+  '/assets/cover-textures/contour.svg',
+  '/assets/cover-textures/concentric.svg',
+  '/assets/cover-textures/diagonal.svg',
+  '/assets/cover-textures/grid.svg',
+  '/assets/cover-textures/corner-ornament.svg',
   '/books.json',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
@@ -108,8 +116,8 @@ self.addEventListener('fetch', function (e) {
     return;
   }
 
-  // 图标类：缓存优先，后台静默更新
-  if (/^\/icons\//.test(url.pathname) || /favicon\.svg$/.test(url.pathname) || /\.webmanifest$/.test(url.pathname)) {
+  // 图标与书封纹理：缓存优先，后台静默更新
+  if (/^\/icons\//.test(url.pathname) || /^\/assets\/cover-textures\//.test(url.pathname) || /favicon\.svg$/.test(url.pathname) || /\.webmanifest$/.test(url.pathname)) {
     e.respondWith(staleWhileRevalidate(req));
   }
 });

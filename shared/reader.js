@@ -26,6 +26,13 @@
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
   }
+  function currentBook() {
+    var m = data && data.meta ? data.meta : {};
+    return { key: BOOK, book: m.book, subtitle: m.subtitle, favchar: m.favchar, theme: m.theme };
+  }
+  function coverMarkup(book, opts) {
+    return window.BookCover && window.BookCover.html ? window.BookCover.html(book, opts) : '';
+  }
   function stripTags(html) {
     return html.replace(/<rt>[\s\S]*?<\/rt>/g, '')
       .replace(/<[^>]+>/g, '').replace(/\s+/g, '');
@@ -114,7 +121,7 @@
       + '  <div class="sidebar-head">'
       + '    <a class="sb-back" href="/" title="返回国学经典共读首页"><span class="ar">←</span>国学经典共读</a>'
       + '    <div class="sb-book">'
-      + '      <span class="sb-seal">' + esc(m.book.charAt(0)) + '</span>'
+      + '      <a class="sb-cover" href="#cover" title="回到本书封面">' + coverMarkup(currentBook(), { size: 'mini' }) + '</a>'
       + '      <div class="sb-text">'
       + '        <a class="sb-title" href="#cover" title="回到本书封面">' + esc(m.book) + '</a>'
       + '        <div class="sb-meta">共' + esc(cnNum(TOTAL)) + '章 · 一天一章</div>'
@@ -223,11 +230,14 @@
     var m = data.meta;
     return ''
       + '<section class="cover view" data-view="cover" id="cover">'
-      + '<section class="hero">'
-      + '  <h1>' + esc(m.book) + '</h1>'
-      + '  <p class="sub">' + esc(m.subtitle) + '</p>'
-      + '  <div class="rule"></div>'
-      + '  <p class="intro">' + (m.intro || '') + '</p>'
+      + '<section class="hero cover-hero">'
+      + '  <div class="cover-art">' + coverMarkup(currentBook(), { size: 'large' }) + '</div>'
+      + '  <div class="cover-copy">'
+      + '    <h1>' + esc(m.book) + '</h1>'
+      + '    <p class="sub">' + esc(m.subtitle) + '</p>'
+      + '    <div class="rule"></div>'
+      + '    <p class="intro">' + (m.intro || '') + '</p>'
+      + '  </div>'
       + '</section>'
       + '<section class="plan">'
       + '  <div class="plan-head"><h2>今日共读</h2><span class="chip" id="dayChip"></span></div>'
@@ -436,7 +446,7 @@
       + '<textarea class="sheng-note reading-notebook" id="shengNote-' + c.n + '" data-n="' + c.n + '" rows="6" placeholder="记下读到这里想到的事……"></textarea>'
       + '<div class="reading-note-meta"><span id="readingSave-' + c.n + '" role="status" aria-live="polite"></span><span>仅保存在当前浏览器</span></div></div>';
     var h = '<section class="deep-dive" id="' + prefix + '" aria-label="本章深读">'
-      + '<header class="study-head"><h2>深 读</h2><p class="study-sub">读懂，然后用到自己身上</p></header>'
+      + '<header class="study-head">' + coverMarkup(currentBook(), { size: 'mini' }) + '<h2>深 读</h2><p class="study-sub">读懂，然后用到自己身上</p></header>'
       + sections + comm;
     if (res) h += '<section class="study-block"><h3 class="blk-title">现代处境</h3><div class="cgrid">' + res + '</div></section>';
     if (practice) h += '<section class="study-block"><h3 class="blk-title">今日省察</h3><ol class="sheng">' + practice + '</ol></section>';
@@ -572,7 +582,9 @@
     syncNav('study');
     if (bodyClass('paged')) setActiveView($('study'));
     if (scroll !== false) {
-      var y = $('study').getBoundingClientRect().top + window.scrollY - 10;
+      // 宽屏顶栏吸顶，需为其留出空间；移动端顶栏隐藏，沿用较小偏移
+      var offset = window.innerWidth >= 1024 ? 70 : 12;
+      var y = $('study').getBoundingClientRect().top + window.scrollY - offset;
       window.scrollTo(0, Math.max(0, y));
     }
   }
@@ -953,8 +965,11 @@
       var b = books[i];
       var cur = b.key === BOOK;
       html += (cur ? '<span class="tp-book cur">' : '<a class="tp-book" href="/' + esc(b.key) + '/">')
+        + coverMarkup(b, { size: 'mini' })
+        + '<span class="tb-text">'
         + '<span class="tb-name">' + esc(b.book) + '</span>'
         + '<span class="tb-tag">' + esc(cur ? '在读' : (b.tag || '')) + ' · ' + b.total + ' 章</span>'
+        + '</span>'
         + (cur ? '</span>' : '</a>');
     }
     html += '<a class="hub-all" href="/">📚 返回 国学经典共读 首页 →</a>';
@@ -1175,7 +1190,15 @@
   function injectStudy() {
     fetch(STUDY_URL, { cache: 'no-cache' })
       .then(function (r) { return r.ok ? r.text() : ''; })
-      .then(function (h) { var el = $('studyBody'); if (el) el.innerHTML = h; })
+      .then(function (h) {
+        var el = $('studyBody');
+        if (!el) return;
+        el.innerHTML = h;
+        var head = el.querySelector('.study-head');
+        if (head && !head.querySelector('.bc')) {
+          head.insertAdjacentHTML('afterbegin', coverMarkup(currentBook(), { size: 'mini' }));
+        }
+      })
       .catch(function () {});
   }
 

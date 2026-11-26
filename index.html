@@ -16,7 +16,9 @@
 <meta name="description" content="国学经典共读：注音 · 逐句译文 · 多视角解读——让古籍不再难读">
 <title>国学经典共读</title>
 <link rel="stylesheet" href="/shared/palette.css?v=6">
+<link rel="stylesheet" href="/shared/book-cover.css?v=7">
 <link rel="stylesheet" href="/shared/pwa.css">
+<script src="/shared/book-cover.js?v=4"></script>
 <script src="/shared/appearance.js"></script>
 <script src="/shared/pwa.js" defer></script>
 <style>
@@ -44,9 +46,8 @@ a{color:inherit}
 /* ── 顶栏 ── */
 .nav{position:sticky;top:0;z-index:60;background:var(--paper);background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
 .nav-inner{max-width:1100px;margin:0 auto;padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between;gap:14px}
-.nav-brand{font-family:"STKaiti","KaiTi","Kaiti SC",serif;font-size:21px;letter-spacing:3px;text-decoration:none;display:inline-flex;align-items:center;gap:9px}
-.brand-mark{width:38px;height:38px;border-radius:8px;flex:none;display:block;box-shadow:0 1px 4px rgba(141,74,52,.22)}
-.brand-txt{display:inline-flex;align-items:baseline;gap:8px;white-space:nowrap}
+.nav-brand{font-family:"STKaiti","KaiTi","Kaiti SC",serif;font-size:23px;letter-spacing:4px;text-decoration:none;display:inline-flex;align-items:baseline;color:var(--ink)}
+.brand-txt{display:inline-flex;align-items:baseline;gap:10px;white-space:nowrap}
 .nav-brand small{font-family:inherit;font-size:10.5px;letter-spacing:2px;color:var(--muted)}
 .nav-right{display:flex;align-items:center;gap:8px}
 .nav-meta{font-size:12px;color:var(--muted);letter-spacing:1.5px}
@@ -83,50 +84,35 @@ a{color:inherit}
 .filter-bar button.active{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:500}
 .filter-bar button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-/* ── 书卡 ── */
+/* ── 书架：书封直接落在纸面上，信息只保留一行 ── */
 .container{width:100%;max-width:1100px;margin:0 auto;padding:0 24px}
-.grid{display:grid;grid-template-columns:1fr;gap:20px;padding-bottom:16px}
+.grid{display:grid;grid-template-columns:1fr;gap:30px 24px;padding-bottom:16px}
 @media (min-width:700px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media (min-width:1040px){.grid{grid-template-columns:repeat(3,1fr)}}
-.card{
-  position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;
-  padding:24px 24px 20px;display:flex;flex-direction:column;
-  transition:transform .2s,border-color .2s,box-shadow .2s;box-shadow:var(--shadow);
-}
-.card:hover{transform:translateY(-3px);border-color:var(--line-strong);box-shadow:0 2px 6px rgba(43,36,24,.05),0 18px 40px -22px rgba(43,36,24,.3)}
-.card-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:10px}
-.card-seal{flex:none;width:42px;height:42px;border-radius:10px;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-family:"STKaiti","KaiTi",serif;font-size:22px;letter-spacing:0;box-shadow:inset 0 -1px 0 rgba(0,0,0,.12)}
-.card .name{font-family:"STKaiti","KaiTi","Kaiti SC",serif;font-size:27px;font-weight:600;letter-spacing:.1em;line-height:1.2}
-.card .authors{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.6;letter-spacing:.02em}
-.card .meta-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:14px 0 16px;font-size:11.5px;color:var(--soft)}
-.card .cat-tag{border:1px solid var(--line);border-radius:999px;padding:1px 9px;letter-spacing:.06em}
-.card .chapter-badge{background:var(--accent-bg);color:var(--accent-deep);border-radius:999px;padding:1px 9px;letter-spacing:.04em}
-.card .card-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:12px;border-top:1px solid var(--line)}
-.card .prog{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted);letter-spacing:.04em;min-width:0}
-.card .prog .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.7;flex:none}
-.card .go{display:inline-flex;align-items:center;gap:5px;font-size:13.5px;letter-spacing:.06em;color:var(--accent-deep);text-decoration:none;white-space:nowrap;transition:color .16s}
+@media (min-width:1360px){.container{max-width:1240px}.grid{grid-template-columns:repeat(4,1fr)}}
+.card{position:relative;display:flex;flex-direction:column;min-width:0}
+.card-cover-link{display:block;width:100%;max-width:226px;margin:0 auto 14px;color:inherit;text-decoration:none}
+.card-cover-link:focus-visible{outline:2px solid var(--accent);outline-offset:6px;border-radius:10px}
+.card .card-foot{display:flex;align-items:center;justify-content:center;gap:14px;padding:0 4px}
+.card-meta{font-size:11.5px;color:var(--muted);letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .go{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;letter-spacing:.06em;color:var(--accent-deep);text-decoration:none;white-space:nowrap;transition:color .16s}
 .card .go .ar{font-size:13px;line-height:1;transition:transform .16s}
 .card .go:hover{color:var(--accent)}
 .card .go:hover .ar{transform:translateX(3px)}
 .card .go:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
 
-/* ── 首屏骨架：与真实书卡同构，数据到位时页面不跳动 ── */
+/* ── 首屏骨架：与真实书封同构，数据到位时页面不跳动 ── */
 .sk{position:relative;display:block;overflow:hidden;background:var(--line);border-radius:6px}
 .sk::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--card) 75%,transparent),transparent);animation:skShine 1.4s ease-in-out infinite}
 @keyframes skShine{to{transform:translateX(100%)}}
-.sk-card{pointer-events:none;min-height:204px}
-.sk-card .card-seal{background:var(--line);box-shadow:none}
-.sk-stack{flex:1;min-width:0}
-.sk-name{width:78px;height:28px;margin-top:3px}
-.sk-authors{width:176px;max-width:100%;height:11px;margin-top:9px}
-.sk-tag{width:50px;height:18px;border-radius:999px}
-.sk-badge{width:86px;height:18px;border-radius:999px}
-.sk-prog{width:112px;height:11px}
+.sk-card{pointer-events:none}
+.sk-cover{width:100%;max-width:226px;margin:0 auto 14px;aspect-ratio:3/4;border-radius:10px}
+.sk-line{height:11px;border-radius:999px}
+.sk-line.meta{width:38%;height:11px}
 .sk-go{width:68px;height:13px}
 .sk-pill{width:62px;height:31px;border-radius:999px}
 .sk-stat{width:104px;height:14px;margin:4px 0;border-radius:999px}
 .sk-meta{display:inline-block;width:124px;height:10px;border-radius:999px;vertical-align:middle}
-@media (max-width:699px){.sk-card{min-height:200px}}
 @media (prefers-reduced-motion:reduce){.sk::after{animation:none}}
 
 /* ── 书目载入失败 ── */
@@ -196,8 +182,7 @@ html[data-theme="dark"] .nav{background:color-mix(in srgb,var(--paper) 92%,trans
   .hero .stats{gap:6px}
   .nav-inner{height:54px;padding:0 12px;gap:10px}
   .nav-meta{display:none}
-  .nav-brand{font-size:18.5px;letter-spacing:2px;gap:7px}
-  .brand-mark{width:30px;height:30px;border-radius:6px}
+  .nav-brand{font-size:19px;letter-spacing:2.5px}
   .brand-txt small{display:none}
   .nav-right{gap:6px}
   .icon-btn{font-size:12.5px;padding:5px 10px;letter-spacing:.3px}
@@ -205,10 +190,8 @@ html[data-theme="dark"] .nav{background:color-mix(in srgb,var(--paper) 92%,trans
   .resume{margin-bottom:4px}
   .filter-bar{padding:20px 12px 24px}
   .filter-bar button{padding:5px 14px;font-size:12.5px}
-  .grid{gap:14px;padding-bottom:12px}
-  .card{padding:18px;border-radius:14px}
-  .card .name{font-size:24px}
-  .card .card-seal{width:36px;height:36px;font-size:19px;border-radius:9px}
+  .grid{gap:24px 14px;padding-bottom:12px}
+  .card-cover-link,.sk-cover{max-width:210px;margin-bottom:12px}
   .benefits{margin-top:40px}
   .benefits-inner{grid-template-columns:1fr}
   .benefits h2{letter-spacing:3px}
@@ -221,7 +204,7 @@ html[data-theme="dark"] .nav{background:color-mix(in srgb,var(--paper) 92%,trans
 
 <header class="nav">
   <div class="nav-inner">
-    <a class="nav-brand" href="/"><img class="brand-mark" src="/favicon.svg" width="38" height="38" alt=""><span class="brand-txt">国学共读<small>GUOXUE</small></span></a>
+    <a class="nav-brand" href="/"><span class="brand-txt">国学共读<small>GUOXUE</small></span></a>
     <div class="nav-right">
       <span class="nav-meta" id="navMeta"><span class="sk sk-meta" aria-hidden="true"></span></span>
       <button class="icon-btn" type="button" data-pwa-install>安装 <span class="pwa-app-suffix">APP</span></button>
@@ -261,34 +244,28 @@ html[data-theme="dark"] .nav{background:color-mix(in srgb,var(--paper) 92%,trans
 <main class="container">
   <div class="grid" id="bookGrid" aria-busy="true">
     <article class="card sk-card" aria-hidden="true">
-      <div class="card-top"><span class="card-seal"></span><div class="sk-stack"><span class="sk sk-name"></span><span class="sk sk-authors"></span></div></div>
-      <div class="meta-row"><span class="sk sk-tag"></span><span class="sk sk-badge"></span></div>
-      <div class="card-foot"><span class="sk sk-prog"></span><span class="sk sk-go"></span></div>
+      <span class="sk sk-cover"></span>
+      <div class="card-foot"><span class="sk sk-line meta"></span><span class="sk sk-go"></span></div>
     </article>
     <article class="card sk-card" aria-hidden="true">
-      <div class="card-top"><span class="card-seal"></span><div class="sk-stack"><span class="sk sk-name"></span><span class="sk sk-authors"></span></div></div>
-      <div class="meta-row"><span class="sk sk-tag"></span><span class="sk sk-badge"></span></div>
-      <div class="card-foot"><span class="sk sk-prog"></span><span class="sk sk-go"></span></div>
+      <span class="sk sk-cover"></span>
+      <div class="card-foot"><span class="sk sk-line meta"></span><span class="sk sk-go"></span></div>
     </article>
     <article class="card sk-card" aria-hidden="true">
-      <div class="card-top"><span class="card-seal"></span><div class="sk-stack"><span class="sk sk-name"></span><span class="sk sk-authors"></span></div></div>
-      <div class="meta-row"><span class="sk sk-tag"></span><span class="sk sk-badge"></span></div>
-      <div class="card-foot"><span class="sk sk-prog"></span><span class="sk sk-go"></span></div>
+      <span class="sk sk-cover"></span>
+      <div class="card-foot"><span class="sk sk-line meta"></span><span class="sk sk-go"></span></div>
     </article>
     <article class="card sk-card" aria-hidden="true">
-      <div class="card-top"><span class="card-seal"></span><div class="sk-stack"><span class="sk sk-name"></span><span class="sk sk-authors"></span></div></div>
-      <div class="meta-row"><span class="sk sk-tag"></span><span class="sk sk-badge"></span></div>
-      <div class="card-foot"><span class="sk sk-prog"></span><span class="sk sk-go"></span></div>
+      <span class="sk sk-cover"></span>
+      <div class="card-foot"><span class="sk sk-line meta"></span><span class="sk sk-go"></span></div>
     </article>
     <article class="card sk-card" aria-hidden="true">
-      <div class="card-top"><span class="card-seal"></span><div class="sk-stack"><span class="sk sk-name"></span><span class="sk sk-authors"></span></div></div>
-      <div class="meta-row"><span class="sk sk-tag"></span><span class="sk sk-badge"></span></div>
-      <div class="card-foot"><span class="sk sk-prog"></span><span class="sk sk-go"></span></div>
+      <span class="sk sk-cover"></span>
+      <div class="card-foot"><span class="sk sk-line meta"></span><span class="sk sk-go"></span></div>
     </article>
     <article class="card sk-card" aria-hidden="true">
-      <div class="card-top"><span class="card-seal"></span><div class="sk-stack"><span class="sk sk-name"></span><span class="sk sk-authors"></span></div></div>
-      <div class="meta-row"><span class="sk sk-tag"></span><span class="sk sk-badge"></span></div>
-      <div class="card-foot"><span class="sk sk-prog"></span><span class="sk sk-go"></span></div>
+      <span class="sk sk-cover"></span>
+      <div class="card-foot"><span class="sk sk-line meta"></span><span class="sk sk-go"></span></div>
     </article>
   </div>
 </main>
@@ -322,6 +299,12 @@ html[data-theme="dark"] .nav{background:color-mix(in srgb,var(--paper) 92%,trans
 <script>
 var BOOKS = [];
 var currentCat = "all";
+
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
 
 /* 外观：主题（guoxue_theme）+ 配色（guoxue_pal），与阅读器共用 */
 var PALS = [
@@ -462,20 +445,15 @@ function renderBooks() {
 
   var html = filtered.map(function (b) {
     var n = lastRead(b.key);
-    var line = n > 0
-      ? '<span class="dot"></span>上次读到第 ' + n + ' 章'
-      : '<span class="dot" style="opacity:.35"></span>尚未开始 · 随时可读';
-    return '<article class="card">'
-      + '<div class="card-top">'
-      + '  <span class="card-seal">' + b.book.charAt(0) + '</span>'
-      + '  <div><div class="name">' + b.book + '</div>'
-      + '  <div class="authors">' + b.subtitle + '</div></div>'
-      + '</div>'
-      + '<div class="meta-row"><span class="cat-tag">' + (b.cat || '经典') + '</span>'
-      + '<span class="chapter-badge">' + b.total + ' 章 · ' + b.total + ' 天</span></div>'
+    var url = '/' + esc(b.key) + '/';
+    var name = esc(b.book);
+    var cover = window.BookCover ? window.BookCover.html(b, { size: 'large' }) : '';
+    var cta = n > 0 ? '继续第 ' + n + ' 章' : '开始共读';
+    return '<article class="card shelf-card">'
+      + '<a class="card-cover-link" href="' + url + '" aria-label="' + name + '书封 · 进入共读">' + cover + '</a>'
       + '<div class="card-foot">'
-      + '  <span class="prog">' + line + '</span>'
-      + '  <a class="go" href="/' + b.key + '/">' + (n > 0 ? '继续共读' : '开始共读') + '<span class="ar">→</span></a>'
+      + '  <span class="card-meta">' + esc(b.cat || '经典') + ' · ' + b.total + ' 章</span>'
+      + '  <a class="go" href="' + url + '">' + cta + '<span class="ar">→</span></a>'
       + '</div>'
       + '</article>';
   }).join('');
